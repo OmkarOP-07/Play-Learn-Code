@@ -6,6 +6,7 @@ import ProfileDropdown from './ProfileDropdown';
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -13,11 +14,20 @@ const Navbar = () => {
       setUser(user);
     });
 
-    return () => unsubscribe();
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950/80 backdrop-blur-lg shadow-lg border-b border-white/10">
+    <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent  ${scrolled ? 'border-b border-white/10 backdrop-blur-lg shadow-lg neon-glow' : ''} `}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
