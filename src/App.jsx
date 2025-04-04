@@ -17,10 +17,12 @@ import Learn from './components/Learn.jsx';
 import JavaLearning from './Cources/java.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import PythonLearning from './Cources/python.jsx';
-import BasicSyntax from './Java/Beginner/basic-syntax.jsx';
+import PrintingOutput from './Java/Beginner/printing-output.jsx';
 import VariableGamePage from './Java/Variables/variables.jsx';
 import ArrayGamePage from './Java/Arrays/array.jsx';
 import VariablesGamePage from './Java/Variables/variables.jsx';
+import OOPD from './Java/OOPS/oopd.jsx';
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -86,18 +88,8 @@ function App() {
           errorElement={<ErrorBoundary />}
         />
         <Route
-          path="/Java/Beginner/syntax"
-          element={user ? <java /> : <Navigate to="/login" />}
-          errorElement={<ErrorBoundary />}
-        />  
-        <Route
-          path="/Java/Beginner/basic-syntax"
-          element={user ? <BasicSyntax /> : <Navigate to="/login" />}
-          errorElement={<ErrorBoundary />}
-        />
-        <Route
-          path="/Java/Beginner/variables"
-          element={user ? <VariableGamePage /> : <Navigate to="/login" />}
+          path="/Java/Beginner/printing-output"
+          element={user ? <PrintingOutput /> : <Navigate to="/login" />}
           errorElement={<ErrorBoundary />}
         />
         <Route
@@ -108,6 +100,11 @@ function App() {
         <Route
           path="/Java/Variables/variables"
           element={user ? <VariablesGamePage /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/OOP/oopd"
+          element={user ? <OOPD /> : <Navigate to="/login" />}
           errorElement={<ErrorBoundary />}
         />
 
