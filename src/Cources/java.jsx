@@ -22,7 +22,7 @@ const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
 
   //sidebar
   return (
-    <div className={`bg-black bg-opacity-30 text-white w-64 h-full fixed left-0 top-[4rem] p-4 transition-transform ${isVisible ? 'translate-x-0' : '-translate-x-full'} z-50`}>
+    <div className={`bg-black bg-opacity-30 text-white w-64 h-full fixed left-0 top-[4rem] p-4 transition-transform ${isVisible ? 'translate-x-0' : '-translate-x-full'} z-50 `}>
       <h2 className="bg-purple-900 bg-opacity-30 p-2 text-xl font-bold mb-4 border border-white/10 rounded-[0.5rem]">Java Concepts</h2>
       <ul>
         {concepts.map((concept) => (
@@ -104,8 +104,8 @@ const JavaLearning = () => {
       script: "You've discovered an ancient artifact filled with encrypted messages. To unlock its secrets, you must store and manipulate data correctly.",
       subtopics: [
         { id: 2.1, title: "Declaring Variables", path: "/java/Variables/variables", mission: "The Storage Vault", script: "Data must be stored before it can be used. Learn to declare variables.", icon: "https://img.icons8.com/color/96/000000/database.png" },
-        { id: 2.2, title: "Data Types", path: "/java/beginner/data-types", mission: "Know Your Elements", script: "Each piece of data has a type. Understand the different data types to use them effectively.", icon: "https://img.icons8.com/color/96/000000/bulleted-list.png" },
-        { id: 2.3, title: "Type Casting", path: "/java/beginner/type-casting", mission: "Shape Shifter", script: "Data is flexible. Learn how to transform one type into another.", icon: "https://img.icons8.com/color/96/000000/exchange.png" }
+        { id: 2.2, title: "Data Types", path: "/java/Variables/data-types", mission: "Know Your Elements", script: "Each piece of data has a type. Understand the different data types to use them effectively.", icon: "https://img.icons8.com/color/96/000000/bulleted-list.png" },
+        { id: 2.3, title: "Type Casting", path: "/java/Variables/type-casting", mission: "Shape Shifter", script: "Data is flexible. Learn how to transform one type into another.", icon: "https://img.icons8.com/color/96/000000/exchange.png" }
       ],
     },
     {
@@ -209,7 +209,7 @@ const JavaLearning = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative ">
       <Sidebar concepts={javaConcepts} isVisible={isSidebarVisible} onToggle={toggleSidebar} onTopicClick={handleTopicClick} />
 
       {/* Hamburger Icon */}

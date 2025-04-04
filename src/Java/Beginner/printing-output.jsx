@@ -79,7 +79,7 @@ export default function JavaLearningGame() {
         </div>
       </div>
 
-      <Card className="border-4 border-primary shadow-lg bg-gray-200 text-black w-full max-w-4xl mx-auto">
+      <Card className="  shadow-lg bg-gray-200 text-black w-full max-w-4xl mx-auto">
         <CardHeader className="bg-primary/10">
           <CardTitle className="text-xl">Mission: Print Your Name!</CardTitle>
           <CardDescription>
