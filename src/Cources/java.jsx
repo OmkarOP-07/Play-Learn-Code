@@ -157,7 +157,7 @@ const JavaLearning = () => {
         {
           id: 7.1,
           title: "Classes & Objects",
-          path: "/Java/OOPS/OOPD",
+          path: "/java/oops/oopd",
           mission: "Blueprints of Creation",
           script: "Learn how to create and use classes and objects.",
           icon: "https://img.icons8.com/color/96/000000/class.png"
