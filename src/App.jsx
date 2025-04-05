@@ -23,6 +23,10 @@ import DataTypesGamePage from './Java/Variables/data-types.jsx';
 import OOPD from './Java/OOPS/oopd.jsx';
 import BasicSyntax from './Java/Beginner/basic-syntax.jsx';
 import VariablesGamePage from './Java/Variables/variables.jsx';
+import TypeCastingGamePage from './Java/Variables/type-casting.jsx';
+import IfElseGamePage from './Java/Conditionals/if-else.jsx';
+import SwitchStatements from './Java/Conditionals/switch.jsx';
+import ForLoopGamePage from './Java/Loops/for-loop.jsx';
 
 
 
@@ -120,7 +124,26 @@ function App() {
           element={user ? <VariablesGamePage /> : <Navigate to="/login" />}
           errorElement={<ErrorBoundary />}
         />
-
+        <Route
+          path="/Java/Variables/type-casting"
+          element={user ? <TypeCastingGamePage /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        /> 
+        <Route
+          path="/Java/Conditionals/if-else"
+          element={user ? <IfElseGamePage /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/Conditionals/switch"
+          element={user ? <SwitchStatements /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/Loops/for-loop"
+          element={user ? <ForLoopGamePage /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
       </Route>
     ),
     {

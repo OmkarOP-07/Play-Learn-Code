@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
@@ -35,26 +35,13 @@ export default function ControlStructures() {
   ]);
   const [availableCardsHistory, setAvailableCardsHistory] = useState([]);
 
-  const levels = [
-    {
-      level: 1,
-      title: "Traffic Light Control",
-      description: "Drag and drop the correct conditions and actions for the traffic light",
-      light: "red",
-      expectedOutput: "Stop!",
-      solution: {
-        ifCondition: "light = red",
-        ifAction: "Stop!",
-        elseIfCondition: "light = yellow",
-        elseIfAction: "Go slow!",
-        elseCondition: "light = green",
-        elseAction: "Go!"
-      }
-    }
-  ];
+  const levels = useMemo(() => {
+    // Your logic to initialize levels
+    return []; // Ensure this returns an array
+  }, []);
 
   useEffect(() => {
-    if (level <= levels.length) {
+    if (levels && levels.length > 0 && level <= levels.length) {
       setCurrentLight(levels[level - 1].light);
       setPlacedCards({
         ifCondition: null,
@@ -76,7 +63,10 @@ export default function ControlStructures() {
         { id: "slow", text: "Go slow!", type: "action" }
       ]);
     }
-  }, [level]);
+  }, [level, levels]);
+
+  console.log("Levels:", levels);
+  console.log("Current Level:", level);
 
   const startGame = () => {
     setGameStarted(true);
@@ -190,8 +180,11 @@ export default function ControlStructures() {
     }
   };
 
+  //     <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative">
+
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 pt-24">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative">
+    <div className="w-full max-w-4xl mx-auto p-4 pt-16 text-white ">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
           <Award className="h-6 w-6 text-primary" />
@@ -211,9 +204,9 @@ export default function ControlStructures() {
 
       <Card className="border-4 border-primary shadow-lg">
         <CardHeader className="bg-primary/10">
-          <CardTitle className="text-xl">{levels[level - 1].title}</CardTitle>
+          <CardTitle className="text-xl">{levels[level - 1]?.title || 'No level data available'}</CardTitle>
           <CardDescription>
-            {levels[level - 1].description}
+            {levels[level - 1]?.description || 'No description available'}
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6">
@@ -221,7 +214,7 @@ export default function ControlStructures() {
             {/* Left Side - Traffic Lights */}
             <div className="col-span-2 flex flex-col items-center">
               <h2 className="text-lg font-semibold mb-4">Traffic Lights</h2>
-              <div className="flex flex-col items-center gap-4 bg-gray-100 p-6 rounded-lg">
+              <div className="flex flex-col items-center gap-4 bg-gray-100 p-6 rounded-lg text-black">
                 <div className="flex flex-col items-center gap-2">
                   <div className={`w-16 h-16 rounded-full ${
                     currentLight === "red" ? "bg-red-500" : "bg-gray-300"
@@ -232,13 +225,13 @@ export default function ControlStructures() {
                   <div className={`w-16 h-16 rounded-full ${
                     currentLight === "yellow" ? "bg-yellow-500" : "bg-gray-300"
                   } shadow-lg`} />
-                  <p className="text-sm font-medium">Yellow Light</p>
+                  <p className="text-sm font-medium text-center">Yellow Light</p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <div className={`w-16 h-16 rounded-full ${
                     currentLight === "green" ? "bg-green-500" : "bg-gray-300"
                   } shadow-lg`} />
-                  <p className="text-sm font-medium">Green Light</p>
+                  <p className="text-sm font-medium text-center">Green Light</p>
                 </div>
               </div>
             </div>
@@ -324,11 +317,11 @@ export default function ControlStructures() {
 
             {/* Right Side - Cards */}
             <div className="col-span-4 flex flex-col">
-              <h2 className="text-lg font-semibold mb-4">Available Cards</h2>
+              <h2 className="text-lg font-semibold mb-4 text-center">Available Cards</h2>
               <div className="space-y-4">
                 <div>
                   <h3 className="text-sm font-medium mb-2">Conditions</h3>
-                  <div className="space-y-2">
+                  <div className="space-y-2 text-black">
                     {availableCards
                       .filter(card => card.type === 'condition')
                       .map(card => (
@@ -345,7 +338,7 @@ export default function ControlStructures() {
                 </div>
                 <div>
                   <h3 className="text-sm font-medium mb-2">Actions</h3>
-                  <div className="space-y-2">
+                  <div className="space-y-2 text-black">
                     {availableCards
                       .filter(card => card.type === 'action')
                       .map(card => (
@@ -420,6 +413,7 @@ export default function ControlStructures() {
           </div>
         </CardContent>
       </Card>
+    </div>
     </div>
   );
 } 

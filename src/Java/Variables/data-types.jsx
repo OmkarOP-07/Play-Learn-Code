@@ -244,7 +244,7 @@ function Variables() {
             </div>
             <button
               onClick={resetGame}
-              className="mt-3 bg-black text-white px-4 py-2 text-base rounded-md hover:bg-gray-800 transition-colors font-inter border border-gray-300"
+              className="mt-3 bg-white text-black px-4 py-2 text-base rounded-md hover:bg-gray-800 transition-colors font-inter border border-gray-300"
             >
               Reset Game
             </button>

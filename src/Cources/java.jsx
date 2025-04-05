@@ -105,7 +105,7 @@ const JavaLearning = () => {
       subtopics: [
         { id: 2.1, title: "Declaring Variables", path: "/java/Variables/variables", mission: "The Storage Vault", script: "Data must be stored before it can be used. Learn to declare variables.", icon: "https://img.icons8.com/color/96/000000/database.png" },
         { id: 2.2, title: "Data Types", path: "/java/Variables/data-types", mission: "Know Your Elements", script: "Each piece of data has a type. Understand the different data types to use them effectively.", icon: "https://img.icons8.com/color/96/000000/bulleted-list.png" },
-        { id: 2.3, title: "Type Casting", path: "/java/Variables/type-casting", mission: "Shape Shifter", script: "Data is flexible. Learn how to transform one type into another.", icon: "https://img.icons8.com/color/96/000000/exchange.png" }
+        { id: 2.3, title: "Type Casting", path: "/Java/Variables/type-casting", mission: "Shape Shifter", script: "Data is flexible. Learn how to transform one type into another.", icon: "https://img.icons8.com/color/96/000000/exchange.png" }
       ],
     },
     {
@@ -114,8 +114,8 @@ const JavaLearning = () => {
       mission: "Choose Your Path",
       script: "You arrive at the Gates of Decision, where every choice determines your fate. Write a program that decides whether you enter the gates or turn back.",
       subtopics: [
-        { id: 3.1, title: "If-Else Statements", path: "/coding/conditions/if-else", mission: "The Forked Road", script: "Every decision matters. Use if-else to guide the program's choices.", icon: "https://img.icons8.com/color/96/000000/split.png" },
-        { id: 3.2, title: "Switch Statements", path: "/coding/conditions/switch", mission: "The Control Panel", script: "When multiple choices appear, a switch statement helps navigate them efficiently.", icon: "https://img.icons8.com/color/96/000000/toggle-off.png" }
+        { id: 3.1, title: "If-Else Statements", path: "/Java/Conditionals/if-else", mission: "The Forked Road", script: "Every decision matters. Use if-else to guide the program's choices.", icon: "https://img.icons8.com/color/96/000000/split.png" },
+        { id: 3.2, title: "Switch Statements", path: "/java/conditionals/switch", mission: "The Control Panel", script: "When multiple choices appear, a switch statement helps navigate them efficiently.", icon: "https://img.icons8.com/color/96/000000/toggle-off.png" }
       ],
     },
     {
@@ -124,8 +124,8 @@ const JavaLearning = () => {
       mission: "Master the Loops",
       script: "The Tower of Knowledge awaits, but its steps are infinite. Use loops to climb the staircase without getting lost.",
       subtopics: [
-        { id: 4.1, title: "For Loops", path: "/coding/loops/for-loop", mission: "Counting Steps", script: "Repeat a task efficiently by mastering the for loop.", icon: "https://img.icons8.com/color/96/000000/refresh.png" },
-        { id: 4.2, title: "While Loops", path: "/coding/loops/while-loop", mission: "Endless Journey", script: "Sometimes the destination is unknown. Use while loops for uncertain conditions.", icon: "https://img.icons8.com/color/96/000000/infinity.png" }
+        { id: 4.1, title: "For Loops", path: "/Java/Loops/for-loop", mission: "Counting Steps", script: "Repeat a task efficiently by mastering the for loop.", icon: "https://img.icons8.com/color/96/000000/refresh.png" },
+        { id: 4.2, title: "While Loops", path: "/Java/Loops/while-loop", mission: "Endless Journey", script: "Sometimes the destination is unknown. Use while loops for uncertain conditions.", icon: "https://img.icons8.com/color/96/000000/infinity.png" }
       ],
     },
     {
@@ -134,8 +134,8 @@ const JavaLearning = () => {
       mission: "Weave the Spells",
       script: "To cast the most powerful spell, you must write a function that performs a magical transformation.",
       subtopics: [
-        { id: 5.1, title: "Defining Functions", path: "/coding/functions/defining", mission: "The Magic Formula", script: "Functions create reusable magic. Define your own to simplify tasks.", icon: "https://img.icons8.com/color/96/000000/stars.png" },
-        { id: 5.2, title: "Function Parameters", path: "/coding/functions/parameters", mission: "Spell Components", script: "A function's power depends on its inputs. Learn how to pass parameters effectively.", icon: "https://img.icons8.com/color/96/000000/test-tube.png" }
+        { id: 5.1, title: "Defining Functions", path: "/Java/Functions/defining", mission: "The Magic Formula", script: "Functions create reusable magic. Define your own to simplify tasks.", icon: "https://img.icons8.com/color/96/000000/stars.png" },
+        { id: 5.2, title: "Function Parameters", path: "/Java/Functions/parameters", mission: "Spell Components", script: "A function's power depends on its inputs. Learn how to pass parameters effectively.", icon: "https://img.icons8.com/color/96/000000/test-tube.png" }
       ],
     },
     {
@@ -144,8 +144,8 @@ const JavaLearning = () => {
       mission: "Find the Patterns",
       script: "The ancient scrolls are hidden in an unordered list. Sort them correctly to reveal their secrets.",
       subtopics: [
-        { id: 6.1, title: "Array Basics", path: "/coding/arrays/basics", mission: "Organized Storage", script: "Store multiple values in a structured way with arrays.", icon: "https://img.icons8.com/color/96/000000/data-sheet.png" },
-        { id: 6.2, title: "Sorting Arrays", path: "/coding/arrays/sorting", mission: "Arrange the Chaos", script: "Learn how to sort arrays for better organization.", icon: "https://img.icons8.com/color/96/000000/sorting-arrows.png" }
+        { id: 6.1, title: "Array Basics", path: "/Java/Arrays/basics", mission: "Organized Storage", script: "Store multiple values in a structured way with arrays.", icon: "https://img.icons8.com/color/96/000000/data-sheet.png" },
+        { id: 6.2, title: "Sorting Arrays", path: "/Java/Arrays/sorting", mission: "Arrange the Chaos", script: "Learn how to sort arrays for better organization.", icon: "https://img.icons8.com/color/96/000000/sorting-arrows.png" }
       ],
     },
     {
@@ -157,7 +157,7 @@ const JavaLearning = () => {
         {
           id: 7.1,
           title: "Classes & Objects",
-          path: "/java/oops/oopd",
+          path: "/Java/OOPS/oopd",
           mission: "Blueprints of Creation",
           script: "Learn how to create and use classes and objects.",
           icon: "https://img.icons8.com/color/96/000000/class.png"
@@ -209,7 +209,7 @@ const JavaLearning = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative ">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative pt-16 ">
       <Sidebar concepts={javaConcepts} isVisible={isSidebarVisible} onToggle={toggleSidebar} onTopicClick={handleTopicClick} />
 
       {/* Hamburger Icon */}

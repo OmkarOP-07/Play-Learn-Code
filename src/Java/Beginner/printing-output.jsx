@@ -62,8 +62,9 @@ export default function JavaLearningGame() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative">
       <div className="mx-auto p-4 pt-24 text-black text-white">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-2 bg-gray-200 p-2 rounded-md text-black">
+      <Card className="  shadow-lg bg-gray-200 text-black w-full max-w-4xl mx-auto">
+      <div className="flex justify-between items-center mb-6 bg-purple-500 p-2 rounded-md text-black border-2 border-purple-500">
+        <div className="flex items-center gap-2  p-2 rounded-md text-black">
           <Rocket className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold ">Java Adventure</h1>
         </div>
@@ -79,7 +80,6 @@ export default function JavaLearningGame() {
         </div>
       </div>
 
-      <Card className="  shadow-lg bg-gray-200 text-black w-full max-w-4xl mx-auto">
         <CardHeader className="bg-primary/10">
           <CardTitle className="text-xl">Mission: Print Your Name!</CardTitle>
           <CardDescription>

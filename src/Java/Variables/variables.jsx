@@ -72,7 +72,7 @@ const JavaVariablesGame = () => {
   
   if (showWinMessage) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-purple-800 to-indigo-900 text-white ">
+      <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-purple-800 to-indigo-900 text-black ">
         <div className="animate-bounce mb-8">
           <div className="text-yellow-300 text-6xl mb-4">🏆</div>
         </div>
@@ -103,23 +103,23 @@ const JavaVariablesGame = () => {
 
   return (
     
-    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative pt-10">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-black overflow-hidden relative pt-10">
       {/* Header with progress and score */}
       <div className='w-[70%] mx-auto'>
       <div className="flex justify-between items-center mb-6 pt-10">
         <div className=" bg-transparent rounded-lg p-3 shadow-gray-900 shadow-md">
-          <p className="font-bold">Level: {currentLevel + 1}/{levels.length}</p>
+          <p className="font-bold text-white">Level: {currentLevel + 1}/{levels.length}</p>
         </div>
         <div className="bg-transparent rounded-lg p-3 shadow-gray-900 shadow-md">
-          <p className="font-bold">Score: {score}</p>
+          <p className="font-bold text-white">Score: {score}</p>
         </div>
       </div>
 
       {/* Level title */}
-      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">{currentLevelData.title}</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center text-white">{currentLevelData.title}</h1>
       
       {/* Progress bar */}
-      <div className="w-full bg-black rounded-full h-4 mb-6">
+      <div className="w-full bg-white rounded-full h-4 mb-6">
         <div 
           className="bg-green-500 h-4 rounded-full transition-all duration-500 ease-in-out"
           style={{ width: `${((currentLevel) / levels.length) * 100}%` }}
@@ -127,7 +127,7 @@ const JavaVariablesGame = () => {
       </div>
 
       {/* Main content */}
-      <div className="bg-black rounded-lg p-6 shadow-xl mb-8">
+      <div className="bg-white rounded-lg p-6 shadow-xl mb-8">
         <div className="mb-6">
           <p className="text-lg mb-4">{currentLevelData.description}</p>
           <div className="p-4 bg-gray-900 rounded-lg border-l-4 border-blue-500">
@@ -146,11 +146,11 @@ const JavaVariablesGame = () => {
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="Type your code here..."
-                className="flex-grow p-3 rounded-lg bg-black border border-gray-600 text-white font-mono"
+                className="flex-grow p-3 rounded-lg bg-white border border-gray-600 text-black font-mono"
               />
               <button
                 type="submit"
-                className="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200"
+                className="bg-green-600 hover:bg-green-500 text-black font-bold py-2 px-6 rounded-lg transition-colors duration-200"
               >
                 Submit
               </button>
@@ -176,7 +176,7 @@ const JavaVariablesGame = () => {
       </div>
 
       {/* Visual representation of variables */}
-      <div className="bg-black rounded-lg p-4 shadow-xl mb-6">
+      <div className="bg-white rounded-lg p-4 shadow-xl mb-6">
         <h3 className="text-lg font-semibold mb-3">Variable Visualization</h3>
         <div className="flex flex-wrap gap-4 justify-center">
           <div className="border-2 border-blue-600 rounded-lg p-3 w-32 h-32 flex flex-col items-center justify-center">
