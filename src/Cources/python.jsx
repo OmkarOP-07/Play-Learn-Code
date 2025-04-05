@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Ai from '../components/Ai';
 
 const Sidebar = ({ concepts, isVisible, onToggle }) => {
   const navigate = useNavigate();

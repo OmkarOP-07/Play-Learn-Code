@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
+import Ai from '../components/Ai';
+import chatbotImage from '../assets/images/chatbot.jpeg';
 
 const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
   const navigate = useNavigate();
@@ -77,10 +79,30 @@ const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
 const JavaLearning = () => {
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const [selectedTopic, setSelectedTopic] = useState(1); // Set initial topic to the first one
+  const [isAiVisible, setAiVisible] = useState(false); // State to manage Ai visibility
+  const aiRef = useRef(null); // Ref for the Ai component
 
   const toggleSidebar = () => {
     setSidebarVisible(!isSidebarVisible);
   };
+
+  const toggleAi = () => {
+    console.log("Chatbot icon clicked"); // Log when clicked
+    setAiVisible(!isAiVisible); // Toggle visibility on click
+  };
+
+  const handleClickOutside = (event) => {
+    if (aiRef.current && !aiRef.current.contains(event.target)) {
+      setAiVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleTopicClick = (id) => {
     setSelectedTopic(id); // Set the selected topic
@@ -284,8 +306,36 @@ const JavaLearning = () => {
           )}
         </div>
       </div>
+
+      {/* Circular icon for chatbot */}
+      <div 
+        className="chatbot-icon" 
+        onClick={toggleAi} 
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          width: '60px',
+          height: '60px',
+          borderRadius: '50%',
+          backgroundImage: `url(${chatbotImage})`, // Use the imported image
+          backgroundSize: 'cover',
+          cursor: 'pointer',
+          transition: 'transform 0.3s ease',
+          zIndex: 1000, // Ensure it's on top
+        }}
+      />
+
+      {/* Sticky AI component */}
+      {isAiVisible && (
+        <div className="sticky-ai" ref={aiRef}>
+          <Ai onClose={() => setAiVisible(false)} />
+        </div>
+      )}
     </div>
+    
   );
+  
 };
 
 export default JavaLearning;

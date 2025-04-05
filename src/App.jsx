@@ -161,7 +161,7 @@ function App() {
         />
         <Route
           path="/ai"
-          element={<Ai />}
+          element={user ? <Ai /> : <Navigate to="/login" />}
           errorElement={<ErrorBoundary />}
         />
       </Route>
