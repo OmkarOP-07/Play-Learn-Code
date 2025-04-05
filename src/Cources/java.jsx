@@ -130,12 +130,12 @@ const JavaLearning = () => {
     },
     {
       id: 5,
-      title: "Functions & Modular Code",
-      mission: "Weave the Spells",
-      script: "To cast the most powerful spell, you must write a function that performs a magical transformation.",
+      title: "Exception Handling",
+      mission: "Handle the Errors",
+      script: "When the code doesn't run, it's not because of a mistake. It's because of an error. Learn how to handle errors gracefully.",
       subtopics: [
-        { id: 5.1, title: "Defining Functions", path: "/Java/Functions/defining", mission: "The Magic Formula", script: "Functions create reusable magic. Define your own to simplify tasks.", icon: "https://img.icons8.com/color/96/000000/stars.png" },
-        { id: 5.2, title: "Function Parameters", path: "/Java/Functions/parameters", mission: "Spell Components", script: "A function's power depends on its inputs. Learn how to pass parameters effectively.", icon: "https://img.icons8.com/color/96/000000/test-tube.png" }
+        { id: 5.1, title: "Exceptions", path: "/Java/Exception/exception", mission: "The Error Wizard", script: "When the code doesn't run, it's not because of a mistake. It's because of an error. Learn how to handle errors gracefully.", icon: "https://img.icons8.com/color/96/000000/error.png" },
+        //{ id: 5.2, title: "Function Parameters", path: "/Java/Functions/parameters", mission: "Spell Components", script: "A function's power depends on its inputs. Learn how to pass parameters effectively.", icon: "https://img.icons8.com/color/96/000000/test-tube.png" }
       ],
     },
     {

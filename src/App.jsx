@@ -27,6 +27,7 @@ import TypeCastingGamePage from './Java/Variables/type-casting.jsx';
 import IfElseGamePage from './Java/Conditionals/if-else.jsx';
 import SwitchStatements from './Java/Conditionals/switch.jsx';
 import ForLoopGamePage from './Java/Loops/for-loop.jsx';
+import Exceptions from './Java/Exception/exceptions.jsx';
 
 
 
@@ -142,6 +143,11 @@ function App() {
         <Route
           path="/Java/Loops/for-loop"
           element={user ? <ForLoopGamePage /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/Exception/exception"
+          element={user ? <Exceptions /> : <Navigate to="/login" />}
           errorElement={<ErrorBoundary />}
         />
       </Route>
