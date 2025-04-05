@@ -30,7 +30,7 @@ import WhileLoopGamePage from './Java/Loops/while-loop.jsx';
 import Exceptions from './Java/Exception/exceptions.jsx';
 import Inheritance from './Java/OOPS/inheritance.jsx';
 import Encapsulation from './Java/OOPS/encapsulation.jsx';
-
+import Ai from './components/Ai.jsx';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -157,6 +157,11 @@ function App() {
         <Route
           path="/Java/OOPS/encapsulation"
           element={user ? <Encapsulation /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/ai"
+          element={<Ai />}
           errorElement={<ErrorBoundary />}
         />
       </Route>

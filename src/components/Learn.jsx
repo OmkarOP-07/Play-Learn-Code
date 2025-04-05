@@ -1,8 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
+import Ai from './Ai';
+import chatbotImage from '../assets/images/chatbot.jpeg'; // Import the image
 
 const Learn = () => {
+  const [isAiVisible, setAiVisible] = useState(false); // State to manage Ai visibility
+  const aiRef = useRef(null); // Ref for the Ai component
+
+  const toggleAi = () => {
+    setAiVisible(!isAiVisible); // Toggle visibility on click
+  };
+
+  // Close the Ai component when clicking outside of it
+  const handleClickOutside = (event) => {
+    if (aiRef.current && !aiRef.current.contains(event.target)) {
+      setAiVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener for clicks
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // Cleanup the event listener on component unmount
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const courses = [
     {
       id: 1,
@@ -81,6 +106,31 @@ const Learn = () => {
             </Link>
           ))}
         </div>
+        
+        {/* Circular icon for chatbot */}
+        <div 
+          className="chatbot-icon" 
+          onClick={toggleAi} 
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            backgroundImage: `url(${chatbotImage})`, // Use the imported image
+            backgroundSize: 'cover',
+            cursor: 'pointer',
+            transition: 'transform 0.3s ease',
+          }}
+        />
+
+        {/* Sticky AI component without animation */}
+        {isAiVisible && (
+          <div className="sticky-ai" ref={aiRef}>
+            <Ai />
+          </div>
+        )}
       </div>
     </div>
   );
