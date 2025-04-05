@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { LockKeyhole, Unlock, Clock, Key, Lightbulb, BookOpen, RefreshCw, Award } from "lucide-react"
-import { Button } from "../components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
+import { Button } from "../../components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -12,10 +11,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../components/ui/dialog"
-import { Progress } from "../components/ui/progress"
-import { Badge } from "../components/ui/badge"
-import { TabsComponents } from "../components/ui/tabs"
+} from "../../components/ui/dialog"
+import { Progress } from "../../components/ui/progress"
+import { Badge } from "../../components/ui/badge"
+import { TabsComponents } from "../../components/ui/tabs"
 
 // Game objects with encapsulation challenges
 const roomObjects = [

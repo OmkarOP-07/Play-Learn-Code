@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import { Check, X, ArrowRight, Award, HelpCircle, RefreshCw, Code, BookOpen } from "lucide-react"
-import { Button } from "../components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
-import { TabsComponents } from "../components/ui/tabs"
+import { Button } from "../../components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
+import { TabsComponents } from "../../components/ui/tabs"
 import {
   Dialog,
   DialogContent,
@@ -13,9 +13,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../components/ui/dialog"
-import { Progress } from "../components/ui/progress"
-import { Badge } from "../components/ui/badge"
+} from "../../components/ui/dialog"
+import { Progress } from "../../components/ui/progress"
+import { Badge } from "../../components/ui/badge"
 
 // Game scenarios with inheritance and polymorphism challenges
 const gameScenarios = [
@@ -492,6 +492,7 @@ export default function ClassBuilderGame() {
 
   // Handle drag and drop for class hierarchy
   const handleDragEnd = (result) => {
+    console.log(result); // Check if this logs when you drag an item
     if (!result.destination) return
 
     const items = Array.from(classes)
@@ -624,270 +625,276 @@ export default function ClassBuilderGame() {
   // Render game completion screen
   if (gameComplete) {
     return (
-      <Card className="w-full max-w-3xl bg-slate-800 border-slate-700 text-white shadow-xl ">
-        <CardHeader className="text-center bg-indigo-600 rounded-t-lg">
-          <CardTitle className="text-3xl">Congratulations!</CardTitle>
-          <CardDescription className="text-white text-lg">You've mastered inheritance and polymorphism</CardDescription>
-        </CardHeader>
-        <CardContent className="p-8 text-center">
-          <div className="flex justify-center mb-8">
-            <Award className="h-32 w-32 text-yellow-400" />
-          </div>
-          <h3 className="text-2xl font-bold mb-4">Final Score: {score}</h3>
-          <p className="text-slate-300 mb-8">
-            You've successfully learned how to build class hierarchies and understand polymorphic behavior in Java!
-            These concepts are fundamental to object-oriented programming.
-          </p>
-          <Button onClick={resetGame} size="lg" className="bg-indigo-600 hover:bg-indigo-700">
-            <RefreshCw className="mr-2 h-5 w-5" /> Play Again
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative">
+        <div className="flex justify-center items-center mt-20">
+          <Card className="w-full max-w-3xl bg-slate-800 border-slate-700 text-white shadow-xl ">
+            <CardHeader className="text-center bg-indigo-600 rounded-t-lg">
+              <CardTitle className="text-3xl">Congratulations!</CardTitle>
+              <CardDescription className="text-white text-lg">You've mastered inheritance and polymorphism</CardDescription>
+            </CardHeader>
+            <CardContent className="p-8 text-center">
+              <div className="flex justify-center mb-8">
+                <Award className="h-32 w-32 text-yellow-400" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Final Score: {score}</h3>
+              <p className="text-slate-300 mb-8">
+                You've successfully learned how to build class hierarchies and understand polymorphic behavior in Java!
+                These concepts are fundamental to object-oriented programming.
+              </p>
+              <Button onClick={resetGame} size="lg" className="bg-indigo-600 hover:bg-indigo-700">
+                <RefreshCw className="mr-2 h-5 w-5" /> Play Again
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     )
   }
 
   return (
-    <div className="flex justify-center items-center h-screen mt-80">
-    <Card className="w-full max-w-4xl bg-slate-800 border-slate-700 text-white shadow-xl">
-      <CardHeader className="border-b border-slate-700">
-        <div className="flex justify-between items-center">
-          <div>
-            <CardTitle>
-              Level {level}: {level === 1 ? "Basic" : level === 2 ? "Intermediate" : "Advanced"}
-            </CardTitle>
-            <CardDescription className="text-slate-300">
-              {currentScenario.title} - {currentScenario.description}
-            </CardDescription>
-          </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-indigo-400">{score} pts</div>
-            <div className="text-xs text-slate-400">SCORE</div>
-          </div>
-        </div>
-        <Progress value={progress} className="h-2 bg-slate-700" />
-      </CardHeader>
-
-      <CardContent className="p-6">
-        <TabsComponents.Root value={activeTab} onValueChange={setActiveTab} className="mb-6">
-          <TabsComponents.List className="bg-slate-700">
-            <TabsComponents.Trigger value="hierarchy" disabled={hierarchyCorrect === true && showPolymorphismQuestion}>
-              <Code className="h-4 w-4 mr-2" /> Class Hierarchy
-            </TabsComponents.Trigger>
-            <TabsComponents.Trigger value="polymorphism" disabled={!showPolymorphismQuestion}>
-              <BookOpen className="h-4 w-4 mr-2" /> Polymorphism
-            </TabsComponents.Trigger>
-          </TabsComponents.List>
-
-          <TabsComponents.Content value="hierarchy" className="mt-4">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-2">Arrange the classes in the correct hierarchy</h3>
-              <p className="text-slate-300 mb-4">
-                Drag and drop the classes to arrange them in the correct inheritance hierarchy. Parent classes should
-                come before their children.
-              </p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative">
+      <div className="flex justify-center items-center mt-20">
+        <Card className="w-full max-w-4xl bg-slate-800 border-slate-700 text-white shadow-xl">
+          <CardHeader className="border-b border-slate-700">
+            <div className="flex justify-between items-center">
+              <div>
+                <CardTitle>
+                  Level {level}: {level === 1 ? "Basic" : level === 2 ? "Intermediate" : "Advanced"}
+                </CardTitle>
+                <CardDescription className="text-slate-300">
+                  {currentScenario.title} - {currentScenario.description}
+                </CardDescription>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-indigo-400">{score} pts</div>
+                <div className="text-xs text-slate-400">SCORE</div>
+              </div>
             </div>
+            <Progress value={progress} className="h-2 bg-slate-700" />
+          </CardHeader>
 
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="classes">
-                {(provided) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-3">
-                    {classes.map((cls, index) => (
-                      <Draggable key={cls.id} draggableId={cls.id} index={index}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="p-4 bg-slate-700 rounded-lg border border-slate-600 cursor-move"
-                          >
-                            <div className="flex justify-between items-center mb-2">
-                              <h4 className="font-semibold">{cls.name}</h4>
-                              <Badge className={`${getClassTypeColor(cls.type)}`}>{getClassTypeLabel(cls.type)}</Badge>
-                            </div>
-                            <pre className="p-3 bg-slate-900 rounded text-xs overflow-x-auto">
-                              <code className="text-slate-300 font-mono">{cls.code}</code>
-                            </pre>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
+          <CardContent className="p-6">
+            <TabsComponents.Root value={activeTab} onValueChange={setActiveTab} className="mb-6">
+              <TabsComponents.List className="bg-slate-700">
+                <TabsComponents.Trigger value="hierarchy" disabled={hierarchyCorrect === true && showPolymorphismQuestion}>
+                  <Code className="h-4 w-4 mr-2" /> Class Hierarchy
+                </TabsComponents.Trigger>
+                <TabsComponents.Trigger value="polymorphism" disabled={!showPolymorphismQuestion}>
+                  <BookOpen className="h-4 w-4 mr-2" /> Polymorphism
+                </TabsComponents.Trigger>
+              </TabsComponents.List>
 
-            {hierarchyCorrect !== null && (
-              <div
-                className={`p-4 rounded-md mt-6 flex items-center ${
-                  hierarchyCorrect ? "bg-green-900/50" : "bg-red-900/50"
-                }`}
-              >
-                {hierarchyCorrect ? (
-                  <>
-                    <Check className="h-5 w-5 text-green-400 mr-2" />
-                    <span>Correct! You've arranged the classes in the right hierarchy.</span>
-                  </>
-                ) : (
-                  <>
-                    <X className="h-5 w-5 text-red-400 mr-2" />
-                    <span>Not quite right. Try again!</span>
-                  </>
-                )}
-              </div>
-            )}
-
-            {hierarchyCorrect !== true && (
-              <div className="mt-6">
-                <Button onClick={checkHierarchy} className="bg-indigo-600 hover:bg-indigo-700">
-                  Check Hierarchy
-                </Button>
-              </div>
-            )}
-          </TabsComponents.Content>
-
-          <TabsComponents.Content value="polymorphism" className="mt-4">
-            {showPolymorphismQuestion && (
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">{currentScenario.polymorphismQuestion.question}</h3>
-                  <div className="space-y-3 mt-4">
-                    {currentScenario.polymorphismQuestion.options.map((option) => (
-                      <div
-                        key={option}
-                        className={`p-4 rounded-md cursor-pointer border transition-colors ${
-                          selectedPolymorphismAnswer === option
-                            ? "bg-slate-700 border-indigo-500"
-                            : "bg-slate-900 border-slate-700 hover:border-slate-500"
-                        }`}
-                        onClick={() => setSelectedPolymorphismAnswer(option)}
-                      >
-                        <code className="text-sm font-mono">{option}</code>
-                      </div>
-                    ))}
-                  </div>
+              <TabsComponents.Content value="hierarchy" className="mt-4">
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold mb-2">Arrange the classes in the correct hierarchy</h3>
+                  <p className="text-slate-300 mb-4">
+                    Drag and drop the classes to arrange them in the correct inheritance hierarchy. Parent classes should
+                    come before their children.
+                  </p>
                 </div>
 
-                {polymorphismCorrect !== null && (
+                <DragDropContext onDragEnd={handleDragEnd}>
+                  <Droppable droppableId="classes">
+                    {(provided) => (
+                      <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-3">
+                        {classes.map((cls, index) => (
+                          <Draggable key={cls.id} draggableId={cls.id} index={index}>
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="p-4 bg-slate-700 rounded-lg border border-slate-600 cursor-move"
+                              >
+                                <div className="flex justify-between items-center mb-2">
+                                  <h4 className="font-semibold">{cls.name}</h4>
+                                  <Badge className={`${getClassTypeColor(cls.type)}`}>{getClassTypeLabel(cls.type)}</Badge>
+                                </div>
+                                <pre className="p-3 bg-slate-900 rounded text-xs overflow-x-auto">
+                                  <code className="text-slate-300 font-mono">{cls.code}</code>
+                                </pre>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+
+                {hierarchyCorrect !== null && (
                   <div
-                    className={`p-4 rounded-md flex flex-col ${
-                      polymorphismCorrect ? "bg-green-900/50" : "bg-red-900/50"
+                    className={`p-4 rounded-md mt-6 flex items-center ${
+                      hierarchyCorrect ? "bg-green-900/50" : "bg-red-900/50"
                     }`}
                   >
-                    <div className="flex items-center mb-2">
-                      {polymorphismCorrect ? (
-                        <>
-                          <Check className="h-5 w-5 text-green-400 mr-2" />
-                          <span className="font-semibold">Correct!</span>
-                        </>
-                      ) : (
-                        <>
-                          <X className="h-5 w-5 text-red-400 mr-2" />
-                          <span className="font-semibold">Incorrect</span>
-                        </>
-                      )}
-                    </div>
-                    <p className="text-sm">{currentScenario.polymorphismQuestion.explanation}</p>
+                    {hierarchyCorrect ? (
+                      <>
+                        <Check className="h-5 w-5 text-green-400 mr-2" />
+                        <span>Correct! You've arranged the classes in the right hierarchy.</span>
+                      </>
+                    ) : (
+                      <>
+                        <X className="h-5 w-5 text-red-400 mr-2" />
+                        <span>Not quite right. Try again!</span>
+                      </>
+                    )}
                   </div>
                 )}
 
-                {polymorphismCorrect !== true && (
-                  <Button
-                    onClick={checkPolymorphismAnswer}
-                    disabled={!selectedPolymorphismAnswer}
-                    className="bg-indigo-600 hover:bg-indigo-700"
-                  >
-                    Check Answer
-                  </Button>
+                {hierarchyCorrect !== true && (
+                  <div className="mt-6">
+                    <Button onClick={checkHierarchy} className="bg-indigo-600 hover:bg-indigo-700">
+                      Check Hierarchy
+                    </Button>
+                  </div>
                 )}
-              </div>
-            )}
-          </TabsComponents.Content>
-        </TabsComponents.Root>
-      </CardContent>
+              </TabsComponents.Content>
 
-      <CardFooter className="flex justify-between border-t border-slate-700 p-4">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="bg-transparent border-slate-600 text-slate-300 hover:bg-slate-700">
-              <HelpCircle className="h-4 w-4 mr-2" /> Hint
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-slate-800 text-white border-slate-700">
-            <DialogHeader>
-              <DialogTitle>OOP Concept Hint</DialogTitle>
-              <DialogDescription className="text-slate-300">
-                Here's a hint to help you understand the concept:
-              </DialogDescription>
-            </DialogHeader>
-            <div className="p-4 bg-slate-900 rounded-md">
-              {activeTab === "hierarchy" ? (
-                <>
-                  <h4 className="font-semibold mb-2">Inheritance Hierarchy Tips:</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-slate-300">
-                    <li>Parent classes should come before their children</li>
-                    <li>Interfaces are at the top of the hierarchy</li>
-                    <li>Abstract classes can have both abstract and concrete methods</li>
-                    <li>A class can implement multiple interfaces but extend only one class</li>
-                  </ul>
-                </>
-              ) : (
-                <>
-                  <h4 className="font-semibold mb-2">Polymorphism Tips:</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-slate-300">
-                    <li>Polymorphism allows a parent class reference to refer to a child class object</li>
-                    <li>Method overriding is a key aspect of polymorphism</li>
-                    <li>The actual method executed depends on the object's type, not the reference type</li>
-                    <li>Interfaces enable polymorphic behavior across unrelated classes</li>
-                  </ul>
-                </>
+              <TabsComponents.Content value="polymorphism" className="mt-4">
+                {showPolymorphismQuestion && (
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2">{currentScenario.polymorphismQuestion.question}</h3>
+                      <div className="space-y-3 mt-4">
+                        {currentScenario.polymorphismQuestion.options.map((option) => (
+                          <div
+                            key={option}
+                            className={`p-4 rounded-md cursor-pointer border transition-colors ${
+                              selectedPolymorphismAnswer === option
+                                ? "bg-slate-700 border-indigo-500"
+                                : "bg-slate-900 border-slate-700 hover:border-slate-500"
+                            }`}
+                            onClick={() => setSelectedPolymorphismAnswer(option)}
+                          >
+                            <code className="text-sm font-mono">{option}</code>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {polymorphismCorrect !== null && (
+                      <div
+                        className={`p-4 rounded-md flex flex-col ${
+                          polymorphismCorrect ? "bg-green-900/50" : "bg-red-900/50"
+                        }`}
+                      >
+                        <div className="flex items-center mb-2">
+                          {polymorphismCorrect ? (
+                            <>
+                              <Check className="h-5 w-5 text-green-400 mr-2" />
+                              <span className="font-semibold">Correct!</span>
+                            </>
+                          ) : (
+                            <>
+                              <X className="h-5 w-5 text-red-400 mr-2" />
+                              <span className="font-semibold">Incorrect</span>
+                            </>
+                          )}
+                        </div>
+                        <p className="text-sm">{currentScenario.polymorphismQuestion.explanation}</p>
+                      </div>
+                    )}
+
+                    {polymorphismCorrect !== true && (
+                      <Button
+                        onClick={checkPolymorphismAnswer}
+                        disabled={!selectedPolymorphismAnswer}
+                        className="bg-indigo-600 hover:bg-indigo-700"
+                      >
+                        Check Answer
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </TabsComponents.Content>
+            </TabsComponents.Root>
+          </CardContent>
+
+          <CardFooter className="flex justify-between border-t border-slate-700 p-4">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="bg-transparent border-slate-600 text-slate-300 hover:bg-slate-700">
+                  <HelpCircle className="h-4 w-4 mr-2" /> Hint
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-slate-800 text-white border-slate-700">
+                <DialogHeader>
+                  <DialogTitle>OOP Concept Hint</DialogTitle>
+                  <DialogDescription className="text-slate-300">
+                    Here's a hint to help you understand the concept:
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="p-4 bg-slate-900 rounded-md">
+                  {activeTab === "hierarchy" ? (
+                    <>
+                      <h4 className="font-semibold mb-2">Inheritance Hierarchy Tips:</h4>
+                      <ul className="list-disc pl-5 space-y-2 text-slate-300">
+                        <li>Parent classes should come before their children</li>
+                        <li>Interfaces are at the top of the hierarchy</li>
+                        <li>Abstract classes can have both abstract and concrete methods</li>
+                        <li>A class can implement multiple interfaces but extend only one class</li>
+                      </ul>
+                    </>
+                  ) : (
+                    <>
+                      <h4 className="font-semibold mb-2">Polymorphism Tips:</h4>
+                      <ul className="list-disc pl-5 space-y-2 text-slate-300">
+                        <li>Polymorphism allows a parent class reference to refer to a child class object</li>
+                        <li>Method overriding is a key aspect of polymorphism</li>
+                        <li>The actual method executed depends on the object's type, not the reference type</li>
+                        <li>Interfaces enable polymorphic behavior across unrelated classes</li>
+                      </ul>
+                    </>
+                  )}
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            <div className="flex gap-2">
+              {polymorphismCorrect === true && (
+                <Button
+                  onClick={() => {
+                    const currentLevelScenarios = gameScenarios.filter(
+                      (scenario) =>
+                        (level === 1 && scenario.difficulty === "easy") ||
+                        (level === 2 && scenario.difficulty === "medium") ||
+                        (level === 3 && scenario.difficulty === "hard"),
+                    )
+
+                    const currentIndex = currentLevelScenarios.findIndex((s) => s.id === currentScenario.id)
+                    if (currentIndex < currentLevelScenarios.length - 1) {
+                      setCurrentScenario(currentLevelScenarios[currentIndex + 1])
+                    } else {
+                      // If we've gone through all scenarios at this level, move to next level
+                      const nextLevel = level + 1
+                      if (nextLevel <= 3) {
+                        setLevel(nextLevel)
+                        setProgress(0)
+                        const nextLevelScenarios = gameScenarios.filter(
+                          (scenario) =>
+                            (nextLevel === 1 && scenario.difficulty === "easy") ||
+                            (nextLevel === 2 && scenario.difficulty === "medium") ||
+                            (nextLevel === 3 && scenario.difficulty === "hard"),
+                        )
+                        if (nextLevelScenarios.length > 0) {
+                          setCurrentScenario(nextLevelScenarios[0])
+                        }
+                      } else {
+                        setGameComplete(true)
+                      }
+                    }
+                  }}
+                  className="bg-indigo-600 hover:bg-indigo-700"
+                >
+                  Next Challenge <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
               )}
             </div>
-          </DialogContent>
-        </Dialog>
-
-        <div className="flex gap-2">
-          {polymorphismCorrect === true && (
-            <Button
-              onClick={() => {
-                const currentLevelScenarios = gameScenarios.filter(
-                  (scenario) =>
-                    (level === 1 && scenario.difficulty === "easy") ||
-                    (level === 2 && scenario.difficulty === "medium") ||
-                    (level === 3 && scenario.difficulty === "hard"),
-                )
-
-                const currentIndex = currentLevelScenarios.findIndex((s) => s.id === currentScenario.id)
-                if (currentIndex < currentLevelScenarios.length - 1) {
-                  setCurrentScenario(currentLevelScenarios[currentIndex + 1])
-                } else {
-                  // If we've gone through all scenarios at this level, move to next level
-                  const nextLevel = level + 1
-                  if (nextLevel <= 3) {
-                    setLevel(nextLevel)
-                    setProgress(0)
-                    const nextLevelScenarios = gameScenarios.filter(
-                      (scenario) =>
-                        (nextLevel === 1 && scenario.difficulty === "easy") ||
-                        (nextLevel === 2 && scenario.difficulty === "medium") ||
-                        (nextLevel === 3 && scenario.difficulty === "hard"),
-                    )
-                    if (nextLevelScenarios.length > 0) {
-                      setCurrentScenario(nextLevelScenarios[0])
-                    }
-                  } else {
-                    setGameComplete(true)
-                  }
-                }
-              }}
-              className="bg-indigo-600 hover:bg-indigo-700"
-            >
-              Next Challenge <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          )}
-        </div>
-      </CardFooter>
-    </Card>
+          </CardFooter>
+        </Card>
+      </div>
     </div>
   )
 }

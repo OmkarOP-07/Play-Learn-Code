@@ -20,16 +20,16 @@ import PythonLearning from './Cources/python.jsx';
 import PrintingOutput from './Java/Beginner/printing-output.jsx';
 import ArrayGamePage from './Java/Arrays/array.jsx';
 import DataTypesGamePage from './Java/Variables/data-types.jsx';
-import OOPD from './Java/OOPS/oopd.jsx';
 import BasicSyntax from './Java/Beginner/basic-syntax.jsx';
 import VariablesGamePage from './Java/Variables/variables.jsx';
 import TypeCastingGamePage from './Java/Variables/type-casting.jsx';
 import IfElseGamePage from './Java/Conditionals/if-else.jsx';
 import SwitchStatements from './Java/Conditionals/switch.jsx';
 import ForLoopGamePage from './Java/Loops/for-loop.jsx';
+import WhileLoopGamePage from './Java/Loops/while-loop.jsx';
 import Exceptions from './Java/Exception/exceptions.jsx';
-
-
+import Inheritance from './Java/OOPS/inheritance.jsx';
+import Encapsulation from './Java/OOPS/encapsulation.jsx';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -104,12 +104,6 @@ function App() {
           element={user ? <ArrayGamePage /> : <Navigate to="/login" />}
           errorElement={<ErrorBoundary />}
         />
-        
-        <Route
-          path="/Java/OOP/oopd"
-          element={user ? <OOPD /> : <Navigate to="/login" />}
-          errorElement={<ErrorBoundary />}
-        />
         <Route
           path="/Java/Beginner/basic-syntax"
           element={user ? <BasicSyntax /> : <Navigate to="/login" />}
@@ -146,8 +140,23 @@ function App() {
           errorElement={<ErrorBoundary />}
         />
         <Route
+          path="/Java/Loops/while-loop"
+          element={user ? <WhileLoopGamePage /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
           path="/Java/Exception/exception"
           element={user ? <Exceptions /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/OOPS/inheritance"
+          element={user ? <Inheritance /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/OOPS/encapsulation"
+          element={user ? <Encapsulation /> : <Navigate to="/login" />}
           errorElement={<ErrorBoundary />}
         />
       </Route>
