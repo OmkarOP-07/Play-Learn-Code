@@ -1,19 +1,15 @@
+// src/components/Navbar.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { auth } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useAuth } from '../context/AuthContext';
 import ProfileDropdown from './ProfileDropdown';
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
+  const { currentUser } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-    });
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
     };
@@ -21,13 +17,12 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      unsubscribe();
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent  ${scrolled ? 'border-b border-white/10 backdrop-blur-lg shadow-lg neon-glow' : ''} `}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent ${scrolled ? 'border-b border-white/10 backdrop-blur-lg shadow-lg neon-glow' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -51,17 +46,14 @@ const Navbar = () => {
             >
               Learn
             </Link>
-            {/* <Link to="/challenges" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
-              Challenges
-            </Link> */}
             <Link 
               to="/leaderboard" 
               className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-purple-200 transition-colors duration-200"
             >
               Certification
             </Link>
-            {user ? (
-              <ProfileDropdown user={user} />
+            {currentUser ? (
+              <ProfileDropdown user={currentUser} />
             ) : (
               <div className="flex items-center space-x-3">
                 <Link 
@@ -85,4 +77,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

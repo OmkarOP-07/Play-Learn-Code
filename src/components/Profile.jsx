@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        navigate('/login');
-      }
-    });
+    if (currentUser) {
+      setUser(currentUser);
+    } else {
+      navigate('/login');
+    }
+  }, [currentUser, navigate]);
 
-    return () => unsubscribe();
-  }, [navigate]);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   if (!user) return null;
 
@@ -52,10 +58,10 @@ const Profile = () => {
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="flex items-center space-x-6">
             <div className="w-24 h-24 rounded-full bg-primary text-white flex items-center justify-center text-4xl font-bold">
-              {user.email.split('@')[0].charAt(0).toUpperCase()}
+              {user.username ? user.username.charAt(0).toUpperCase() : user.email.split('@')[0].charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{user.displayName || 'User'}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{user.username || 'User'}</h1>
               <p className="text-gray-600">{user.email}</p>
               <div className="mt-2 flex items-center space-x-4">
                 <div className="flex items-center">
@@ -68,6 +74,14 @@ const Profile = () => {
                   <span className="text-primary font-semibold">XP: 1250</span>
                 </div>
               </div>
+            </div>
+            <div className="ml-auto">
+              <button 
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>
