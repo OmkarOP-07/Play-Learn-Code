@@ -28,9 +28,11 @@ import SwitchStatements from './Java/Conditionals/switch.jsx';
 import ForLoopGamePage from './Java/Loops/for-loop.jsx';
 import WhileLoopGamePage from './Java/Loops/while-loop.jsx';
 import Exceptions from './Java/Exception/exceptions.jsx';
+import ClassesAndObjects from './Java/OOPS/ClassesAndObjects.jsx';
 import Inheritance from './Java/OOPS/inheritance.jsx';
 import Encapsulation from './Java/OOPS/encapsulation.jsx';
 import Ai from './components/Ai.jsx';
+
 
 function App() {
   const router = createBrowserRouter(
@@ -142,6 +144,11 @@ function App() {
         <Route
           path="/Java/OOPS/encapsulation"
           element={<Encapsulation />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/OOPS/ClassesAndObjects"
+          element={<ClassesAndObjects />}
           errorElement={<ErrorBoundary />}
         />
         <Route
