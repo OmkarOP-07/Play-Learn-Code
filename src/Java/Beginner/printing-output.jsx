@@ -9,16 +9,16 @@ import { TabsComponents } from "../../components/ui/tabs"
 import { Badge } from "../../components/ui/badge"
 import { Sparkles, Play, Award, ChevronRight, Rocket } from "lucide-react"
 import confetti from "canvas-confetti"
+import { useJavaPoints } from "../JavaPointsContext";
 
 export default function JavaLearningGame() {
   const navigate = useNavigate();
   const [name, setName] = useState("")
   const [output, setOutput] = useState("")
   const [showOutput, setShowOutput] = useState(false)
-  const [points, setPoints] = useState(0)
   const [level, setLevel] = useState(1)
   const [celebration, setCelebration] = useState(false)
-
+  const { points, addPoints } = useJavaPoints();
   const runCode = () => {
     if (!name.trim()) {
       setOutput("Oops! You forgot to type your name!")
@@ -30,7 +30,7 @@ export default function JavaLearningGame() {
 
     if (!celebration) {
       setCelebration(true)
-      setPoints(points + 10)
+      addPoints(10)
 
       // Trigger confetti effect
       confetti({
@@ -171,7 +171,9 @@ export default function JavaLearningGame() {
           </Button>
 
           {celebration && (
-            <Button onClick={goToNextLevel} className="flex items-center gap-2 bg-black text-white  ">
+            <Button onClick={() => {
+              goToNextLevel();
+            }} className="flex items-center gap-2 bg-black text-white  ">
               Complete Level <ChevronRight className="h-4 w-4" />
             </Button>
          )}

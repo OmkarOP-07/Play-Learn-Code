@@ -36,7 +36,7 @@ import ArrayGame from './Java/Collections/ArrayGame.jsx';
 import HashMapGame from './Java/Collections/HashMapGame.jsx'; 
 import Constructors from './Java/OOPS/Constructors.jsx';
 import MultilevelInheritance from './Java/OOPS/MultilevelInheritanceGame.jsx';
-import { JavaPointsProvider } from './Java/JavaPointsContext';
+import { JavaPointsProvider } from "./Java/JavaPointsContext.jsx";
 
 
 function App() {
@@ -192,7 +192,9 @@ function App() {
 
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <JavaPointsProvider>
+        <RouterProvider router={router} />
+      </JavaPointsProvider>
     </AuthProvider>
   );
 }

@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "../../components/ui/button";
 import { BookOpen, Code, Coffee, PlayCircle } from 'lucide-react';
 import Tooltip from "../../components/ui/tooltip";
+import { useJavaPoints } from '../JavaPointsContext';
 
 const JavaLearner = () => {
   const [activeExample, setActiveExample] = useState('hello');
@@ -335,7 +336,7 @@ const JavaLearner = () => {
             <div className="w-full flex justify-between items-center">
               <span className="text-sm">Interactive Java Syntax Explorer</span>
               <Button variant="outline" size="sm">
-                <PlayCircle className="h-4 w-4 mr-1" /> Next Lesson
+                <PlayCircle className="h-4 w-4 mr-1" /> Complete Level
               </Button>
             </div>
           </CardFooter>

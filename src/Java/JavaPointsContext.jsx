@@ -1,38 +1,27 @@
-"use client";
+// JavaPointsContext.js
+import React, { createContext, useContext, useState } from "react";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
+// Create the context
 const JavaPointsContext = createContext();
 
-export function JavaPointsProvider({ children }) {
-  const [javaPoints, setJavaPoints] = useState(0);
+// Create the provider component
+export const JavaPointsProvider = ({ children }) => {
+  const [points, setPoints] = useState(0);
 
-  // Log points whenever they change
-  useEffect(() => {
-    console.log('Java Points Updated:', javaPoints);
-  }, [javaPoints]);
-
-  const addPoints = (points) => {
-    console.log('Adding points:', points);
-    setJavaPoints(prev => {
-      const newTotal = prev + points;
-      console.log('Previous points:', prev);
-      console.log('New total:', newTotal);
-      return newTotal;
+  const addPoints = (value) => {
+    setPoints((prev) => {
+      const updated = prev + value;
+      console.log("Adding points. New value will be:", updated);
+      return updated;
     });
   };
+  
 
   return (
-    <JavaPointsContext.Provider value={{ javaPoints, addPoints }}>
+    <JavaPointsContext.Provider value={{ points, addPoints }}>
       {children}
     </JavaPointsContext.Provider>
   );
-}
+};
 
-export function useJavaPoints() {
-  const context = useContext(JavaPointsContext);
-  if (context === undefined) {
-    throw new Error('useJavaPoints must be used within a JavaPointsProvider');
-  }
-  return context;
-} 
+export const useJavaPoints = () => useContext(JavaPointsContext);
