@@ -199,6 +199,14 @@ const JavaLearning = () => {
           mission: "The Secret Vault",
           script: "In the world of coding, knowledge is power, but security is key. Protect your data with encapsulation, just as a vault protects treasures.",
           icon: "https://img.icons8.com/color/96/000000/lock.png"
+        },
+        {
+          id: 7.4,
+          title: "Constructors",
+          path: "/Java/OOPS/constructors",
+          mission: "The Constructor Wizard",
+          script: "Learn how to create and use constructors.",
+          icon: "https://img.icons8.com/color/96/000000/constructor.png"
         }
       ],
     },

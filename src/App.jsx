@@ -32,6 +32,8 @@ import ClassesAndObjects from './Java/OOPS/ClassesAndObjects.jsx';
 import Inheritance from './Java/OOPS/Inheritance.jsx';
 import Encapsulation from './Java/OOPS/encapsulation.jsx';
 import Ai from './components/Ai.jsx';
+import Constructors from './Java/OOPS/Constructors.jsx';
+import MultilevelInheritance from './Java/OOPS/MultilevelInheritanceGame.jsx';
 
 
 function App() {
@@ -154,6 +156,16 @@ function App() {
         <Route
           path="/ai"
           element={<Ai />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/OOPS/constructors"
+          element={<Constructors />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/OOPS/multilevel-inheritance"
+          element={<MultilevelInheritance />}
           errorElement={<ErrorBoundary />}
         />
       </Route>
