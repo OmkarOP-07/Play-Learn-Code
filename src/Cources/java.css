@@ -1,0 +1,13 @@
+/* Custom scrollbar for WebKit browsers */
+.susu::-webkit-scrollbar {
+    width: 2px; /* Width of the scrollbar */
+}
+
+.susu::-webkit-scrollbar-thumb {
+    background: rgba(168, 86, 230, 0.5); /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.susu::-webkit-scrollbar-track {
+    background: transparent; /* Background of the scrollbar track */
+}

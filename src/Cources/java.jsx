@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Ai from '../components/Ai';
 import chatbotImage from '../assets/images/chatbot.jpeg';
-
+import './java.css';
 const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
 
   //sidebar
   return (
-    <div className={`bg-black bg-opacity-30 text-white w-64 h-full fixed left-0 top-[4rem] p-4 transition-transform ${isVisible ? 'translate-x-0' : '-translate-x-full'} z-50 `}>
+    <div className={`bg-black bg-opacity-30 text-white w-64 h-full fixed left-0 top-[4rem] p-4 transition-transform ${isVisible ? 'translate-x-0' : '-translate-x-full'} z-50 overflow-y-auto susu`}>
       <h2 className="bg-purple-900 bg-opacity-30 p-2 text-xl font-bold mb-4 border border-white/10 rounded-[0.5rem]">Java Concepts</h2>
       <ul>
         {concepts.map((concept) => (
@@ -179,7 +179,7 @@ const JavaLearning = () => {
         {
           id: 7.1,
           title: "Classes & Objects",
-          path: "/Java/OOPS/oopd",
+          path: "/Java/OOPS/ClassesAndObjects",
           mission: "Blueprints of Creation",
           script: "Learn how to create and use classes and objects.",
           icon: "https://img.icons8.com/color/96/000000/class.png"
