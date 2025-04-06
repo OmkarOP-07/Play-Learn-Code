@@ -31,6 +31,8 @@ import Exceptions from './Java/Exception/exceptions.jsx';
 import Inheritance from './Java/OOPS/inheritance.jsx';
 import Encapsulation from './Java/OOPS/encapsulation.jsx';
 import Ai from './components/Ai.jsx';
+import ArrayGame from './Java/Collections/ArrayGame.jsx';
+import HashMapGame from './Java/Collections/HashMapGame.jsx'; 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -157,6 +159,16 @@ function App() {
         <Route
           path="/Java/OOPS/encapsulation"
           element={user ? <Encapsulation /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/Collections/ArrayGame"
+          element={user ? <ArrayGame /> : <Navigate to="/login" />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/Java/Collections/HashMapGame"
+          element={user ? <HashMapGame /> : <Navigate to="/login" />}
           errorElement={<ErrorBoundary />}
         />
         <Route

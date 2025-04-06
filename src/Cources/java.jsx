@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Ai from '../components/Ai';
 import chatbotImage from '../assets/images/chatbot.jpeg';
-
+import './java.css';
 const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
 
   //sidebar
   return (
-    <div className={`bg-black bg-opacity-30 text-white w-64 h-full fixed left-0 top-[4rem] p-4 transition-transform ${isVisible ? 'translate-x-0' : '-translate-x-full'} z-50 `}>
+    <div className={`bg-black bg-opacity-30 text-white w-64 h-full fixed left-0 top-[4rem] p-4 transition-transform ${isVisible ? 'translate-x-0' : '-translate-x-full'} z-50 overflow-y-auto custom-scrollbar`}>
       <h2 className="bg-purple-900 bg-opacity-30 p-2 text-xl font-bold mb-4 border border-white/10 rounded-[0.5rem]">Java Concepts</h2>
       <ul>
         {concepts.map((concept) => (
@@ -167,7 +167,8 @@ const JavaLearning = () => {
       script: "The ancient scrolls are hidden in an unordered list. Sort them correctly to reveal their secrets.",
       subtopics: [
         { id: 6.1, title: "Array Basics", path: "/Java/Arrays/basics", mission: "Organized Storage", script: "Store multiple values in a structured way with arrays.", icon: "https://img.icons8.com/color/96/000000/data-sheet.png" },
-        { id: 6.2, title: "Sorting Arrays", path: "/Java/Arrays/sorting", mission: "Arrange the Chaos", script: "Learn how to sort arrays for better organization.", icon: "https://img.icons8.com/color/96/000000/sorting-arrows.png" }
+      //  { id: 6.2, title: "Arrays and Lists", path: "/Java/Arrays/ArrayGame", mission: "Arrange the Chaos", script: "Learn how to sort arrays for better organization.", icon: "https://img.icons8.com/color/96/000000/sorting-arrows.png" },
+       // { id: 6.3, title: "HashMaps", path: "/Java/Collections/hashmaps", mission: "The Secret Index", script: "Quickly find what you need using key-value pairs stored in HashMaps.", icon: "https://img.icons8.com/color/96/000000/list.png" }  
       ],
     },
     {
@@ -211,7 +212,7 @@ const JavaLearning = () => {
         {
           id: 9.1,
           title: "Lists & Arrays",
-          path: "/Java/Collections/array",
+          path: "/Java/Collections/ArrayGame",
           mission: "The Treasure Chest",
           script: "Store and retrieve multiple values efficiently using lists and arrays.",
           icon: "https://img.icons8.com/color/96/000000/box.png"
@@ -219,7 +220,7 @@ const JavaLearning = () => {
         {
           id: 9.2,
           title: "HashMaps",
-          path: "/Java/Collections/hashmaps",
+          path: "/Java/Collections/HashMapGame",
           mission: "The Secret Index",
           script: "Quickly find what you need using key-value pairs stored in HashMaps.",
           icon: "https://img.icons8.com/color/96/000000/list.png"
