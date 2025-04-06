@@ -8,11 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-<<<<<<< HEAD
-    "start": "concurrently \"npm run dev\" \"npm run start:backend\""
-=======
+    "start": "concurrently \"npm run dev\" \"npm run server\"",
     "server": "node server/server.js"
->>>>>>> 6778ac4eebb3ac5b533cd6005d457709b4293590
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.7.2",

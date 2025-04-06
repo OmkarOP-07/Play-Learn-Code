@@ -36,6 +36,7 @@ import ArrayGame from './Java/Collections/ArrayGame.jsx';
 import HashMapGame from './Java/Collections/HashMapGame.jsx'; 
 import Constructors from './Java/OOPS/Constructors.jsx';
 import MultilevelInheritance from './Java/OOPS/MultilevelInheritanceGame.jsx';
+import { JavaPointsProvider } from './Java/JavaPointsContext';
 
 
 function App() {
@@ -157,12 +158,12 @@ function App() {
         />
         <Route
           path="/Java/Collections/ArrayGame"
-          element={user ? <ArrayGame /> : <Navigate to="/login" />}
+          element={<ArrayGame />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Collections/HashMapGame"
-          element={user ? <HashMapGame /> : <Navigate to="/login" />}
+          element={<HashMapGame />}
           errorElement={<ErrorBoundary />}
         />
         <Route

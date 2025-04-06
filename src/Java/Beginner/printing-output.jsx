@@ -49,7 +49,7 @@ export default function JavaLearningGame() {
   }
 
   const goToNextLevel = () => {
-    navigate('/java/variables');
+    navigate('/java/beginner/basic-syntax');
   }
 
   useEffect(() => {
@@ -171,10 +171,10 @@ export default function JavaLearningGame() {
           </Button>
 
           {celebration && (
-            <Button onClick={goToNextLevel} className="flex items-center gap-2 ">
-              Next Challenge <ChevronRight className="h-4 w-4" />
+            <Button onClick={goToNextLevel} className="flex items-center gap-2 bg-black text-white  ">
+              Complete Level <ChevronRight className="h-4 w-4" />
             </Button>
-          )}
+         )}
         </CardFooter>
       </Card>
     </div>
