@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -6,11 +6,11 @@ import {
   Route,
   Navigate
 } from 'react-router-dom';
-import { auth } from './firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout.jsx';
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
+import OTPLogin from './components/OTPLogin.jsx';
 import SignUp from './components/SignUp.jsx';
 import Profile from './components/Profile.jsx';
 import Learn from './components/Learn.jsx';
@@ -31,137 +31,122 @@ import Exceptions from './Java/Exception/exceptions.jsx';
 import Inheritance from './Java/OOPS/inheritance.jsx';
 import Encapsulation from './Java/OOPS/encapsulation.jsx';
 import Ai from './components/Ai.jsx';
+
 function App() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
   const router = createBrowserRouter(
     createRoutesFromElements(
-
       <Route
-        element={<Layout user={user} />}
+        element={<Layout />}
         errorElement={<ErrorBoundary />}
       >   
         <Route
           path="/"
-          element={<Home user={user} />}
+          element={<Home />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/python"
-          element={user ? <PythonLearning /> : <Navigate to="/login" />}
+          element={<PythonLearning />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/login"
-          element={!user ? <Login /> : <Navigate to="/" />}
+          element={<Login />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/otp-login"
+          element={<OTPLogin />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/signup"
-          element={!user ? <SignUp /> : <Navigate to="/" />}
+          element={<SignUp />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/profile"
-          element={user ? <Profile user={user} /> : <Navigate to="/login" />}
+          element={<Profile />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/learn"
-          element={user ? <Learn /> : <Navigate to="/login" />}
+          element={<Learn />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java"
-          element={user ? <JavaLearning /> : <Navigate to="/login" />}
+          element={<JavaLearning />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Beginner/printing-output"
-          element={user ? <PrintingOutput /> : <Navigate to="/login" />}
+          element={<PrintingOutput />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Arrays/array"
-          element={user ? <ArrayGamePage /> : <Navigate to="/login" />}
+          element={<ArrayGamePage />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Beginner/basic-syntax"
-          element={user ? <BasicSyntax /> : <Navigate to="/login" />}
+          element={<BasicSyntax />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Variables/data-types"
-          element={user ? <DataTypesGamePage /> : <Navigate to="/login" />}
+          element={<DataTypesGamePage />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Variables/variables"
-          element={user ? <VariablesGamePage /> : <Navigate to="/login" />}
+          element={<VariablesGamePage />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Variables/type-casting"
-          element={user ? <TypeCastingGamePage /> : <Navigate to="/login" />}
+          element={<TypeCastingGamePage />}
           errorElement={<ErrorBoundary />}
         /> 
         <Route
           path="/Java/Conditionals/if-else"
-          element={user ? <IfElseGamePage /> : <Navigate to="/login" />}
+          element={<IfElseGamePage />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Conditionals/switch"
-          element={user ? <SwitchStatements /> : <Navigate to="/login" />}
+          element={<SwitchStatements />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Loops/for-loop"
-          element={user ? <ForLoopGamePage /> : <Navigate to="/login" />}
+          element={<ForLoopGamePage />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Loops/while-loop"
-          element={user ? <WhileLoopGamePage /> : <Navigate to="/login" />}
+          element={<WhileLoopGamePage />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/Exception/exception"
-          element={user ? <Exceptions /> : <Navigate to="/login" />}
+          element={<Exceptions />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/OOPS/inheritance"
-          element={user ? <Inheritance /> : <Navigate to="/login" />}
+          element={<Inheritance />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/Java/OOPS/encapsulation"
-          element={user ? <Encapsulation /> : <Navigate to="/login" />}
+          element={<Encapsulation />}
           errorElement={<ErrorBoundary />}
         />
         <Route
           path="/ai"
-          element={user ? <Ai /> : <Navigate to="/login" />}
+          element={<Ai />}
           errorElement={<ErrorBoundary />}
         />
       </Route>
@@ -173,7 +158,11 @@ function App() {
     }
   );
 
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App; 

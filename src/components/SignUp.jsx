@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebase"; // Import Firebase auth
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
 
 const SignUp = () => {
   const navigate = useNavigate(); // For redirecting after signup
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -13,6 +13,8 @@ const SignUp = () => {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(""); // For success/error messages
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,28 +23,27 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setMessage("");
+    setLoading(true);
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
+      setLoading(false);
       return;
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-
-      await updateProfile(userCredential.user, {
-        displayName: formData.username
-      });
-
-      console.log("User created successfully:", userCredential.user);
+      await signup(formData.email, formData.password, formData.username);
+      setMessage("Successfully signed up!"); // Set success message
+      setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
       navigate("/"); // Redirect to home page after successful signup
     } catch (error) {
       console.error("Error creating user:", error);
-      setError(error.message);
+      setError(error.response?.data?.message || "Failed to create account");
+      setMessage("Failed to sign up."); // Set error message
+      setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,6 +66,11 @@ const SignUp = () => {
           {error && (
             <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
               {error}
+            </div>
+          )}
+          {message && (
+            <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-md text-sm">
+              {message}
             </div>
           )}
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -141,8 +147,12 @@ const SignUp = () => {
             </div>
 
             <div>
-              <button type="submit" className="w-full btn btn-primary">
-                Create Account
+              <button 
+                type="submit" 
+                className="w-full btn btn-primary"
+                disabled={loading}
+              >
+                {loading ? "Creating Account..." : "Create Account"}
               </button>
             </div>
           </form>

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { auth } from '../firebase';
-import { signOut } from 'firebase/auth';
+import { useAuth } from '../context/AuthContext';
 
 const ProfileDropdown = ({ user }) => {
+  const { logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -18,13 +18,9 @@ const ProfileDropdown = ({ user }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      setIsOpen(false);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
+  const handleSignOut = () => {
+    logout();
+    setIsOpen(false);
   };
 
   // Get initials from email for the avatar
@@ -38,7 +34,7 @@ const ProfileDropdown = ({ user }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center focus:outline-none group"
       >
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white flex items-center justify-center text-lg font-semibold shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-all duration-300 group-hover:-translate-y-0.5">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white flex items-center justify-center text-lg font-semibold shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-all duration-300 group-hover:-translate-y-0.5">
           {getInitials(user.email)}
         </div>
       </button>

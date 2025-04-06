@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { auth } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useAuth } from '../context/AuthContext';
 import ProgressBar from './ProgressBar';
 
 const Home = () => {
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    // Simulate loading time for a smoother transition
+    const timer = setTimeout(() => {
       setLoading(false);
-    });
-
-    return () => unsubscribe();
+    }, 500);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
@@ -56,7 +55,7 @@ const Home = () => {
         {location.pathname === '/' && (
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 min-h-[80vh] mt-2">
             <div className="w-full md:w-1/2 text-center md:text-left space-y-6">
-              {user ? (
+              {currentUser ? (
                 <>
                   <div className="inline-block mb-4 bg-gradient-to-r from-indigo-400 to-purple-500 p-1 rounded-lg">
                     <div className="bg-indigo-950/50 backdrop-blur-sm px-4 py-2 rounded">
@@ -64,7 +63,7 @@ const Home = () => {
                     </div>
                   </div>
                   <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">
-                    Welcome back, {user.displayName || 'Coder'}!
+                    Welcome back, {currentUser.username || 'Coder'}!
                   </h1>
                   <p className="text-xl md:text-2xl mb-8 text-purple-100">
                     Continue your programming journey with interactive challenges
@@ -315,7 +314,7 @@ const Home = () => {
         </div>
 
         {/* Progress Section */}
-        {user && (
+        {currentUser && (
           <div className="mt-16">
             <h2 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">
               Your Progress
@@ -368,7 +367,7 @@ const Home = () => {
         )}
 
         {/* CTA Section */}
-        {!user && (
+        {!currentUser && (
           <div className="mt-16 text-center">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-12 border border-white/10">
               <h2 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">

@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [authMethod, setAuthMethod] = useState('password'); // 'password' or 'otp'
+  const [message, setMessage] = useState(''); // For success/error messages
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,17 +20,19 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      
-      console.log('User logged in:', userCredential.user);
-      navigate('/profile'); // Redirect to profile page after successful login
+      if (authMethod === 'password') {
+        await login(formData.email, formData.password);
+        setMessage('Successfully signed in!'); // Set success message
+        setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
+        navigate('/');
+      } else {
+        navigate('/otp-login');
+      }
     } catch (error) {
       console.error('Login error:', error);
-      setError(error.message);
+      setError(error.response?.data?.message || 'An error occurred during login');
+      setMessage('Failed to sign in.'); // Set error message
+      setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
     } finally {
       setLoading(false);
     }
@@ -62,6 +66,36 @@ const Login = () => {
               {error}
             </div>
           )}
+          {message && (
+            <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-md text-sm">
+              {message}
+            </div>
+          )}
+          <div className="mb-6 flex rounded-md shadow-sm">
+            <button
+              type="button"
+              className={`flex-1 py-2 px-4 text-sm font-medium rounded-l-md ${
+                authMethod === 'password'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white/5 text-purple-200 hover:text-white'
+              }`}
+              onClick={() => setAuthMethod('password')}
+            >
+              Password
+            </button>
+            <button
+              type="button"
+              className={`flex-1 py-2 px-4 text-sm font-medium rounded-r-md ${
+                authMethod === 'otp'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white/5 text-purple-200 hover:text-white'
+              }`}
+              onClick={() => setAuthMethod('otp')}
+            >
+              OTP
+            </button>
+          </div>
+          
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-white">
@@ -81,23 +115,25 @@ const Login = () => {
               </div>
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-white">
-                Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="input bg-white/5 border-white/10 text-white placeholder-gray-400"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
+            {authMethod === 'password' && (
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-white">
+                  Password
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    className="input bg-white/5 border-white/10 text-white placeholder-gray-400"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -125,7 +161,7 @@ const Login = () => {
                 className="w-full btn btn-primary"
                 disabled={loading}
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                {loading ? 'Signing in...' : authMethod === 'password' ? 'Sign in' : 'Continue with OTP'}
               </button>
             </div>
           </form>
