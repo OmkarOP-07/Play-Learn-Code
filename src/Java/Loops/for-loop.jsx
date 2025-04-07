@@ -6,17 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Badge } from "../../components/ui/badge"
 import { Play, ChevronRight, Award, Sparkles, XCircle, Undo2 } from "lucide-react"
 import confetti from "canvas-confetti"
+import { useJavaPoints } from "../JavaPointsContext";
 
 export default function ForLoops() {
   const [level, setLevel] = useState(1)
-  const [points, setPoints] = useState(0)
   const [showSuccess, setShowSuccess] = useState(false)
   const [showError, setShowError] = useState(false)
   const [gameStarted, setGameStarted] = useState(false)
   const [draggedCard, setDraggedCard] = useState(null)
   const [isResetting, setIsResetting] = useState(false)
   const [currentTask, setCurrentTask] = useState("Count from 1 to 5")
-
+  const { points, addPoints } = useJavaPoints();
   // For loop specific state
   const [placedCards, setPlacedCards] = useState({
     initialization: null,
@@ -82,7 +82,7 @@ export default function ForLoops() {
           increment: "i += 2",
           loopBody: "System.out.println(i);",
         },
-        expectedOutput: ["1", "3", "5", "7", "9"],
+        expectedOutput: ["1", "3", "5", "7"],
       },
     ]
   }, [])
@@ -256,7 +256,6 @@ export default function ForLoops() {
     ) {
       setShowSuccess(true)
       setShowError(false)
-      setPoints(points + 10)
       confetti({
         particleCount: 100,
         spread: 70,
@@ -280,6 +279,8 @@ export default function ForLoops() {
       setShowSuccess(false)
     } else {
       // Navigate to next section or show completion
+      addPoints(10);
+      navigate('/java/loops/while-loop');
       setShowSuccess(true)
       // In a real app, you might use router.push('/next-section') here
     }
@@ -341,7 +342,7 @@ export default function ForLoops() {
 
                   {level === 3 && (
                     <div className="flex flex-col items-center gap-2">
-                      {[1, 3, 5, 7, 9].map((num) => (
+                      {[1, 3, 5, 7].map((num) => (
                         <div
                           key={num}
                           className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold"

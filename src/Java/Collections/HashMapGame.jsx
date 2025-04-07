@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import confetti from "canvas-confetti";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons';
-
+import { useJavaPoints } from "../JavaPointsContext";
 const availableItems = [
   // HashMap items
   { id: "hashmap_declaration", name: "HashMap<String, Integer> map = new HashMap<>();", type: "declaration", description: "HashMap declaration" },
@@ -50,10 +50,10 @@ export function HashMapGame() {
   const [hashmapCode, setHashmapCode] = useState([]);
   const [shuffledItems, setShuffledItems] = useState([...availableItems].sort(() => Math.random() - 0.5));
   const [showDialog, setShowDialog] = useState(false);
-  const [points, setPoints] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [draggedItem, setDraggedItem] = useState(null);
   const [showNextDialog, setShowNextDialog] = useState(false);
+  const { points, addPoints } = useJavaPoints();
 
   const handleDragStart = (e, item) => {
     setDraggedItem(item);
@@ -90,7 +90,7 @@ export function HashMapGame() {
 
   const handleSubmit = () => {
     const earnedPoints = calculatePoints();
-    setPoints(earnedPoints);
+    addPoints(earnedPoints);
     setShowDialog(true);
     setSubmitted(true);
 
@@ -105,7 +105,6 @@ export function HashMapGame() {
     setHashmapCode([]);
     setSubmitted(false);
     setShowDialog(false);
-    setPoints(0);
   };
 
   const handleNext = () => {
@@ -162,11 +161,11 @@ export function HashMapGame() {
                   {shuffledItems.map((item) => (
                     <div
                       key={item.id}
-                      className="p-2 bg-black/40 rounded-md cursor-move hover:bg-white/10 transition-colors"
+                      className="p-2 bg-black/40 rounded-md cursor-move transition-colors"
                       draggable
                       onDragStart={(e) => handleDragStart(e, item)}
                     >
-                      <Badge variant="outline" className="text-white border-white/20">{item.name}</Badge>
+                      <Badge className="text-white border-white/20 bg-transparent">{item.name}</Badge>
                       <p className="text-xs text-white/60 mt-1">{item.description}</p>
                     </div>
                   ))}
@@ -184,7 +183,7 @@ export function HashMapGame() {
                   <div className="space-y-2">
                     {hashmapCode.map((item, index) => (
                       <div key={index} className="p-2 bg-white/10 rounded-md">
-                        <Badge variant="outline" className="text-white border-white/20">{item.name}</Badge>
+                        <Badge className="text-white border-white/20 bg-transparent">{item.name}</Badge>
                       </div>
                     ))}
                   </div>

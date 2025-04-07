@@ -15,7 +15,7 @@ import {
 } from "../../components/ui/dialog";
 import { useNavigate } from 'react-router-dom';
 import confetti from "canvas-confetti";
-
+import { useJavaPoints } from "../JavaPointsContext";
 const availableItems = [
   { id: "class_vehicle", name: "class Vehicle", type: "keyword", description: "Base class declaration" },
   { id: "engine_status", name: "private boolean engineRunning;", type: "attribute", description: "Engine status" },
@@ -35,7 +35,7 @@ export function SingleInheritanceGame() {
   const [childClass, setChildClass] = useState([]);
   const [shuffledItems, setShuffledItems] = useState([...availableItems].sort(() => Math.random() - 0.5));
   const [showDialog, setShowDialog] = useState(false);
-  const [points, setPoints] = useState(0);
+  const { points, addPoints } = useJavaPoints();
   const [submitted, setSubmitted] = useState(false);
   const [showRoute, setShowRoute] = useState(false);
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ export function SingleInheritanceGame() {
 
   const handleSubmit = () => {
     const earnedPoints = calculatePoints();
-    setPoints(earnedPoints);
+    addPoints(10);
     setShowDialog(true);
     setSubmitted(true);
 
@@ -87,7 +87,6 @@ export function SingleInheritanceGame() {
     setChildClass([]);
     setSubmitted(false);
     setShowDialog(false);
-    setPoints(0);
   };
 
   const handleNextClick = () => {

@@ -18,7 +18,6 @@ import JavaLearning from './Cources/java.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import PythonLearning from './Cources/python.jsx';
 import PrintingOutput from './Java/Beginner/printing-output.jsx';
-import ArrayGamePage from './Java/Arrays/array.jsx';
 import DataTypesGamePage from './Java/Variables/data-types.jsx';
 import BasicSyntax from './Java/Beginner/basic-syntax.jsx';
 import VariablesGamePage from './Java/Variables/variables.jsx';
@@ -37,6 +36,8 @@ import HashMapGame from './Java/Collections/HashMapGame.jsx';
 import Constructors from './Java/OOPS/Constructors.jsx';
 import MultilevelInheritance from './Java/OOPS/MultilevelInheritanceGame.jsx';
 import { JavaPointsProvider } from "./Java/JavaPointsContext.jsx";
+import ArrayGamePage from './Java/Arrays/array.jsx';
+
 
 
 function App() {

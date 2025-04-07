@@ -4,14 +4,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "../../components/ui/button";
 import { BookOpen, Code, Coffee, PlayCircle } from 'lucide-react';
 import Tooltip from "../../components/ui/tooltip";
-import { useJavaPoints } from '../JavaPointsContext';
+import { useJavaPoints } from "../JavaPointsContext";
 
 const JavaLearner = () => {
   const [activeExample, setActiveExample] = useState('hello');
   const [activeToken, setActiveToken] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const codeBlockRef = useRef(null);
-  
+  const { points, addPoints } = useJavaPoints();
   const keywordDefinitions = {
     'public': 'An access modifier that makes a class, method, or field accessible from any other class.',
     'class': 'A blueprint for creating objects that defines attributes and behaviors (methods).',
@@ -335,7 +335,10 @@ const JavaLearner = () => {
           <CardFooter className="bg-slate-50 border-t p-4 text-center text-slate-600 rounded-b-lg">
             <div className="w-full flex justify-between items-center">
               <span className="text-sm">Interactive Java Syntax Explorer</span>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => {
+                addPoints(10);
+                navigate('/java/variables/variables');
+              }}>
                 <PlayCircle className="h-4 w-4 mr-1" /> Complete Level
               </Button>
             </div>

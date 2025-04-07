@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog"
 import { Progress } from "../../components/ui/progress"
-
+import { useJavaPoints } from "../JavaPointsContext";
 const codeSnippets = [
   {
     id: 1,
@@ -435,7 +435,7 @@ export default function ExceptionGame() {
       setGameComplete(true)
     }
   }, [level])
-
+  const { points, addPoints } = useJavaPoints();
   const handleOptionSelect = (option) => {
     setSelectedOption(option)
   }
@@ -608,11 +608,14 @@ export default function ExceptionGame() {
                 <RefreshCw className="mr-2 h-5 w-5" /> Play Again
               </Button>
               <Button 
-                onClick={() => window.location.href = "/java/inheritance"} 
+                onClick={() => {
+                  addPoints(10);
+                  window.location.href = "/java/arrays/array";
+                }} 
                 size="lg" 
                 className="bg-blue-600 hover:bg-blue-700"
               >
-                <ArrowRight className="mr-2 h-5 w-5" /> Next Concept
+                <ArrowRight className="mr-2 h-5 w-5" /> Next Level
               </Button>
             </div>
           </CardContent>

@@ -16,7 +16,7 @@ import {
 } from "../../components/ui/dialog";
 import confetti from "canvas-confetti";
 import { useNavigate } from "react-router-dom";
-
+import { useJavaPoints } from "../JavaPointsContext";
 const availableItems = [
   // Array items
   { id: "array_declaration", name: "int[] numbers = new int[5];", type: "declaration", description: "Array declaration" },
@@ -50,7 +50,7 @@ export function ArrayGame() {
   const [listCode, setListCode] = useState([]);
   const [shuffledItems, setShuffledItems] = useState([...availableItems].sort(() => Math.random() - 0.5));
   const [showDialog, setShowDialog] = useState(false);
-  const [points, setPoints] = useState(0);
+  const { points, addPoints } = useJavaPoints();
   const [submitted, setSubmitted] = useState(false);
   const [showNextDialog, setShowNextDialog] = useState(false);
 
@@ -84,7 +84,7 @@ export function ArrayGame() {
 
   const handleSubmit = () => {
     const earnedPoints = calculatePoints();
-    setPoints(earnedPoints);
+    addPoints(10);
     setShowDialog(true);
     setSubmitted(true);
 
@@ -100,11 +100,10 @@ export function ArrayGame() {
     setListCode([]);
     setSubmitted(false);
     setShowDialog(false);
-    setPoints(0);
   };
 
   const handleNext = () => {
-    setShowNextDialog(true);
+    navigate("/Java/Collections/HashMapGame");
   };
 
   const handleConfirmNext = () => {

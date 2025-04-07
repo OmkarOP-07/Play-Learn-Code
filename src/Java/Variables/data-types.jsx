@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useJavaPoints } from "../JavaPointsContext";
 
 function Variables() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function Variables() {
   const [recentlyCompleted, setRecentlyCompleted] = useState(null);
   const [shuffledAnswers, setShuffledAnswers] = useState([]);
   const [vanishingItems, setVanishingItems] = useState([]);
-
+  const { points, addPoints } = useJavaPoints();
   const questions = [
     {
       id: 1,
@@ -214,7 +215,8 @@ function Variables() {
   };
 
   const handleNext = () => {
-    navigate('/java/control-structures');
+    addPoints(10);
+    navigate('/java/variables/type-casting');
   };
 
   const isGameComplete = completedItems.length === questions.length;

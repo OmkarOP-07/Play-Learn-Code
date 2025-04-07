@@ -8,10 +8,11 @@ import { Progress } from "../../components/ui/progress";
 import { Play, ChevronRight, Award, Sparkles, XCircle, Undo2, Code, RefreshCw } from 'lucide-react';
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
+import { useJavaPoints } from "../JavaPointsContext";
 
 export default function WhileLoops() {
   const [level, setLevel] = useState(1);
-  const [points, setPoints] = useState(0);
+  const { points, addPoints } = useJavaPoints();
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
@@ -275,7 +276,6 @@ export default function WhileLoops() {
     ) {
       setShowSuccess(true);
       setShowError(false);
-      setPoints(points + 15);
       confetti({
         particleCount: 150,
         spread: 70,
@@ -299,6 +299,8 @@ export default function WhileLoops() {
       setLevel(level + 1);
       setShowSuccess(false);
     } else {
+      addPoints(10);
+      navigate('/java/exceptions/exceptions');
       // Show completion
       setShowSuccess(true);
       confetti({

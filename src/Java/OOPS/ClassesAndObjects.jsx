@@ -15,7 +15,7 @@ import {
 } from "../../components/ui/dialog";
 import { useNavigate } from 'react-router-dom';
 import confetti from "canvas-confetti";
-
+import { useJavaPoints } from "../JavaPointsContext";   
 // Available items for drag and drop
 const availableItems = [
   { id: "class", name: "class Student", type: "keyword", description: "Class declaration" },
@@ -37,11 +37,10 @@ export function ClassesAndObjects() {
   const [classParts, setClassParts] = useState([]);
   const [shuffledItems, setShuffledItems] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
-  const [points, setPoints] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [showRoute, setShowRoute] = useState(false);
   const navigate = useNavigate();
-
+  const { points, addPoints } = useJavaPoints();  
   useEffect(() => {
     // Shuffle available items
     const shuffled = [...availableItems].sort(() => Math.random() - 0.5);
@@ -73,7 +72,6 @@ export function ClassesAndObjects() {
 
   const handleSubmit = () => {
     const earnedPoints = calculatePoints();
-    setPoints(earnedPoints);
     setShowDialog(true);
     setSubmitted(true);
 
@@ -89,10 +87,10 @@ export function ClassesAndObjects() {
     setClassParts([]);
     setSubmitted(false);
     setShowDialog(false);
-    setPoints(0);
   };
 
   const handleNextClick = () => {
+    addPoints(10);
     navigate('/Java/OOPS/Constructors');
   };
 
@@ -109,8 +107,8 @@ export function ClassesAndObjects() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-gray-50 p-4 rounded-md font-mono text-sm">
-              <div className="text-black">
+            <div className="bg-black bg-opacity-30 p-4 rounded-md font-mono text-sm">
+              <div className="text-white">
                 <p>class Student {'{'}</p>
                 <p className="ml-4">private String name;</p>
                 <p className="ml-4">private int age;</p>
@@ -137,8 +135,8 @@ export function ClassesAndObjects() {
         {/* Game Card */}
         <Card className="border-2 border-primary shadow-md">
           <CardHeader>
-            <CardTitle className="text-black">Build the Student Class</CardTitle>
-            <p className="text-sm text-black">
+            <CardTitle className="text-white">Build the Student Class</CardTitle>
+            <p className="text-sm text-white">
               Drag and drop elements to form the correct class structure.
             </p>
           </CardHeader>
@@ -146,18 +144,18 @@ export function ClassesAndObjects() {
             <div className="grid grid-cols-3 gap-6">
               {/* Available Items (Shuffled) */}
               <div className="space-y-4">
-                <h3 className="font-semibold text-sm text-black">Available Elements</h3>
+                <h3 className="font-semibold text-sm text-white">Available Elements</h3>
                 <div className="space-y-2">
                   {shuffledItems.map((item) => (
                     <div
                       key={item.id}
-                      className="p-2 bg-gray-50 rounded-md cursor-move hover:bg-gray-100"
+                      className="p-2 bg-black bg-opacity-30 rounded-md cursor-move hover:bg-black/50"
                       draggable
                       onDragStart={(e) => {
                         e.dataTransfer.setData("text/plain", JSON.stringify(item));
                       }}
                     >
-                      <Badge variant="outline" className="text-black">{item.name}</Badge>
+                      <Badge  className="text-white bg-transparent border-white hover:bg-transparent hover:text-white">{item.name}</Badge>
                     </div>
                   ))}
                 </div>
@@ -173,11 +171,11 @@ export function ClassesAndObjects() {
                   handleDrop(item);
                 }}
               >
-                <h3 className="font-semibold mb-2 text-black">Student Class</h3>
+                <h3 className="font-semibold mb-2 text-white">Student Class</h3>
                 <div className="space-y-2">
                   {classParts.map((item, index) => (
-                    <div key={index} className="p-2 bg-blue-50 rounded-md">
-                      <Badge variant="outline" className="text-black">{item.name}</Badge>
+                    <div key={index} className="p-2 bg-black bg-opacity-30 rounded-md">
+                      <Badge  className="text-white bg-transparent border-white hover:bg-transparent hover:border-white hover:text-white">{item.name}</Badge>
                     </div>
                   ))}
                 </div>
@@ -190,7 +188,7 @@ export function ClassesAndObjects() {
                 variant="outline" 
                 onClick={handleReset} 
                 disabled={!classParts.length}
-                className="border-2 border-primary/20 hover:bg-gray-100 bg-white text-black"
+                className="border-2 border-primary/20 hover:bg-white text-white"
               >
                 Reset
               </Button>
@@ -215,14 +213,14 @@ export function ClassesAndObjects() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-black">Next Topic: Constructors</h3>
-                <p className="text-black">Learn about constructors in Java</p>
+                <h3 className="text-xl font-bold text-white">Next Topic: Constructors</h3>
+                <p className="text-white">Learn about constructors in Java</p>
               </div>
               <div className="flex items-center gap-2">
                 {showRoute && (
-                  <span className="text-sm text-black">/Java/OOPS/Constructors</span>
+                    <span className="text-sm text-white">/Java/OOPS/Constructors</span>
                 )}
-                <ArrowRight className="h-5 w-5 text-black" />
+                <ArrowRight className="h-5 w-5 text-white" />
               </div>
             </div>
           </CardContent>
@@ -230,10 +228,10 @@ export function ClassesAndObjects() {
 
         {/* Points Dialog */}
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogContent className="bg-[#1a1a1a]/95 backdrop-blur-sm border border-white/20">
+          <DialogContent className="bg-black bg-opacity-30 text-white backdrop-blur-sm border border-white">
             <div className="text-center py-4">
-              <div className="text-center mt-4 text-primary font-bold animate-bounce">
-                Awesome job! +{points} points!
+              <div className="text-center mt-4 text-primary font-bold animate-bounce text-2xl text-white">
+                Awesome job! +10 points!
               </div>
             </div>
           </DialogContent>

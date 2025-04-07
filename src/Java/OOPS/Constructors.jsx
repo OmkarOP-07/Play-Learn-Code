@@ -15,7 +15,7 @@ import {
 } from "../../components/ui/dialog";
 import { useNavigate } from 'react-router-dom';
 import confetti from "canvas-confetti";
-
+import { useJavaPoints } from "../JavaPointsContext";
 // Available items for drag and drop
 const availableItems = {
   constructorParts: [
@@ -35,7 +35,7 @@ export function ConstructorsGame() {
   const [paramConstructor, setParamConstructor] = useState([]);
   const [showPreview, setShowPreview] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  const [points, setPoints] = useState(0);
+  const { points, addPoints } = useJavaPoints();
   const [submitted, setSubmitted] = useState(false);
   const [showRoute, setShowRoute] = useState(false);
   const navigate = useNavigate();
@@ -105,7 +105,7 @@ export function ConstructorsGame() {
 
   const handleSubmit = () => {
     const earnedPoints = calculatePoints();
-    setPoints(earnedPoints);
+    addPoints(10);
     setShowDialog(true);
     setSubmitted(true);
 
@@ -123,7 +123,6 @@ export function ConstructorsGame() {
     setShowPreview(false);
     setSubmitted(false);
     setShowDialog(false);
-    setPoints(0);
   };
 
   const handleNextClick = () => {

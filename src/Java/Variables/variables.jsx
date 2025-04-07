@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useJavaPoints } from "../JavaPointsContext";
 const JavaVariablesGame = () => {
   const [currentLevel, setCurrentLevel] = useState(0);
   const [score, setScore] = useState(0);
@@ -7,7 +7,7 @@ const JavaVariablesGame = () => {
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [attempts, setAttempts] = useState(0);
-
+  const { points, addPoints } = useJavaPoints();
   const levels = [
     {
       title: "The Storage Vault: Introducing Variables",
@@ -20,7 +20,7 @@ const JavaVariablesGame = () => {
       title: "Variable Types: Different Vaults for Different Treasures",
       description: "Java has different variable types for different kinds of data: int for whole numbers, double for decimals, String for text, and boolean for true/false values.",
       challenge: "Declare a String variable named 'playerName' and assign it the value 'Coder':",
-      correctAnswer: "String playerName = \"Coder\";" | "String playername = \"Coder\";",
+      correctAnswer: "String playerName = \"Coder\";",
       hint: "String values must be enclosed in double quotes."
     },
     {
@@ -40,26 +40,52 @@ const JavaVariablesGame = () => {
     const normalizedUserInput = userInput.trim();
     const normalizedCorrectAnswer = currentLevelData.correctAnswer.trim();
     
-    if (normalizedUserInput === normalizedCorrectAnswer) {
-      // Success!
-      const pointsEarned = Math.max(5 - attempts + 1, 1);
-      setScore(score + pointsEarned);
-      setFeedback(`Correct! +${pointsEarned} points`);
-      
-      // Short delay before moving to next level
-      setTimeout(() => {
-        if (currentLevel < levels.length - 1) {
-          setCurrentLevel(currentLevel + 1);
-          setUserInput('');
-          setFeedback('');
-          setAttempts(0);
-        } else {
-          // Game completed
-          setShowWinMessage(true);
-        }
-      }, 1500);
+    if (Array.isArray(currentLevelData.correctAnswer)) {
+      // Check if the user's input matches any of the correct answers
+      if (currentLevelData.correctAnswer.some(answer => normalizedUserInput === answer.trim())) {
+        // Success!
+        const pointsEarned = Math.max(5 - attempts + 1, 1);
+        setScore(score + pointsEarned);
+        setFeedback(`Correct! +${pointsEarned} points`);
+        
+        // Short delay before moving to next level
+        setTimeout(() => {
+          if (currentLevel < levels.length - 1) {
+            setCurrentLevel(currentLevel + 1);
+            setUserInput('');
+            setFeedback('');
+            setAttempts(0);
+          } else {
+            // Game completed
+            setShowWinMessage(true);
+          }
+        }, 1500);
+      } else {
+        setFeedback("Not quite right. Try again!");
+      }
     } else {
-      setFeedback("Not quite right. Try again!");
+      // Original logic for single correct answer
+      if (normalizedUserInput === normalizedCorrectAnswer) {
+        // Success!
+        const pointsEarned = Math.max(5 - attempts + 1, 1);
+        setScore(score + pointsEarned);
+        setFeedback(`Correct! +${pointsEarned} points`);
+        
+        // Short delay before moving to next level
+        setTimeout(() => {
+          if (currentLevel < levels.length - 1) {
+            setCurrentLevel(currentLevel + 1);
+            setUserInput('');
+            setFeedback('');
+            setAttempts(0);
+          } else {
+            // Game completed
+            setShowWinMessage(true);
+          }
+        }, 1500);
+      } else {
+        setFeedback("Not quite right. Try again!");
+      }
     }
   };
 
@@ -84,16 +110,12 @@ const JavaVariablesGame = () => {
         </div>
         <button 
           onClick={() => {
-            setCurrentLevel(0);
-            setScore(0);
-            setShowWinMessage(false);
-            setUserInput('');
-            setFeedback('');
-            setAttempts(0);
+            navigate('/java/variables/data-types');
+            addPoints(10);
           }}
           className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105"
         >
-          Play Again
+          Next Level
         </button>
       </div>
     );

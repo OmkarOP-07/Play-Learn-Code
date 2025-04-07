@@ -15,7 +15,7 @@ import {
 import { Progress } from "../../components/ui/progress"
 import { Badge } from "../../components/ui/badge"
 import { TabsComponents } from "../../components/ui/tabs"
-
+import { useJavaPoints } from "../JavaPointsContext";
 // Game objects with encapsulation challenges
 const roomObjects = [
   {
@@ -240,7 +240,7 @@ export default function EncapsulationGame() {
   const [finalCode, setFinalCode] = useState("")
   const [finalCodeSubmitted, setFinalCodeSubmitted] = useState(false)
   const [finalCodeCorrect, setFinalCodeCorrect] = useState(null)
-
+  const { points, addPoints } = useJavaPoints();
   // Start the timer when game starts
   useEffect(() => {
     let interval
@@ -343,13 +343,16 @@ export default function EncapsulationGame() {
     setFinalCodeSubmitted(true)
     setFinalCodeCorrect(finalCode === "7359")
   }
-
+  const nextLevel = () => {
+    addPoints(10);
+    navigate("/java/collections/arraylist");
+  }
   // Start screen
   if (!gameStarted) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 pt-16">
         <div className="w-full max-w-3xl">
-          <Card className="w-full bg-slate-800 border-slate-700 text-white shadow-xl">
+          <Card className="w-full bg-black bg-opacity-30 border-2 border-primary/20  text-white shadow-xl mt-16">
             <CardHeader className="text-center bg-purple-600 rounded-t-lg">
               <CardTitle className="text-3xl">Encapsulation Escape Room</CardTitle>
               <CardDescription className="text-white text-lg">
@@ -379,8 +382,9 @@ export default function EncapsulationGame() {
   // Victory screen
   if (gameComplete && finalCodeCorrect) {
     return (
-      <Card className="w-full max-w-3xl bg-slate-800 border-slate-700 text-white shadow-xl">
-        <CardHeader className="text-center bg-green-600 rounded-t-lg">
+     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 pt-16"  >
+        <Card className="w-full max-w-3xl bg-black bg-opacity-30 border-2 border-primary/20  text-white shadow-xl">
+        <CardHeader className="text-center bg-purple-600 rounded-t-lg">
           <CardTitle className="text-3xl">Congratulations!</CardTitle>
           <CardDescription className="text-white text-lg">You've escaped the Encapsulation Room!</CardDescription>
         </CardHeader>
@@ -393,18 +397,20 @@ export default function EncapsulationGame() {
             You've mastered the art of encapsulation and escaped with {formatTime(timer)} remaining! You now understand
             how to properly protect data with private fields and control access with getters and setters.
           </p>
-          <Button onClick={resetGame} size="lg" className="bg-purple-600 hover:bg-purple-700">
-            <RefreshCw className="mr-2 h-5 w-5" /> Play Again
+          <Button onClick={nextLevel} size="lg" className="bg-purple-600 hover:bg-purple-700">
+            <RefreshCw className="mr-2 h-5 w-5" /> Next Level
           </Button>
         </CardContent>
       </Card>
+      </div>
     )
   }
 
   // Game complete but need to enter final code
   if (gameComplete && !finalCodeCorrect) {
     return (
-      <Card className="w-full max-w-3xl bg-slate-800 border-slate-700 text-white shadow-xl">
+     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 pt-16"  >
+     <Card className="ce w-full max-w-3xl  border-2 border-primary/20  text-white shadow-xl bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950">
         <CardHeader className="border-b border-slate-700">
           <div className="flex justify-between items-center">
             <CardTitle>Final Challenge</CardTitle>
@@ -425,11 +431,11 @@ export default function EncapsulationGame() {
             <div className="flex flex-col items-center gap-4">
               <div className="grid grid-cols-4 gap-4 mb-4">
                 {objects.map((object) => (
-                  <div key={object.id} className="p-4 bg-slate-700 rounded-lg text-center">
+                  <div key={object.id} className="p-4 bg-black bg-opacity-30 rounded-lg text-center">
                     <div className="text-3xl mb-2">{object.image}</div>
                     <div className="text-sm font-semibold">{object.name}</div>
                     <Badge className="mt-2 bg-green-600">Unlocked</Badge>
-                    <div className="mt-3 p-2 bg-slate-900 rounded text-yellow-400 text-sm">{object.challenge.clue}</div>
+                    <div className="mt-3 p-2 bg-black bg-opacity-30 rounded text-yellow-400 text-sm">{object.challenge.clue}</div>
                   </div>
                 ))}
               </div>
@@ -440,7 +446,7 @@ export default function EncapsulationGame() {
                   value={finalCode}
                   onChange={(e) => setFinalCode(e.target.value.replace(/[^0-9]/g, "").slice(0, 4))}
                   placeholder="Enter 4-digit code"
-                  className="px-4 py-2 bg-slate-900 border border-slate-700 rounded-md text-white text-center text-xl tracking-widest w-40"
+                  className="px-4 py-2 bg-black bg-opacity-30 border border-slate-700 rounded-md text-white text-center text-xl tracking-widest w-40"
                   maxLength={4}
                 />
                 <Button
@@ -461,13 +467,14 @@ export default function EncapsulationGame() {
           </div>
         </CardContent>
       </Card>
+     </div>
     )
   }
 
   // Main game screen
   return (
-    <div className="flex justify-center items-center min-h-screen pt-24">
-      <Card className="w-full max-w-4xl bg-slate-800 border-slate-700 text-white shadow-xl">
+    <div className="flex justify-center items-center min-h-screen pt-24 bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950">
+      <Card className="w-full max-w-4xl bg-black bg-opacity-30 border-2 border-primary/20  text-white shadow-xl">
         <CardHeader className="border-b border-slate-700">
           <div className="flex justify-between items-center">
             <CardTitle>Encapsulation Escape Room</CardTitle>
@@ -478,7 +485,7 @@ export default function EncapsulationGame() {
           </div>
           <Progress
             value={(objects.filter((obj) => obj.unlocked).length / objects.length) * 100}
-            className="h-2 bg-slate-700"
+            className="h-2 bg-black bg-opacity-30"
           />
         </CardHeader>
 
@@ -494,8 +501,8 @@ export default function EncapsulationGame() {
                     selectedObject?.id === object.id
                       ? "bg-purple-900/50 border border-purple-500"
                       : object.unlocked
-                        ? "bg-slate-700/50 border border-green-500"
-                        : "bg-slate-700 border border-slate-600 hover:border-slate-500"
+                        ? "bg-black bg-opacity-30 border border-green-500"
+                        : "bg-black bg-opacity-30 border border-slate-600 hover:border-slate-500"
                   }`}
                   onClick={() => selectObject(object)}
                 >
@@ -529,7 +536,7 @@ export default function EncapsulationGame() {
                   <p className="text-slate-300 mb-4">{selectedObject.challenge.description}</p>
 
                   <TabsComponents.Root defaultValue="code" className="mb-6">
-                    <TabsComponents.List className="bg-slate-700">
+                    <TabsComponents.List className="bg-black bg-opacity-30">
                       <TabsComponents.Trigger value="code">Code Editor</TabsComponents.Trigger>
                       {showClue && <TabsComponents.Trigger value="clue">Clue</TabsComponents.Trigger>}
                     </TabsComponents.List>
@@ -539,7 +546,7 @@ export default function EncapsulationGame() {
                         <textarea
                           value={userCode}
                           onChange={(e) => setUserCode(e.target.value)}
-                          className="w-full h-64 p-4 bg-slate-900 text-slate-300 font-mono text-sm rounded-md border border-slate-700 focus:border-purple-500 focus:outline-none"
+                          className="w-full h-64 p-4 bg-black bg-opacity-30 text-slate-300 font-mono text-sm rounded-md border border-slate-700 focus:border-purple-500 focus:outline-none"
                           disabled={selectedObject.unlocked}
                         />
                       </div>
@@ -564,14 +571,14 @@ export default function EncapsulationGame() {
                               <Lightbulb className="h-4 w-4 mr-2" /> Hint
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="bg-slate-800 text-white border-slate-700">
+                          <DialogContent className="bg-black bg-opacity-30 text-white border-slate-700">
                             <DialogHeader>
                               <DialogTitle>Encapsulation Hint</DialogTitle>
                               <DialogDescription className="text-slate-300">
                                 Here's a hint to help you solve this challenge:
                               </DialogDescription>
                             </DialogHeader>
-                            <div className="p-4 bg-slate-900 rounded-md">{selectedObject.challenge.hint}</div>
+                            <div className="p-4 bg-black bg-opacity-30 rounded-md">{selectedObject.challenge.hint}</div>
                           </DialogContent>
                         </Dialog>
 
@@ -585,7 +592,7 @@ export default function EncapsulationGame() {
 
                     {showClue && (
                       <TabsComponents.Content value="clue" className="mt-2">
-                        <div className="p-6 bg-yellow-900/30 rounded-lg border border-yellow-600/50">
+                        <div className="p-6 bg-black bg-opacity-30 rounded-lg border border-yellow-600/50">
                           <div className="flex items-center mb-4">
                             <BookOpen className="h-5 w-5 text-yellow-400 mr-2" />
                             <h4 className="font-semibold text-yellow-400">You found a clue!</h4>

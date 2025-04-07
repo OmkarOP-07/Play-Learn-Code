@@ -5,11 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Badge } from "../../components/ui/badge";
 import { Play, ChevronRight, Award, Sparkles, XCircle, RotateCcw, Zap, Check } from "lucide-react";
 import confetti from "canvas-confetti";
+import { useJavaPoints } from "../JavaPointsContext";
 
 export default function SwitchStatements() {
   const navigate = useNavigate();
   const [level, setLevel] = useState(1);
-  const [points, setPoints] = useState(0);
+  const { points, addPoints } = useJavaPoints();
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -212,8 +213,7 @@ export default function SwitchStatements() {
     
     if (result === expectedOutput) {
       setShowSuccess(true);
-      setShowError(false);
-      setPoints(points + 10 + Math.max(0, 5 - attempts));
+      setShowError(false);  
       confetti({
         particleCount: 100,
         spread: 70,
@@ -240,7 +240,8 @@ export default function SwitchStatements() {
       setLevel(level + 1);
       setShowSuccess(false);
     } else {
-      navigate('/java/methods');
+      addPoints(10);
+      navigate('/java/loops/for-loop');
     }
   };
 

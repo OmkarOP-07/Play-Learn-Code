@@ -5,11 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Badge } from "../../components/ui/badge";
 import { Play, ChevronRight, Award, Sparkles, XCircle, Undo2 } from "lucide-react";
 import confetti from "canvas-confetti";
-
+import { useJavaPoints } from "../JavaPointsContext";
 export default function ControlStructures() {
   const navigate = useNavigate();
   const [level, setLevel] = useState(1);
-  const [points, setPoints] = useState(0);
+  const { points, addPoints } = useJavaPoints();
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [currentLight, setCurrentLight] = useState("red");
@@ -36,8 +36,20 @@ export default function ControlStructures() {
   const [availableCardsHistory, setAvailableCardsHistory] = useState([]);
 
   const levels = useMemo(() => {
-    // Your logic to initialize levels
-    return []; // Ensure this returns an array
+    return [
+      {
+        light: "red",
+        solution: {
+          ifCondition: { text: "light = red" },
+          ifAction: { text: "Stop!" },
+          elseIfCondition: { text: "light = yellow" },
+          elseIfAction: { text: "Go slow!" },
+          elseCondition: { text: "light = green" },
+          elseAction: { text: "Go!" }
+        }
+      },
+      // Add more levels as needed
+    ];
   }, []);
 
   useEffect(() => {
@@ -140,20 +152,18 @@ export default function ControlStructures() {
   };
 
   const checkSolution = () => {
-    const currentLevel = levels[level - 1];
     const { ifCondition, ifAction, elseIfCondition, elseIfAction, elseCondition, elseAction } = placedCards;
 
     if (
-      ifCondition?.text === currentLevel.solution.ifCondition &&
-      ifAction?.text === currentLevel.solution.ifAction &&
-      elseIfCondition?.text === currentLevel.solution.elseIfCondition &&
-      elseIfAction?.text === currentLevel.solution.elseIfAction &&
-      elseCondition?.text === currentLevel.solution.elseCondition &&
-      elseAction?.text === currentLevel.solution.elseAction
+      ifCondition?.text === levels[level - 1].solution.ifCondition.text &&
+      ifAction?.text === levels[level - 1].solution.ifAction.text &&
+      elseIfCondition?.text === levels[level - 1].solution.elseIfCondition.text &&
+      elseIfAction?.text === levels[level - 1].solution.elseIfAction.text &&
+      elseCondition?.text === levels[level - 1].solution.elseCondition.text &&
+      elseAction?.text === levels[level - 1].solution.elseAction.text
     ) {
       setShowSuccess(true);
       setShowError(false);
-      setPoints(points + 10);
       confetti({
         particleCount: 100,
         spread: 70,
@@ -176,7 +186,8 @@ export default function ControlStructures() {
       setLevel(level + 1);
       setShowSuccess(false);
     } else {
-      navigate('/java/arrays');
+      addPoints(10);
+      navigate('/java/conditionals/switch');
     }
   };
 
@@ -204,9 +215,9 @@ export default function ControlStructures() {
 
       <Card className="border-4 border-primary shadow-lg">
         <CardHeader className="bg-primary/10">
-          <CardTitle className="text-xl">{levels[level - 1]?.title || 'No level data available'}</CardTitle>
+          <CardTitle className="text-xl">{"if-else Game "}</CardTitle>
           <CardDescription>
-            {levels[level - 1]?.description || 'No description available'}
+            {'Solve the puzzle by matching the correct condition and action to the traffic light.'}
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6">
@@ -371,8 +382,10 @@ export default function ControlStructures() {
             {gameStarted && (
               <div className="space-y-4">
                 <div className="flex justify-center gap-4">
-                  <Button onClick={checkSolution} className="flex items-center gap-2">
-                    Run Code
+                  <Button onClick={() => {
+                    checkSolution();
+                  }} className="flex items-center gap-2">
+                    Check Answer
                   </Button>
                   {placedCardsHistory.length > 0 && (
                     <Button 

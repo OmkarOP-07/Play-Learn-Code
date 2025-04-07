@@ -168,7 +168,7 @@ const JavaLearning = () => {
       mission: "Find the Patterns",
       script: "The ancient scrolls are hidden in an unordered list. Sort them correctly to reveal their secrets.",
       subtopics: [
-        { id: 6.1, title: "Array Basics", path: "/Java/Arrays/basics", mission: "Organized Storage", script: "Store multiple values in a structured way with arrays.", icon: "https://img.icons8.com/color/96/000000/data-sheet.png" },
+        { id: 6.1, title: "Array Basics", path: "/Java/Arrays/array", mission: "Organized Storage", script: "Store multiple values in a structured way with arrays.", icon: "https://img.icons8.com/color/96/000000/data-sheet.png" },
       //  { id: 6.2, title: "Arrays and Lists", path: "/Java/Arrays/ArrayGame", mission: "Arrange the Chaos", script: "Learn how to sort arrays for better organization.", icon: "https://img.icons8.com/color/96/000000/sorting-arrows.png" },
        // { id: 6.3, title: "HashMaps", path: "/Java/Collections/hashmaps", mission: "The Secret Index", script: "Quickly find what you need using key-value pairs stored in HashMaps.", icon: "https://img.icons8.com/color/96/000000/list.png" }  
       ],

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronRight, Award, Heart, RefreshCw, Home, ArrowRight } from "lucide-react"
+import { useJavaPoints } from "../JavaPointsContext";
 
 export default function GamePage() {
   const [gameState, setGameState] = useState("start") // start, playing, success, failure, complete
@@ -13,7 +14,7 @@ export default function GamePage() {
   const [showFeedback, setShowFeedback] = useState(false)
   const [draggedType, setDraggedType] = useState(null)
   const [selectedAnswer, setSelectedAnswer] = useState(null)
-
+  const { points, addPoints } = useJavaPoints();
   const levels = [
     {
       type: "multiple-choice",
@@ -67,11 +68,9 @@ export default function GamePage() {
     },
   ]
 
-  const handleStart = () => {
-    setGameState("playing")
-    setCurrentLevel(0)
-    setLives(3)
-    setScore(0)
+  const handleComplete = () => {
+    addPoints(10);
+    navigate('/java/conditionals/if-else');
   }
 
   const handleAnswerSelect = (index) => {
@@ -444,10 +443,10 @@ export default function GamePage() {
                     className="px-6 py-3 bg-purple-600 rounded-lg font-bold flex items-center"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={handleStart}
+                    onClick={handleComplete}
                   >
                     <RefreshCw className="mr-2" />
-                    Play Again
+                    Next Level
                   </motion.button>
                 </div>
               </motion.div>

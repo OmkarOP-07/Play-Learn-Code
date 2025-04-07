@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { Badge } from "../../components/ui/badge";
 import { Sparkles, Play, ChevronRight } from "lucide-react";
 import { Button } from "../../components/ui/button";
-
+import { useJavaPoints } from "../JavaPointsContext";
 const arrayTypes = [
   { type: "int", syntax: "int arr[] = {1, 2, 3, 4};", values: [1, 2, 3, 4] },
   { type: "char", syntax: "char arr[] = {'A', 'B', 'C'};", values: ["A", "B", "C"] },
@@ -15,9 +15,8 @@ const arrayTypes = [
 
 export default function ArrayGamePage() {
   const [droppedArray, setDroppedArray] = useState(null);
-  const [points, setPoints] = useState(0);
   const [level, setLevel] = useState(1);
-
+  const { points, addPoints } = useJavaPoints();
   // Draggable component
   const ArrayDragItem = ({ type, syntax }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -45,7 +44,7 @@ export default function ArrayGamePage() {
     accept: "ARRAY",
     drop: (item) => {
       setDroppedArray(arrayTypes.find((arr) => arr.type === item.type));
-      setPoints(points + 10); // Award points on successful drop
+      addPoints(10); // Award points on successful drop
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
