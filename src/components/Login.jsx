@@ -21,9 +21,10 @@ const Login = () => {
 
     try {
       if (authMethod === 'password') {
-        await login(formData.email, formData.password);
-        setMessage('Successfully signed in!'); // Set success message
-        setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
+        const response = await login(formData.email, formData.password);
+        console.log("Login component - Login successful:", response);
+        setMessage('Successfully signed in!');
+        setTimeout(() => setMessage(''), 3000);
         navigate('/');
       } else {
         navigate('/otp-login');
@@ -31,8 +32,8 @@ const Login = () => {
     } catch (error) {
       console.error('Login error:', error);
       setError(error.response?.data?.message || 'An error occurred during login');
-      setMessage('Failed to sign in.'); // Set error message
-      setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
+      setMessage('Failed to sign in.');
+      setTimeout(() => setMessage(''), 3000);
     } finally {
       setLoading(false);
     }

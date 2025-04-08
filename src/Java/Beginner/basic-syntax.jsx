@@ -11,7 +11,7 @@ const JavaLearner = () => {
   const [activeToken, setActiveToken] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const codeBlockRef = useRef(null);
-  const { points, addPoints } = useJavaPoints();
+  const { points, addPoints, isLoading } = useJavaPoints();
   const keywordDefinitions = {
     'public': 'An access modifier that makes a class, method, or field accessible from any other class.',
     'class': 'A blueprint for creating objects that defines attributes and behaviors (methods).',

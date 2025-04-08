@@ -27,7 +27,8 @@ export const register = async (req, res) => {
       name,
       email,
       password,
-      username
+      username,
+      points: 0
     });
 
     if (user) {
@@ -40,6 +41,7 @@ export const register = async (req, res) => {
         name: user.name,
         email: user.email,
         username: user.username,
+        points: user.points,
         token
       });
     }
@@ -68,6 +70,7 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
         username: user.username,
+        points: user.points,
         token
       });
     } else {
@@ -138,6 +141,7 @@ export const verifyOTPEmail = async (req, res) => {
       name: user.name,
       email: user.email,
       username: user.username,
+      points: user.points,
       token
     });
   } catch (error) {

@@ -15,7 +15,7 @@ import {
 } from "../../components/ui/dialog";
 import { useNavigate } from 'react-router-dom';
 import confetti from "canvas-confetti";
-import { useJavaPoints } from "../JavaPointsContext";   
+import { useJavaPoints } from "../JavaPointsContext";
 // Available items for drag and drop
 const availableItems = [
   { id: "class", name: "class Student", type: "keyword", description: "Class declaration" },
@@ -40,7 +40,7 @@ export function ClassesAndObjects() {
   const [submitted, setSubmitted] = useState(false);
   const [showRoute, setShowRoute] = useState(false);
   const navigate = useNavigate();
-  const { points, addPoints } = useJavaPoints();  
+  const { points, addPoints, isLoading } = useJavaPoints();  
   useEffect(() => {
     // Shuffle available items
     const shuffled = [...availableItems].sort(() => Math.random() - 0.5);

@@ -7,7 +7,7 @@ const JavaVariablesGame = () => {
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [attempts, setAttempts] = useState(0);
-  const { points, addPoints } = useJavaPoints();
+  const { points, addPoints, isLoading } = useJavaPoints();
   const levels = [
     {
       title: "The Storage Vault: Introducing Variables",
