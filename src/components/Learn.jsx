@@ -33,7 +33,6 @@ const Learn = () => {
       id: 1,
       title: "Java Programming",
       description: "Master Java programming with interactive challenges",
-      progress: 0,
       image: "https://img.icons8.com/color/96/000000/java-coffee-cup-logo.png",
       path: "/java"
     },
@@ -41,7 +40,6 @@ const Learn = () => {
       id: 2,
       title: "Python Programming",
       description: "Learn Python programming from scratch",
-      progress: 0,
       image: "https://img.icons8.com/color/96/000000/python.png",
       path: "/python"
     },
@@ -49,7 +47,6 @@ const Learn = () => {
       id: 3,
       title: "Web Development",
       description: "Build modern web applications",
-      progress: 0,
       image: "https://img.icons8.com/color/96/000000/web.png",
       path: "/web"
     }
@@ -102,7 +99,7 @@ const Learn = () => {
               <p className="text-purple-100 mb-6">
                 {course.description}
               </p>
-              <ProgressBar progress={course.progress} />
+              {course.title === "Java Programming" && <ProgressBar />}
             </Link>
           ))}
         </div>

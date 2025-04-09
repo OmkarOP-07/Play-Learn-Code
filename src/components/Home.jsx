@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ProgressBar from './ProgressBar';
+import { useJavaPoints } from '../Java/JavaPointsContext';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
   const location = useLocation();
   const { currentUser } = useAuth();
+  const { points } = useJavaPoints();
 
   useEffect(() => {
     // Simulate loading time for a smoother transition
@@ -16,6 +19,19 @@ const Home = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    // Fetch progress based on points or any other logic
+    if (currentUser) {
+      // Assuming you have a function to calculate progress based on points
+      const calculateProgress = (points) => {
+        // Example calculation: max points could be 100
+        return Math.round((points / 170) * 100); // Adjust this logic as needed
+      };
+
+      setProgress(calculateProgress(points));
+    }
+  }, [currentUser, points]); // Re-run when currentUser or points change
 
   if (loading) {
     return (
@@ -340,15 +356,15 @@ const Home = () => {
                   </p>
                   <div className="flex gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-white">12</div>
+                      <div className="text-2xl font-bold text-white">0</div>
                       <div className="text-sm text-purple-200">Challenges Completed</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-white">5</div>
+                      <div className="text-2xl font-bold text-white">0</div>
                       <div className="text-sm text-purple-200">Badges Earned</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-white">#24</div>
+                        <div className="text-2xl font-bold text-white">0</div>
                       <div className="text-sm text-purple-200">Leaderboard Rank</div>
                     </div>
                   </div>
@@ -357,7 +373,7 @@ const Home = () => {
                 {/* Right side - Progress */}
                 <div className="md:w-1/4 bg-white/5 p-8 flex flex-col items-center justify-center">
                   <div className="flex flex-col items-center">
-                    <ProgressBar progress={65} color="text-indigo-500" />
+                    <ProgressBar progress={progress} color="text-indigo-500" />
                     <p className="mt-2 text-sm text-purple-200">Overall Progress</p>
                   </div>
                 </div>
