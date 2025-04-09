@@ -47,7 +47,7 @@ const Navbar = () => {
               Learn
             </Link>
             <Link 
-              to="/leaderboard" 
+              to="/CertGen" 
               className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-purple-200 transition-colors duration-200"
             >
               Certification
