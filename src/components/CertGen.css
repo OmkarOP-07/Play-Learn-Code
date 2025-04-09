@@ -1,0 +1,410 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap');
+
+/* Certificate Styling */
+.certificate-wrapper {
+  position: relative;
+  background: #fff;
+  padding: 30px 20px;
+  border: 12px double #d4af37;
+  border-radius: 8px;
+  max-width: 900px;
+  width: calc(100% - 40px);
+  margin: 30px auto;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+  background-color: #f9f5e0;
+  overflow: hidden;
+}
+
+/* Gold foil decorative elements - smaller on mobile */
+.certificate-wrapper::before,
+.certificate-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-image: url('https://www.transparenttextures.com/patterns/golden-age.png');
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.certificate-wrapper::before {
+  top: 10px;
+  left: 10px;
+}
+
+.certificate-wrapper::after {
+  bottom: 10px;
+  right: 10px;
+}
+
+.certificate {
+    top: 4rem;
+  background-color: #f9f5e0;
+  position: relative;
+  padding: 20px;
+  z-index: 1;
+}
+
+/* Logo positioning - changes based on screen size */
+.logo-container {
+  position: relative;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #d4af37;
+  object-fit: cover;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 3px;
+}
+
+/* Title styles - same fonts, adjusted sizing */
+.certificate .title {
+  font-size: 36px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  padding-top: 10px;
+  text-transform: uppercase;
+  font-family: 'Playfair Display', serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+}
+
+.certificate .subtitle {
+  font-size: 20px;
+  font-style: italic;
+  color: #555;
+  margin-bottom: 30px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+}
+
+/* Main content */
+.certificate .text {
+  font-size: 16px;
+  color: #333;
+  margin: 12px 0;
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+}
+
+.certificate .name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 42px;
+  color: #000;
+  margin: 25px 0;
+  text-decoration: underline;
+  text-decoration-color: #d4af37;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 8px;
+  letter-spacing: 1px;
+  word-break: break-word;
+}
+
+.certificate .competition {
+  font-size: 26px;
+  color: #2c3e50;
+  font-weight: 600;
+  margin: 25px 0;
+  font-family: 'Playfair Display', serif;
+  position: relative;
+  display: inline-block;
+  padding: 0 15px;
+  word-break: break-word;
+}
+
+.certificate .competition::before,
+.certificate .competition::after {
+  content: "";
+  position: absolute;
+  height: 1.5px;
+  width: 30px;
+  background: #d4af37;
+  top: 50%;
+}
+
+.certificate .competition::before {
+  left: -30px;
+}
+
+.certificate .competition::after {
+  right: -30px;
+}
+
+/* Date and signature */
+.certificate .date {
+  font-size: 16px;
+  color: #444;
+  margin-top: 30px;
+  font-style: italic;
+}
+
+.certificate .signature {
+  font-family: 'Great Vibes', cursive;
+  font-size: 30px;
+  color: #000;
+  margin-top: 60px;
+}
+
+.signature-line {
+  width: 180px;
+  height: 1px;
+  background: #333;
+  margin: 5px auto;
+}
+
+.signature-title {
+  font-size: 15px;
+  color: #555;
+  margin-top: 5px;
+  font-style: normal;
+  font-family: 'Georgia', serif;
+}
+
+/* Download button */
+.download-btn {
+  display: inline-block;
+  margin: 70px auto 0;
+  padding: 12px 25px;
+  background: linear-gradient(to right, #1f1c2c, #3a3560);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.3s;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Playfair Display', serif;
+}
+
+.download-btn:hover {
+  background: linear-gradient(to right, #3a3560, #1f1c2c);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Tablet View (600px and up) */
+@media (min-width: 600px) {
+  .certificate-wrapper {
+    padding: 40px 30px;
+  }
+
+  .logo-container {
+    position: absolute;
+    top: 77px;
+    right: -132px;
+    margin: 0;
+    justify-content: flex-end;
+  }
+
+  .logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  .certificate .title {
+    font-size: 42px;
+  }
+
+  .certificate .name {
+    font-size: 48px;
+  }
+
+  .certificate .competition {
+    font-size: 30px;
+  }
+}
+
+/* Desktop View (900px and up) */
+@media (min-width: 900px) {
+  .certificate-wrapper {
+    padding: 60px;
+  }
+
+  .certificate-wrapper::before,
+  .certificate-wrapper::after {
+    width: 120px;
+    height: 120px;
+    opacity: 0.15;
+  }
+
+  .certificate-wrapper::before {
+    top: 20px;
+    left: 20px;
+  }
+
+  .certificate-wrapper::after {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .logo {
+    width: 100px;
+    height: 100px;
+    border-width: 3px;
+  }
+
+  .certificate .title {
+    font-size: 48px;
+  }
+
+  .certificate .subtitle {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  .certificate .name {
+    font-size: 56px;
+  }
+
+  .certificate .competition {
+    font-size: 32px;
+  }
+
+  .certificate .date {
+    font-size: 18px;
+  }
+
+  .certificate .signature {
+    font-size: 36px;
+  }
+}
+
+/* Form Container */
+.form-container {
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 2rem auto;
+  font-family: 'Playfair Display', serif;
+  border: 1px solid #eaeaea;
+}
+
+.form-container h2 {
+  text-align: center;
+  color: white;
+  margin-bottom: 1.8rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.form-container h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: #d4af37;
+}
+
+/* Form Elements */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+form input {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: 'Georgia', serif;
+}
+
+form input:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+form input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Button Styling */
+button[type="submit"] {
+  background: linear-gradient(to right, #1f1c2c, #3a3560);
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(to right, #3a3560, #1f1c2c);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Date Input Customization */
+input[type="date"] {
+  position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+.read-only-input {
+  background-color: #f5f5f5;
+  color: #333;
+  cursor: not-allowed;
+  border: 1px solid #ddd;
+}
+
+.read-only-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .form-container h2 {
+    font-size: 1.5rem;
+  }
+  
+  form input {
+    padding: 0.7rem;
+  }
+}
