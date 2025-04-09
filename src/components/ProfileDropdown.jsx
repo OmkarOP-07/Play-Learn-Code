@@ -40,7 +40,7 @@ const ProfileDropdown = ({ user }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white/10 backdrop-blur-lg border border-white/10 shadow-lg overflow-hidden">
+        <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white/10 backdrop-blur-lg border border-white/10 shadow-lg overflow-hidden">
           <div className="px-4 py-3 border-b border-white/10">
             <p className="text-sm text-white">{user.email}</p>
           </div>

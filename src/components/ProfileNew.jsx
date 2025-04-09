@@ -6,20 +6,20 @@ import { useAuth } from "../context/AuthContext"
 import { BadgeCheck, Award, Target, Medal, BookOpen, Clock, LogOut, ChevronRight, 
   MessageSquare, Calendar, Bookmark, Trophy, Zap, Brain, Lightbulb, 
   BarChart, Settings, HelpCircle, Send, X, Plus, CheckCircle2 } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card"
-import { Button } from "./ui/button"
-import { Progress } from "./ui/progress"
-import { Badge } from "./ui/badge"
-import Tooltip, { TooltipProvider, TooltipTrigger, TooltipContent } from "./ui/tooltip"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card"
+import { Button } from "../components/ui/button"
+import { Progress } from "../components/ui/progress"
+import { Badge } from "../components/ui/badge"
+import Tooltip, { TooltipProvider, TooltipTrigger, TooltipContent } from "../components/ui/tooltip"
 import ProgressBar from "./ProgressBar"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
-import { TabsComponents, TabsList, TabsTrigger, TabsContent } from "./ui/tabs"
-import { Input } from "./ui/input"
-import { Textarea } from "./ui/textarea"
-import { Separator } from "./ui/separator"
-import { ScrollArea } from "./ui/scroll-area"
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
+import { Input } from "../components/ui/input"
+import { Textarea } from "../components/ui/textarea"
+import { Separator } from "../components/ui/separator"
+import { ScrollArea } from "../components/ui/scroll-area"
 
-const Profile = () => {
+const ProfileNew = () => {
   const [user, setUser] = useState(null)
   const [activeTab, setActiveTab] = useState("overview")
   const [chatMessages, setChatMessages] = useState([
@@ -206,7 +206,7 @@ const Profile = () => {
         </Card>
 
         {/* Main Content Tabs */}
-        <TabsComponents.Root defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
+        <Tabs defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
           <TabsList className="grid grid-cols-4 bg-white/5 border border-white/10">
             <TabsTrigger value="overview" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
               <BarChart className="h-4 w-4 mr-2" />
@@ -668,10 +668,10 @@ const Profile = () => {
               </Card>
             </div>
           </TabsContent>
-        </TabsComponents.Root>
+        </Tabs>
       </div>
     </div>
   )
 }
 
-export default Profile 
+export default ProfileNew 
