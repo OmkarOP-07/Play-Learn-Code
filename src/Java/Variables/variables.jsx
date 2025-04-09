@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useJavaPoints } from "../JavaPointsContext";
+import { Lock } from 'lucide-react';
+
 const JavaVariablesGame = () => {
   const [currentLevel, setCurrentLevel] = useState(0);
   const [score, setScore] = useState(0);
@@ -7,7 +9,33 @@ const JavaVariablesGame = () => {
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [attempts, setAttempts] = useState(0);
-  const { points, addPoints, isLoading } = useJavaPoints();
+  const { points, addPoints, isLoading, getGameStatus } = useJavaPoints();
+  
+  // Get the game status to check if it's unlocked
+  const gameStatus = getGameStatus('variables');
+  
+  // If the game is not unlocked, show a message
+  if (!gameStatus.isUnlocked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white p-8">
+        <div className="max-w-4xl mx-auto bg-black/30 p-8 rounded-xl border border-white/10">
+          <div className="flex items-center gap-4 mb-6">
+            <Lock className="h-8 w-8 text-yellow-500" />
+            <h1 className="text-3xl font-bold">Variables</h1>
+          </div>
+          <div className="bg-red-900/30 p-6 rounded-lg mb-6">
+            <p className="text-xl mb-2">This challenge is locked 🔒</p>
+            <p className="text-gray-300">You need 20 points to unlock this content.</p>
+            <p className="text-gray-300 mt-2">Current points: {points}</p>
+          </div>
+          <div className="bg-purple-900/30 p-4 rounded-lg">
+            <p className="text-sm text-gray-300">Tip: Complete the Basic Syntax challenge to earn more points!</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const levels = [
     {
       title: "The Storage Vault: Introducing Variables",

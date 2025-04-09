@@ -33,7 +33,12 @@ const SignUp = () => {
     }
 
     try {
-      await signup(formData.email, formData.password, formData.username);
+      const userData = {
+        email: formData.email,
+        password: formData.password,
+        username: formData.username
+      };
+      await signup(userData);
       setMessage("Successfully signed up!"); // Set success message
       setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
       navigate("/"); // Redirect to home page after successful signup

@@ -14,7 +14,7 @@ const generateToken = (id) => {
 // @access  Public
 export const register = async (req, res) => {
   try {
-    const { name, email, password, username } = req.body;
+    const { email, password, username, name } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ $or: [{ email }, { username }] });
@@ -24,7 +24,7 @@ export const register = async (req, res) => {
 
     // Create user
     const user = await User.create({
-      name,
+      name: name || username, // Use username as name if name is not provided
       email,
       password,
       username,
@@ -32,9 +32,7 @@ export const register = async (req, res) => {
     });
 
     if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '30d'
-      });
+      const token = generateToken(user._id);
 
       res.status(201).json({
         _id: user._id,
@@ -46,6 +44,7 @@ export const register = async (req, res) => {
       });
     }
   } catch (error) {
+    console.error('Registration error:', error);
     res.status(500).json({ message: error.message });
   }
 };

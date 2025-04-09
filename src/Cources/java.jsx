@@ -3,12 +3,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronDown, faLock, faUnlock, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Ai from '../components/Ai';
 import chatbotImage from '../assets/images/chatbot.jpeg';
+import { useJavaPoints } from '../Java/JavaPointsContext';
 import './java.css';
+
 const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
   const navigate = useNavigate();
+  const { getGameStatus } = useJavaPoints();
 
   const [activeTopic, setActiveTopic] = useState(null); // To track which topic is expanded
 
@@ -49,20 +52,41 @@ const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
             {/* Subtopics dropdown */}
             {activeTopic === concept.id && (
               <ul className="ml-4 mt-2">
-                {concept.subtopics.map((subtopic) => (
-                  <li key={subtopic.id} className="mb-2">
-                    <div
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onToggle(); // Hide sidebar on link click
-                        navigate(subtopic.path); // Navigate to the selected subtopic
-                      }}
-                      className="block p-2 rounded transition-transform duration-300 hover:bg-black hover:bg-opacity-20 hover:text-white hover:scale-105 hover:shadow-[0_0_10px_#00ff00, 0_0_20px_#00ff00, 0_0_30px_#00ff00] cursor-pointer"
-                    >
-                      <span className='text-purple-500'>{subtopic.title}</span>
-                    </div>
-                  </li>
-                ))}
+                {concept.subtopics.map((subtopic) => {
+                  // Extract game ID from path
+                  const gameId = subtopic.path.split('/').pop();
+                  const gameStatus = getGameStatus(gameId);
+                  
+                  return (
+                    <li key={subtopic.id} className="mb-2">
+                      <div
+                        onClick={(e) => {
+                          if (!gameStatus.isUnlocked) {
+                            e.preventDefault();
+                            return;
+                          }
+                          e.preventDefault();
+                          onToggle(); // Hide sidebar on link click
+                          navigate(subtopic.path); // Navigate to the selected subtopic
+                        }}
+                        className={`block p-2 rounded transition-transform duration-300 ${
+                          gameStatus.isUnlocked 
+                            ? 'hover:bg-black hover:bg-opacity-20 hover:text-white hover:scale-105 hover:shadow-[0_0_10px_#00ff00, 0_0_20px_#00ff00, 0_0_30px_#00ff00] cursor-pointer' 
+                            : 'opacity-60 cursor-not-allowed'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className='text-purple-500'>{subtopic.title}</span>
+                          {gameStatus.isUnlocked ? (
+                            <FontAwesomeIcon icon={faUnlock} className="text-blue-500 ml-2" />
+                          ) : (
+                            <FontAwesomeIcon icon={faLock} className="text-red-500 ml-2" />
+                          )}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </li>
@@ -83,6 +107,7 @@ const JavaLearning = () => {
   const [selectedTopic, setSelectedTopic] = useState(1); // Set initial topic to the first one
   const [isAiVisible, setAiVisible] = useState(false); // State to manage Ai visibility
   const aiRef = useRef(null); // Ref for the Ai component
+  const { getGameStatus } = useJavaPoints();
 
   const toggleSidebar = () => {
     setSidebarVisible(!isSidebarVisible);
@@ -289,30 +314,55 @@ const JavaLearning = () => {
           {/* Render subtopics as cards for the selected topic */}
           {selectedTopic && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {javaConcepts.find(concept => concept.id === selectedTopic).subtopics.map(subtopic => (
-                <Link
-                  key={subtopic.id}
-                  to={subtopic.path}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]"
-                >
-                  <div className="flex items-center justify-center mb-6">
-                    <img
-                      src={subtopic.icon} // You can modify image per subtopic
-                      alt={subtopic.title}
-                      className="w-20 h-20 object-contain"
-                    />
-                  </div>
-                  <h3 className="text-3xl font-semibold text-white mb-2">
-                    {subtopic.title}
-                  </h3>
-                  <p className="text-white mb-1 text-xl font-bold">
-                    {subtopic.mission}
-                  </p>
-                  <p className="text-purple-200">
-                    {subtopic.script}
-                  </p>
-                </Link>
-              ))}
+              {javaConcepts.find(concept => concept.id === selectedTopic).subtopics.map(subtopic => {
+                // Extract game ID from path
+                const gameId = subtopic.path.split('/').pop();
+                const gameStatus = getGameStatus(gameId);
+                
+                return (
+                  <Link
+                    key={subtopic.id}
+                    to={gameStatus.isUnlocked ? subtopic.path : '#'}
+                    className={`bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/10 transition-all duration-300 ${
+                      gameStatus.isUnlocked 
+                        ? 'hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]' 
+                        : 'opacity-60 cursor-not-allowed'
+                    }`}
+                    onClick={(e) => {
+                      if (!gameStatus.isUnlocked) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <div className="flex items-center justify-between mb-6">
+                      <img
+                        src={subtopic.icon}
+                        alt={subtopic.title}
+                        className="w-20 h-20 object-contain"
+                      />
+                      {gameStatus.isUnlocked ? (
+                        <FontAwesomeIcon icon={faUnlock} className="text-blue-500 text-2xl" />
+                      ) : (
+                        <FontAwesomeIcon icon={faLock} className="text-red-500 text-2xl" />
+                      )}
+                    </div>
+                    <h3 className="text-3xl font-semibold text-white mb-2">
+                      {subtopic.title}
+                    </h3>
+                    <p className="text-white mb-1 text-xl font-bold">
+                      {subtopic.mission}
+                    </p>
+                    <p className="text-purple-200">
+                      {subtopic.script}
+                    </p>
+                    {!gameStatus.isUnlocked && (
+                      <div className="mt-4 p-2 bg-red-900/30 rounded text-center text-white">
+                        Complete previous challenges to unlock this game
+                      </div>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>

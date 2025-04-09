@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useJavaPoints } from '../Java/JavaPointsContext';
 import ProfileDropdown from './ProfileDropdown';
+import { Trophy } from 'lucide-react';
 
 const Navbar = () => {
   const { currentUser } = useAuth();
+  const { points } = useJavaPoints();
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
@@ -20,6 +23,11 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // Calculate percentage of course completed
+  const totalPoints = 170; // Total points in the course
+  const percentageCompleted = Math.round((points / totalPoints) * 100);
+  const isCertificationEligible = percentageCompleted >= 80;
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent ${scrolled ? 'border-b border-white/10 backdrop-blur-lg shadow-lg neon-glow' : ''}`}>
@@ -48,12 +56,25 @@ const Navbar = () => {
             </Link>
             <Link 
               to="/CertGen" 
-              className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-purple-200 transition-colors duration-200"
+              className={`px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 ${
+                isCertificationEligible 
+                  ? 'text-white hover:text-purple-200' 
+                  : 'text-gray-400 cursor-not-allowed'
+              } transition-colors duration-200`}
+              title={isCertificationEligible ? 'Get your certificate' : 'Complete 80% of the course to get a certificate'}
             >
               Certification
+              {isCertificationEligible && <Trophy className="h-4 w-4 text-yellow-500" />}
             </Link>
             {currentUser ? (
-              <ProfileDropdown user={currentUser} />
+              <div className="flex items-center gap-3">
+                <div className="bg-black/30 px-3 py-1 rounded-lg border border-white/10">
+                  <span className="text-sm text-white">
+                    <span className="font-bold">{points}</span> / {totalPoints} points
+                  </span>
+                </div>
+                <ProfileDropdown user={currentUser} />
+              </div>
             ) : (
               <div className="flex items-center space-x-3">
                 <Link 

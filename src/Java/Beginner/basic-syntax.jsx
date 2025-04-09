@@ -2,16 +2,45 @@
 import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { BookOpen, Code, Coffee, PlayCircle } from 'lucide-react';
+import { BookOpen, Code, Coffee, PlayCircle, Lock } from 'lucide-react';
 import Tooltip from "../../components/ui/tooltip";
 import { useJavaPoints } from "../JavaPointsContext";
+import { useNavigate } from 'react-router-dom';
+import GameCompletionButton from '../GameCompletionButton';
 
 const JavaLearner = () => {
   const [activeExample, setActiveExample] = useState('hello');
   const [activeToken, setActiveToken] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const codeBlockRef = useRef(null);
-  const { points, addPoints, isLoading } = useJavaPoints();
+  const navigate = useNavigate();
+  const { points, addPoints, isLoading, getGameStatus, markGameAsCompleted } = useJavaPoints();
+  
+  // Get the game status to check if it's unlocked
+  const gameStatus = getGameStatus('basic-syntax');
+  
+  // If the game is not unlocked, show a message
+  if (!gameStatus.isUnlocked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white p-8">
+        <div className="max-w-4xl mx-auto bg-black/30 p-8 rounded-xl border border-white/10">
+          <div className="flex items-center gap-4 mb-6">
+            <Lock className="h-8 w-8 text-yellow-500" />
+            <h1 className="text-3xl font-bold">Basic Syntax</h1>
+          </div>
+          <div className="bg-red-900/30 p-6 rounded-lg mb-6">
+            <p className="text-xl mb-2">This challenge is locked 🔒</p>
+            <p className="text-gray-300">You need 10 points to unlock this content.</p>
+            <p className="text-gray-300 mt-2">Current points: {points}</p>
+          </div>
+          <div className="bg-purple-900/30 p-4 rounded-lg">
+            <p className="text-sm text-gray-300">Tip: Complete the Printing Output challenge to earn points!</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
   const keywordDefinitions = {
     'public': 'An access modifier that makes a class, method, or field accessible from any other class.',
     'class': 'A blueprint for creating objects that defines attributes and behaviors (methods).',
@@ -155,6 +184,20 @@ const JavaLearner = () => {
         });
       }
     }
+  };
+
+  const handleComplete = () => {
+    // Mark the game as completed
+    markGameAsCompleted('basic-syntax');
+    
+    // Add points for completing the game
+    addPoints(10);
+    
+    // Show success message
+    alert('Congratulations! You have completed the Basic Syntax challenge!');
+    
+    // Navigate to the next game
+    navigate('/java/variables/variables');
   };
 
   return (
@@ -335,12 +378,11 @@ const JavaLearner = () => {
           <CardFooter className="bg-slate-50 border-t p-4 text-center text-slate-600 rounded-b-lg">
             <div className="w-full flex justify-between items-center">
               <span className="text-sm">Interactive Java Syntax Explorer</span>
-              <Button variant="outline" size="sm" onClick={() => {
-                addPoints(10);
-                navigate('/java/variables/variables');
-              }}>
-                <PlayCircle className="h-4 w-4 mr-1" /> Complete Level
-              </Button>
+              <GameCompletionButton 
+                gameId="basic-syntax" 
+                nextGamePath="/java/variables/variables"
+                onComplete={handleComplete}
+              />
             </div>
           </CardFooter>
         </Card>

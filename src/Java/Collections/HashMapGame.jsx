@@ -6,7 +6,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
-import { Hash, Trophy, ArrowRight } from "lucide-react";
+import { Hash, Trophy, ArrowRight, Lock } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -53,7 +53,32 @@ export function HashMapGame() {
   const [submitted, setSubmitted] = useState(false);
   const [draggedItem, setDraggedItem] = useState(null);
   const [showNextDialog, setShowNextDialog] = useState(false);
-  const { points, addPoints } = useJavaPoints();
+  const { points, addPoints, getGameStatus } = useJavaPoints();
+
+  // Get the game status to check if it's unlocked
+  const gameStatus = getGameStatus('HashMapGame');
+  
+  // If the game is not unlocked, show a message
+  if (!gameStatus.isUnlocked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white p-8">
+        <div className="max-w-4xl mx-auto bg-black/30 p-8 rounded-xl border border-white/10">
+          <div className="flex items-center gap-4 mb-6">
+            <Lock className="h-8 w-8 text-yellow-500" />
+            <h1 className="text-3xl font-bold">HashMap Game</h1>
+          </div>
+          <div className="bg-red-900/30 p-6 rounded-lg mb-6">
+            <p className="text-xl mb-2">This challenge is locked 🔒</p>
+            <p className="text-gray-300">You need 160 points to unlock this content.</p>
+            <p className="text-gray-300 mt-2">Current points: {points}</p>
+          </div>
+          <div className="bg-purple-900/30 p-4 rounded-lg">
+            <p className="text-sm text-gray-300">Tip: Complete the Arrays and Lists challenge to earn more points!</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleDragStart = (e, item) => {
     setDraggedItem(item);
