@@ -22,32 +22,16 @@ export default function JavaLearningGame() {
   const { points, addPoints, isLoading } = useJavaPoints();
   const { currentUser } = useAuth();
   
-  // Debug logs
-  useEffect(() => {
-    console.log("Current user in printing-output:", currentUser);
-    console.log("Points in printing-output:", points);
-    console.log("Is loading in printing-output:", isLoading);
-  }, [currentUser, points, isLoading]);
-  
   // Check if user is logged in
   useEffect(() => {
-    console.log("PrintingOutput - Auth check:", { 
-      isLoading, 
-      hasCurrentUser: !!currentUser,
-      currentUser 
-    });
-    
     if (!isLoading && !currentUser) {
-      console.log("PrintingOutput - User not logged in, redirecting to login");
+      // Only redirect if we're sure the user isn't logged in
       navigate('/login');
-    } else if (currentUser) {
-      console.log("PrintingOutput - User is logged in:", currentUser);
     }
   }, [currentUser, isLoading, navigate]);
   
   const runCode = () => {
     if (!currentUser) {
-      console.log("User not logged in, cannot run code");
       setOutput("Please log in to earn points!");
       return;
     }
@@ -61,7 +45,6 @@ export default function JavaLearningGame() {
     setOutput(`Hello ${name}!`)
 
     if (!celebration) {
-      console.log("Celebrating and adding points");
       setCelebration(true)
       addPoints(10)
 
@@ -78,7 +61,7 @@ export default function JavaLearningGame() {
     setName("")
     setOutput("")
     setShowOutput(false)
-    setCelebration(false)
+    // Don't reset celebration to prevent re-awarding points
   }
 
   const goToNextLevel = () => {

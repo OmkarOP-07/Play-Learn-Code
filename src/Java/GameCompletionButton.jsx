@@ -11,7 +11,7 @@ const GameCompletionButton = ({ gameId, nextGamePath }) => {
     markGameAsCompleted(gameId);
     
     // Add points for completing the game
-    addPoints(10);
+    addPoints(10, gameId);
     
     // Show a success message
     alert('Congratulations! You have completed this challenge.');
