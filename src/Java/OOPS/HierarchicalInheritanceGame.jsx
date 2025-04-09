@@ -11,11 +11,11 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogTitle,  
 } from "../../components/ui/dialog";
-import { useNavigate } from 'react-router-dom';
 import confetti from "canvas-confetti";
-import { useJavaPoints } from "../JavaPointsContext";
+import { useNavigate } from "react-router-dom";
+
 const availableItems = [
   { id: "class_vehicle", name: "class Vehicle", type: "keyword", description: "Base class declaration" },
   { id: "engine_status", name: "private boolean engineRunning;", type: "attribute", description: "Engine status" },
@@ -25,27 +25,26 @@ const availableItems = [
   { id: "speed", name: "private int speed;", type: "attribute", description: "Speed attribute" },
   { id: "accelerate", name: "public void accelerate() { speed += 10; System.out.println(\"Speed: \" + speed); }", type: "method", description: "Accelerate method" },
   { id: "brake", name: "public void brake() { speed = Math.max(0, speed - 10); System.out.println(\"Speed: \" + speed); }", type: "method", description: "Brake method" },
-  { id: "extends_sportscar", name: "class SportsCar extends Car", type: "keyword", description: "SportsCar class declaration" },
-  { id: "turbo", name: "private boolean turboEnabled;", type: "attribute", description: "Turbo status" },
-  { id: "turbo_boost", name: "public void turboBoost() { turboEnabled = true; speed += 30; System.out.println(\"TURBO BOOST! Speed: \" + speed); }", type: "method", description: "Turbo boost method" },
-  { id: "drift_mode", name: "public void driftMode() { System.out.println(\"Drifting!\"); }", type: "method", description: "Drift mode method" }
+  { id: "extends_motorcycle", name: "class Motorcycle extends Vehicle", type: "keyword", description: "Motorcycle class declaration" },
+  { id: "lean_angle", name: "private int leanAngle;", type: "attribute", description: "Lean angle" },
+  { id: "wheelie", name: "public void wheelie() { System.out.println(\"Performing wheelie!\"); }", type: "method", description: "Wheelie method" },
+  { id: "lean", name: "public void lean(int angle) { leanAngle = angle; System.out.println(\"Leaning at \" + angle + \" degrees\"); }", type: "method", description: "Lean method" }
 ];
 
 const correctBaseClass = ["class_vehicle", "engine_status", "start_engine", "stop_engine"];
-const correctIntermediateClass = ["extends_car", "speed", "accelerate", "brake"];
-const correctChildClass = ["extends_sportscar", "turbo", "turbo_boost", "drift_mode"];
+const correctCarClass = ["extends_car", "speed", "accelerate", "brake"];
+const correctMotorcycleClass = ["extends_motorcycle", "lean_angle", "wheelie", "lean"];
 
-export function MultilevelInheritanceGame() {
+export function HierarchicalInheritanceGame() {
   const [baseClass, setBaseClass] = useState([]);
-  const [intermediateClass, setIntermediateClass] = useState([]);
-  const [childClass, setChildClass] = useState([]);
+  const [carClass, setCarClass] = useState([]);
+  const [motorcycleClass, setMotorcycleClass] = useState([]);
   const [shuffledItems, setShuffledItems] = useState([...availableItems].sort(() => Math.random() - 0.5));
   const [showDialog, setShowDialog] = useState(false);
-  const { points, addPoints } = useJavaPoints();
+  const [points, setPoints] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [showRoute, setShowRoute] = useState(false);
   const navigate = useNavigate();
-
   const handleDrop = (item, type) => {
     if (submitted) return;
 
@@ -53,11 +52,11 @@ export function MultilevelInheritanceGame() {
       case "base":
         setBaseClass(prev => [...prev, item]);
         break;
-      case "intermediate":
-        setIntermediateClass(prev => [...prev, item]);
+      case "car":
+        setCarClass(prev => [...prev, item]);
         break;
-      case "child":
-        setChildClass(prev => [...prev, item]);
+      case "motorcycle":
+        setMotorcycleClass(prev => [...prev, item]);
         break;
     }
   };
@@ -69,17 +68,17 @@ export function MultilevelInheritanceGame() {
       item.id === correctBaseClass[index]).length;
     totalPoints += Math.floor((baseCorrectParts / correctBaseClass.length) * 33);
 
-    const intermediateCorrectParts = intermediateClass.filter((item, index) => 
-      item.id === correctIntermediateClass[index]).length;
-    totalPoints += Math.floor((intermediateCorrectParts / correctIntermediateClass.length) * 33);
+    const carCorrectParts = carClass.filter((item, index) => 
+      item.id === correctCarClass[index]).length;
+    totalPoints += Math.floor((carCorrectParts / correctCarClass.length) * 33);
 
-    const childCorrectParts = childClass.filter((item, index) => 
-      item.id === correctChildClass[index]).length;
-    totalPoints += Math.floor((childCorrectParts / correctChildClass.length) * 34);
+    const motorcycleCorrectParts = motorcycleClass.filter((item, index) => 
+      item.id === correctMotorcycleClass[index]).length;
+    totalPoints += Math.floor((motorcycleCorrectParts / correctMotorcycleClass.length) * 34);
 
     if (baseCorrectParts === correctBaseClass.length && 
-        intermediateCorrectParts === correctIntermediateClass.length && 
-        childCorrectParts === correctChildClass.length) {
+        carCorrectParts === correctCarClass.length && 
+        motorcycleCorrectParts === correctMotorcycleClass.length) {
       totalPoints += 25;
     }
 
@@ -88,7 +87,7 @@ export function MultilevelInheritanceGame() {
 
   const handleSubmit = () => {
     const earnedPoints = calculatePoints();
-    addPoints(10);
+    setPoints(earnedPoints);
     setShowDialog(true);
     setSubmitted(true);
 
@@ -102,25 +101,26 @@ export function MultilevelInheritanceGame() {
 
   const handleReset = () => {
     setBaseClass([]);
-    setIntermediateClass([]);
-    setChildClass([]);
+    setCarClass([]);
+    setMotorcycleClass([]);
     setSubmitted(false);
     setShowDialog(false);
+    setPoints(0);
   };
 
   const handleNextClick = () => {
-    navigate('/Java/OOPS/HierarchicalInheritanceGame');
+    navigate('/Java/OOPS/HybridInheritanceGame');
   };
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="w-full mx-auto p-6 bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 justify-center items-center flex flex-col pt-20">
+      <div className="w-full mx-auto pt-20 bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 flex flex-col items-center p-4">
         {/* Example Card */}
-        <Card className="mb-6 border-2 border-primary w-[70%]">
+        <Card className="mb-6 border-2 border-primary/20 w-[85%]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <Code className="h-5 w-5" />
-              Multilevel Inheritance Example
+              Hierarchical Inheritance Example
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -141,11 +141,10 @@ export function MultilevelInheritanceGame() {
                 <p className="ml-4">{'}'}</p>
                 <p>{'}'}</p>
                 <p></p>
-                <p>class SportsCar extends Car {'{'}</p>
-                <p className="ml-4">private boolean turboEnabled;</p>
-                <p className="ml-4">public void turboBoost() {'{'}</p>
-                <p className="ml-8">turboEnabled = true;</p>
-                <p className="ml-8">speed += 30;</p>
+                <p>class Motorcycle extends Vehicle {'{'}</p>
+                <p className="ml-4">private int leanAngle;</p>
+                <p className="ml-4">public void wheelie() {'{'}</p>
+                <p className="ml-8">System.out.println("Performing wheelie!");</p>
                 <p className="ml-4">{'}'}</p>
                 <p>{'}'}</p>
               </div>
@@ -154,11 +153,11 @@ export function MultilevelInheritanceGame() {
         </Card>
 
         {/* Game Card */}
-        <Card className="border-2 border-primary shadow-md">
+        <Card className="border-2 border-primary shadow-md w-[85%]">
           <CardHeader>
-            <CardTitle className="text-white">Build the Vehicle-Car-SportsCar Inheritance</CardTitle>
+            <CardTitle className="text-white">Build the Vehicle-Car-Motorcycle Inheritance</CardTitle>
             <p className="text-sm text-white">
-              Drag and drop elements to create a three-level inheritance structure.
+              Drag and drop elements to create a hierarchical inheritance structure.
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -170,7 +169,7 @@ export function MultilevelInheritanceGame() {
                   {shuffledItems.map((item) => (
                     <div
                       key={item.id}
-                      className="p-2 bg-black bg-opacity-20 rounded-md cursor-move hover:bg-black hover:bg-opacity-30"
+                      className="p-2 bg-black bg-opacity-20 rounded-md cursor-move hover:bg-black hover:bg-opacity-30 hover:border-white"
                       draggable
                       onDragStart={(e) => {
                         e.dataTransfer.setData("text/plain", JSON.stringify(item));
@@ -197,47 +196,47 @@ export function MultilevelInheritanceGame() {
                   <h3 className="font-semibold mb-2 text-white">Vehicle (Base Class)</h3>
                   <div className="space-y-2">
                     {baseClass.map((item, index) => (
-                      <div key={index} className="p-2 bg-black bg-opacity-20 rounded-md hover:bg-black hover:bg-opacity-30">
-                        <Badge className="text-white bg-transparent hover:bg-transparent hover:text-white">{item.name}</Badge>
+                      <div key={index} className="p-2 bg-black bg-opacity-20 rounded-md hover:bg-black hover:bg-opacity-30 hover:border-white">
+                        <Badge className="text-white bg-transparent hover:bg-transparent hover:text-white hover:border-white">{item.name}</Badge>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Intermediate Class Zone */}
+                {/* Car Class Zone */}
                 <div
                   className="p-4 border-2 border-dashed border-gray-300 rounded-md"
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
                     e.preventDefault();
                     const item = JSON.parse(e.dataTransfer.getData("text/plain"));
-                    handleDrop(item, "intermediate");
+                    handleDrop(item, "car");
                   }}
                 >
-                  <h3 className="font-semibold mb-2 text-white">Car (Intermediate Class)</h3>
+                  <h3 className="font-semibold mb-2 text-white">Car (Child Class)</h3>
                   <div className="space-y-2">
-                    {intermediateClass.map((item, index) => (
-                      <div key={index} className="p-2 bg-black bg-opacity-20 rounded-md hover:bg-black hover:bg-opacity-30">
-                        <Badge className="text-white bg-transparent hover:bg-transparent hover:text-white">{item.name}</Badge>
+                    {carClass.map((item, index) => (
+                      <div key={index} className="p-2 bg-black bg-opacity-20 rounded-md">
+                        <Badge className="text-white bg-transparent hover:bg-transparent hover:text-white hover:border-white">{item.name}</Badge>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Child Class Zone */}
+                {/* Motorcycle Class Zone */}
                 <div
                   className="p-4 border-2 border-dashed border-gray-300 rounded-md"
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
                     e.preventDefault();
                     const item = JSON.parse(e.dataTransfer.getData("text/plain"));
-                    handleDrop(item, "child");
+                    handleDrop(item, "motorcycle");
                   }}
                 >
-                  <h3 className="font-semibold mb-2 text-white">SportsCar (Child Class)</h3>
+                  <h3 className="font-semibold mb-2 text-white">Motorcycle (Child Class)</h3>
                   <div className="space-y-2">
-                    {childClass.map((item, index) => (
-                      <div key={index} className="p-2 bg-black bg-opacity-20 rounded-md hover:bg-black hover:bg-opacity-30">
+                    {motorcycleClass.map((item, index) => (
+                      <div key={index} className="p-2 bg-black bg-opacity-20 rounded-md">
                         <Badge className="text-white bg-transparent hover:bg-transparent hover:text-white">{item.name}</Badge>
                       </div>
                     ))}
@@ -249,16 +248,16 @@ export function MultilevelInheritanceGame() {
             {/* Submit and Reset Buttons */}
             <div className="flex justify-end gap-4">
               <Button
-                variant="outline"
-                onClick={handleReset}
-                disabled={!baseClass.length && !intermediateClass.length && !childClass.length}
+              
+                onCli bg-transparent hover:bg-transparent hover:text-whiteck={handleReset}
+                disabled={!baseClass.length && !carClass.length && !motorcycleClass.length}
                   className="border-2 border-primary/20 hover:bg-gray-100 bg-white text-black"
               >
                 Reset
               </Button>
               <Button
                 onClick={handleSubmit}
-                disabled={submitted || (!baseClass.length && !intermediateClass.length && !childClass.length)}
+                disabled={submitted || (!baseClass.length && !carClass.length && !motorcycleClass.length)}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white"
               >
                 Submit
@@ -266,9 +265,8 @@ export function MultilevelInheritanceGame() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Next Topic Card */}
-        <Card 
+          {/* Next Topic Card */}
+         <Card 
           className="mt-6 border-2 border-primary/20 cursor-pointer transition-all duration-300 hover:scale-105"
           onMouseEnter={() => setShowRoute(true)}
           onMouseLeave={() => setShowRoute(false)}
@@ -277,20 +275,19 @@ export function MultilevelInheritanceGame() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-white">Next: Hierarchical Inheritance</h3>
-                <p className="text-white">Learn about Hierarchical Inheritance in Java</p>
+                <h3 className="text-xl font-bold text-white">Next: Hybrid Inheritance</h3>
+                <p className="text-white">Learn about Hybrid Inheritance in Java</p>
               </div>
               <div className="flex items-center gap-2">
                 {showRoute && (
-                  <span className="text-sm text-white">/Java/OOPS/HierarchicalInheritanceGame</span>
+                  <span className="text-sm text-white">/Java/OOPS/HybridInheritanceGame</span>
                 )}
                 <ArrowRight className="h-5 w-5 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
-
-        {/* Points Dialog */}
+       {/* Points Dialog */}
        <Dialog open={showDialog} onOpenChange={setShowDialog}>
           <DialogContent className="bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 border border-white/20">
             <div className="text-center py-4">
@@ -303,6 +300,6 @@ export function MultilevelInheritanceGame() {
       </div>
     </DndProvider>
   );
-}
+} 
 
-export default MultilevelInheritanceGame; 
+export default HierarchicalInheritanceGame;

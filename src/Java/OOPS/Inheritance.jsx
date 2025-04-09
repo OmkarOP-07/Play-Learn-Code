@@ -90,7 +90,7 @@ export function SingleInheritanceGame() {
   };
 
   const handleNextClick = () => {
-    navigate('/Java/OOPS/MultilevelInheritanceGame');
+    navigate('/Java/OOPS/MultilevelInheritance');
   };
 
   return (
@@ -98,7 +98,7 @@ export function SingleInheritanceGame() {
      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 overflow-hidden relative pt-16 text-white">
      <div className="w-full max-w-5xl mx-auto p-6">
         {/* Example Card */}
-        <Card className="mb-6 border-2 border-primary/20">
+        <Card className="mb-6 border-2 border-primary">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <Code className="h-5 w-5 text-white" />
@@ -153,7 +153,7 @@ export function SingleInheritanceGame() {
                         e.dataTransfer.setData("text/plain", JSON.stringify(item));
                       }}
                     >
-                      <Badge variant="outline" className="text-white">{item.name}</Badge>
+                      <Badge className="text-white bg-transparent hover:bg-transparent hover:text-white">{item.name}</Badge>
                     </div>
                   ))}
                 </div>
@@ -174,8 +174,8 @@ export function SingleInheritanceGame() {
                   <h3 className="font-semibold mb-2 text-white">Vehicle (Base Class)</h3>
                   <div className="space-y-2">
                     {baseClass.map((item, index) => (
-                      <div key={index} className="p-2 bg-blue-50 rounded-md">
-                        <Badge variant="outline" className="text-white">{item.name}</Badge>
+                      <div key={index} className="p-2 bg-black bg-opacity-20 rounded-md hover:bg-black hover:bg-opacity-30">
+                        <Badge className="text-white bg-transparent hover:bg-transparent hover:text-white">{item.name}</Badge>
                       </div>
                     ))}
                   </div>
@@ -194,8 +194,8 @@ export function SingleInheritanceGame() {
                   <h3 className="font-semibold mb-2 text-white">Car (Child Class)</h3>
                   <div className="space-y-2">
                     {childClass.map((item, index) => (
-                      <div key={index} className="p-2 bg-green-50 rounded-md">
-                        <Badge variant="outline" className="text-white">{item.name}</Badge>
+                      <div key={index} className="p-2 bg-black bg-opacity-20 rounded-md hover:bg-black hover:bg-opacity-30">
+                        <Badge className="text-white bg-transparent hover:bg-transparent hover:text-white">{item.name}</Badge>
                       </div>
                     ))}
                   </div>
@@ -249,10 +249,10 @@ export function SingleInheritanceGame() {
 
         {/* Points Dialog */}
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogContent className="bg-[#1a1a1a]/95 backdrop-blur-sm border border-white/20">
+          <DialogContent className="bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 border border-white/20">
             <div className="text-center py-4">
-              <div className="text-center mt-4 text-primary font-bold animate-bounce">
-                Awesome job! +{points} points!
+              <div className="text-center mt-4 text-primary font-bold animate-bounce text-2xl text-white">
+                Awesome job! +2.5 points!
               </div>
             </div>
           </DialogContent>

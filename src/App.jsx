@@ -38,9 +38,8 @@ import MultilevelInheritance from './Java/OOPS/MultilevelInheritanceGame.jsx';
 import { JavaPointsProvider } from "./Java/JavaPointsContext.jsx";
 import ArrayGamePage from './Java/Arrays/array.jsx';
 import CertGen from './components/CertGen.jsx'; 
-
-
-
+import HybridInheritance from './Java/OOPS/HybridInheritanceGame.jsx';
+import HierarchicalInheritance from './Java/OOPS/HierarchicalInheritanceGame.jsx';
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -179,7 +178,7 @@ function App() {
           errorElement={<ErrorBoundary />}
         />
         <Route
-          path="/Java/OOPS/multilevel-inheritance"
+          path="/Java/OOPS/MultilevelInheritance"
           element={<MultilevelInheritance />}
           errorElement={<ErrorBoundary />}
         />
@@ -188,6 +187,16 @@ function App() {
           element={<CertGen />}
           errorElement={<ErrorBoundary />}
         />
+        <Route
+          path="/Java/OOPS/HybridInheritanceGame"
+          element={<HybridInheritance />}
+          errorElement={<ErrorBoundary />}
+        />  
+        <Route
+          path="/Java/OOPS/HierarchicalInheritanceGame"
+          element={<HierarchicalInheritance />}
+          errorElement={<ErrorBoundary />}
+        />  
       </Route>
     ),
     {
