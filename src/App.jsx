@@ -37,6 +37,7 @@ import Constructors from './Java/OOPS/Constructors.jsx';
 import MultilevelInheritance from './Java/OOPS/MultilevelInheritanceGame.jsx';
 import { JavaPointsProvider } from "./Java/JavaPointsContext.jsx";
 import ArrayGamePage from './Java/Arrays/array.jsx';
+import CertGen from './components/CertGen.jsx'; 
 
 
 
@@ -180,6 +181,11 @@ function App() {
         <Route
           path="/Java/OOPS/multilevel-inheritance"
           element={<MultilevelInheritance />}
+          errorElement={<ErrorBoundary />}
+        />
+        <Route
+          path="/CertGen"
+          element={<CertGen />}
           errorElement={<ErrorBoundary />}
         />
       </Route>
