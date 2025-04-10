@@ -6,6 +6,21 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        'shimmer-diagonal': {
+          '0%': { backgroundPosition: '100% 100%' },
+          '100%': { backgroundPosition: '0 0' },
+        },
+      },
+      animation: {
+        'shimmer-diagonal': 'shimmer-diagonal 1.2s infinite ease-in-out',
+      },
+      backgroundImage: {
+        'skeleton-gradient': 'linear-gradient(135deg, #1e1b4b, #7c3aed, #1e1b4b)', // Indigo-950 to Violet
+      },
+      backgroundSize: {
+        'skeleton': '400% 400%',
+      },
       colors: {
         primary: '#000000',
         secondary: '#111111',

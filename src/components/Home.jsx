@@ -3,6 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ProgressBar from './ProgressBar';
 import { useJavaPoints } from '../Java/JavaPointsContext';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import VideoGrid from './VideoGrid';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -35,8 +38,37 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative">
+        <div className="container mx-auto px-4 py-16 relative z-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 min-h-[80vh] mt-2">
+            <div className="w-full md:w-1/2 text-center md:text-left space-y-6 animate-shimmer-diagonal">
+              <Skeleton height={40} width={200}  baseColor="#3b0764" highlightColor="#9333ea" />
+              <Skeleton height={80} width="80%" baseColor="#3b0764" highlightColor="#9333ea" />
+              <Skeleton height={40} width="70%" baseColor="#3b0764" highlightColor="#9333ea" />
+              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                <Skeleton height={50} width={150} baseColor="#3b0764" highlightColor="#9333ea" />
+                <Skeleton height={50} width={150} baseColor="#3b0764" highlightColor="#9333ea" />
+              </div>
+            </div>
+            <div className='w-[45%] h-[400px]'>
+            <Skeleton height="100%" width="100%" baseColor="#3b0764" highlightColor="#9333ea"/>
+            </div>
+    
+          </div>
+          
+          <div className="mt-16">
+            <Skeleton height={40} width={300} baseColor="#3b0764" highlightColor="#9333ea" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+              {[1, 2, 3].map((item) => (
+                <div key={item} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                  <Skeleton height={60} width={60} circle baseColor="#3b0764" highlightColor="#9333ea" />
+                  <Skeleton height={30} width="70%" className="mt-4" baseColor="#3b0764" highlightColor="#9333ea" />
+                  <Skeleton count={2} className="mt-2" baseColor="#3b0764" highlightColor="#9333ea" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -125,11 +157,12 @@ const Home = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl transform -rotate-3 scale-90 opacity-20 blur-xl animate-pulse-slow"></div>
                 <div className="relative h-full w-full bg-gradient-to-br from-gray-900 to-indigo-950 rounded-2xl p-6 border border-indigo-500/30 shadow-xl overflow-hidden">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                    <div className="ml-4 text-xs text-gray-400 font-mono">CodePlayground.js</div>
-                  </div>
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                  <div className="ml-4 text-xs text-gray-400 font-mono">CodePlayground.js</div>     
+                </div>
+                  
                   <div className="space-y-2 font-mono text-sm">
                     <div className="flex">
                       <span className="text-gray-500 w-8">1</span>
@@ -328,6 +361,9 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        {/* Featured Courses Section */}
+        {/* <VideoGrid /> */}
 
         {/* Progress Section */}
         {currentUser && (

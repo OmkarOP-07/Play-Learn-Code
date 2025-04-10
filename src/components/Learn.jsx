@@ -4,10 +4,10 @@ import ProgressBar from './ProgressBar';
 import Ai from './Ai';
 import chatbotImage from '../assets/images/chatbot.jpeg'; // Import the image
 
+
 const Learn = () => {
   const [isAiVisible, setAiVisible] = useState(false); // State to manage Ai visibility
   const aiRef = useRef(null); // Ref for the Ai component
-
   const toggleAi = () => {
     setAiVisible(!isAiVisible); // Toggle visibility on click
   };
