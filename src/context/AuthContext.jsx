@@ -1,7 +1,23 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = 'https://play-learn-code-server.onrender.com/api';
+// Configure axios defaults
+axios.defaults.withCredentials = false; // Set to false when using '*' for CORS origin
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+
+// Use environment variable for API URL if available, otherwise use the hardcoded URL
+const API_URL = import.meta.env.VITE_API_URL || 'https://play-learn-code-server.onrender.com/api';
+
+console.log('Using API URL:', API_URL);
+
+// Create a custom axios instance with default config
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: false
+});
 
 const AuthContext = createContext();
 
@@ -27,7 +43,7 @@ export const AuthProvider = ({ children }) => {
         console.log("AuthContext - Setting user from storage:", parsedUser);
         setCurrentUser(parsedUser);
         // Set default authorization header
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       } catch (error) {
         console.error("AuthContext - Error parsing stored user:", error);
         localStorage.removeItem('token');
@@ -42,7 +58,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       console.log("AuthContext - Attempting login with:", { email });
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      
+      const response = await api.post('/auth/login', {
         email,
         password,
       });
@@ -57,7 +74,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(userData));
       
       // Set authorization header
-      axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
       
       // Update current user state
       setCurrentUser(userData);
@@ -73,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     try {
       console.log("AuthContext - Attempting signup");
-      const response = await axios.post(`${API_URL}/auth/register`, userData);
+      const response = await api.post('/auth/register', userData);
       
       console.log("AuthContext - Signup response:", response.data);
       
@@ -85,7 +102,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(newUserData));
       
       // Set authorization header
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newUserData.token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${newUserData.token}`;
       
       // Update current user state
       setCurrentUser(newUserData);
@@ -100,7 +117,7 @@ export const AuthProvider = ({ children }) => {
 
   const sendOTP = async (email) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/send-otp`, { email });
+      const response = await api.post('/auth/send-otp', { email });
       return response.data;
     } catch (error) {
       console.error('Error sending OTP:', error);
@@ -110,13 +127,13 @@ export const AuthProvider = ({ children }) => {
 
   const verifyOTP = async (email, otp) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/verify-otp`, { email, otp });
+      const response = await api.post('/auth/verify-otp', { email, otp });
       const { token, ...userData } = response.data;
       
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setCurrentUser(userData);
       return userData;
     } catch (error) {
@@ -129,7 +146,7 @@ export const AuthProvider = ({ children }) => {
     console.log("AuthContext - Logging out");
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    delete api.defaults.headers.common['Authorization'];
     setCurrentUser(null);
   };
 
