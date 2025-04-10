@@ -1,14 +1,20 @@
-import express from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the directory path of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables first
+dotenv.config({ path: path.join(__dirname, '.env') });
+
+import express from 'express';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-
-dotenv.config();
-
-// Connect to database
-connectDB();
+import mongoose from 'mongoose';
 
 const app = express();
 
@@ -60,6 +66,28 @@ app._router.stack.forEach(function(r){
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-}); 
+// Start server only after database connection is established
+const startServer = async () => {
+  try {
+    // Log environment variables (safely)
+    console.log('Environment check:', {
+      MONGODB_URI_exists: !!process.env.MONGODB_URI,
+      PORT: process.env.PORT,
+      NODE_ENV: process.env.NODE_ENV
+    });
+
+    // Connect to database
+    await connectDB();
+    
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+      console.log('MongoDB connection status:', mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected');
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer(); 
