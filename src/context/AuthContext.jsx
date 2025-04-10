@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://play-learn-code-server.onrender.com/api';
 
 const AuthContext = createContext();
 
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
 
   const sendOTP = async (email) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/send-otp', { email });
+      const response = await axios.post(`${API_URL}/auth/send-otp`, { email });
       return response.data;
     } catch (error) {
       console.error('Error sending OTP:', error);
@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }) => {
 
   const verifyOTP = async (email, otp) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/verify-otp', { email, otp });
+      const response = await axios.post(`${API_URL}/auth/verify-otp`, { email, otp });
       const { token, ...userData } = response.data;
       
       localStorage.setItem('token', token);
@@ -152,4 +152,4 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
   return useContext(AuthContext);
-}; 
+};
