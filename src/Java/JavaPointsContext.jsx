@@ -2,7 +2,19 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
-const API_URL = 'http://localhost:5000/api';
+// Use environment variable for API URL if available, otherwise use the hardcoded URL
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+console.log('JavaPointsContext using API URL:', API_URL);
+
+// Create a custom axios instance with default config
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true // Set to true to work with credentials in CORS
+});
 
 const JavaPointsContext = createContext();
 
@@ -134,7 +146,16 @@ export const JavaPointsProvider = ({ children }) => {
         points: newPoints
       });
       
-      const response = await axios.post(`${API_URL}/user/updatePoints`, {
+      // Get the token from localStorage
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+      
+      // Set the Authorization header
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      const response = await api.post(`/user/updatePoints`, {
         userId: currentUser._id,
         points: newPoints
       });
