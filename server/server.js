@@ -23,7 +23,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3000',
-  'https://play-learn-code-6tew-7uw605rc5-ompotdar7498-gmailcoms-projects.vercel.app'
+  // 'https://play-learn-code-6tew-7uw605rc5-ompotdar7498-gmailcoms-projects.vercel.app',
+  'play-learn-code-6tew-pa0g9k0yr-ompotdar7498-gmailcoms-projects.vercel.app'
 ];
 
 // CORS configuration with allowed origins
