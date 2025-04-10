@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 // Configure axios defaults
-axios.defaults.withCredentials = false; // Set to false when using '*' for CORS origin
+axios.defaults.withCredentials = true; // Set to true to work with credentials in CORS
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 // Use environment variable for API URL if available, otherwise use the hardcoded URL
@@ -16,7 +16,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: false
+  withCredentials: true // Set to true to work with credentials in CORS
 });
 
 const AuthContext = createContext();

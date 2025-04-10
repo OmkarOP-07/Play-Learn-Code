@@ -13,7 +13,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: false
+  withCredentials: true // Set to true to work with credentials in CORS
 });
 
 const PointsContext = createContext();
