@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+import cors from 'cors';
 // Get the directory path of the current module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,7 +10,6 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '.env') });
 
 import express from 'express';
-import cors from 'cors';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -19,30 +18,24 @@ import mongoose from 'mongoose';
 const app = express();
 
 // Define allowed origins
+// CORS configuration with allowed origins
 const allowedOrigins = [
   'http://localhost:5173',
-  'http://localhost:5174',
-  'http://localhost:3000',
-  'https://play-learn-code-6tew-7uw605rc5-ompotdar7498-gmailcoms-projects.vercel.app'
+  // Add other allowed origins here
 ];
 
-// CORS configuration with allowed origins
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
     } else {
-      console.log('Blocked by CORS:', origin);
-      return callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
