@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true; // Set to true to work with credentials i
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 // Use environment variable or fallback URL
-const BASE_URL = process.env.REACT_APP_API_URL || "https://play-learn-code-backend.onrender.com/";
+const BASE_URL = "https://play-learn-code-backend.onrender.com/" || "http://localhost:5000/api";
 
 // Create a custom axios instance
 const api = axios.create({

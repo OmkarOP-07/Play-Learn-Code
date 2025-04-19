@@ -32,7 +32,7 @@ const Layout = () => {
       </div>
 
       <div 
-        className="chatbot-icon" 
+        className="chatbot-icon z-50" 
         onClick={toggleAi} 
         style={{
           position: 'fixed',
@@ -50,7 +50,7 @@ const Layout = () => {
 
       {/* Sticky AI component */}
       {isAiVisible && (
-        <div className="sticky-ai" ref={aiRef}>
+        <div className="sticky-ai" ref={aiRef} >
           <Ai onClose={() => setAiVisible(false)} />
         </div>
       )}
