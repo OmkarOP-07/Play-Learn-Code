@@ -21,6 +21,7 @@ const app = express();
 // CORS configuration with allowed origins
 const allowedOrigins = [
   'http://localhost:5173',
+  'https://play-learn-code.vercel.app',
   // Add other allowed origins here
 ];
 
