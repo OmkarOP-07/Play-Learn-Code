@@ -6,7 +6,9 @@ axios.defaults.withCredentials = true; // Set to true to work with credentials i
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 // Use environment variable for API URL if available, otherwise use the hardcoded URL
- const API_URL = import.meta.env.VITE_API_URL || 'https://play-learn-code-server.onrender.com/api';
+const API_URL = axios.create({
+  baseURL: "https://play-learn-code-backend.onrender.com" || process.env.REACT_APP_API_URL, // use env variable
+});
 // const API_URL = import.meta.env.MONGO_URI
 console.log('Using API URL:', API_URL);
 
