@@ -5,21 +5,19 @@ import axios from 'axios';
 axios.defaults.withCredentials = true; // Set to true to work with credentials in CORS
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
-// Use environment variable for API URL if available, otherwise use the hardcoded URL
-const API_URL = axios.create({
-  baseURL: "https://play-learn-code-backend.onrender.com" || process.env.REACT_APP_API_URL, // use env variable
-});
-// const API_URL = import.meta.env.MONGO_URI
-console.log('Using API URL:', API_URL);
+// Use environment variable or fallback URL
+const BASE_URL = process.env.REACT_APP_API_URL || "https://play-learn-code-backend.onrender.com";
 
-// Create a custom axios instance with default config
+// Create a custom axios instance
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true // Set to true to work with credentials in CORS
+  withCredentials: true,
 });
+
+console.log("Using API base URL:", BASE_URL);
 
 const AuthContext = createContext();
 
