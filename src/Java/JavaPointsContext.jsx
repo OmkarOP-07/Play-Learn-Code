@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
 // Use environment variable for API URL if available, otherwise use the hardcoded URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || "https://play-learn-code-backend.onrender.com";
 
 console.log('JavaPointsContext using API URL:', API_URL);
 
