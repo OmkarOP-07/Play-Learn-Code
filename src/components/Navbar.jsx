@@ -7,7 +7,7 @@ import ProfileDropdown from './ProfileDropdown';
 import { Trophy, Menu, X } from 'lucide-react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-
+import '../components/Backdrop.jsx'; // Import the Backdrop component
 const Navbar = () => {
   const { currentUser } = useAuth();
   const { points } = useJavaPoints();
@@ -102,24 +102,6 @@ const Navbar = () => {
               Certification
               {isCertificationEligible && <Trophy className="h-4 w-4 text-yellow-500" />}
             </Link>
-            {currentUser ? (
-              <ProfileDropdown user={currentUser} />
-            ) : (
-              <div className="flex items-center space-x-3">
-                <Link 
-                  to="/login" 
-                  className="px-4 py-2 rounded-xl text-sm font-medium bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white transition-all duration-300 hover:-translate-y-0.5"
-                  >
-                  Login
-                </Link>
-                <Link 
-                  to="/signup" 
-                  className="px-4 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
             
             {loading ? (
               <div className="flex items-center gap-3">
@@ -136,76 +118,98 @@ const Navbar = () => {
                 <ProfileDropdown user={currentUser} />
               </div>
               
-            ) : null}
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Navigation Sidebar */}
-      <div className={`fixed inset-0 z-40 md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-        {/* Backdrop */}
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-          onClick={toggleMobileMenu}
-        ></div>
-        
-        {/* Sidebar */}
-        <div className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-indigo-950 to-purple-950 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-          <div className="flex flex-col h-full pt-16 pb-4 px-4">
-            <div className="flex-1 flex flex-col space-y-4">
-              <Link 
-                to="/" 
-                className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
-                onClick={toggleMobileMenu}
-              >
-                Home
-              </Link>
-              <Link 
-                to="/learn" 
-                className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
-                onClick={toggleMobileMenu}
-              >
-                Learn
-              </Link>
-              <Link 
-                to="/CertGen" 
-                className={`px-4 py-3 rounded-lg flex items-center gap-2 ${
-                  isCertificationEligible 
-                    ? 'text-white hover:bg-white/10' 
-                    : 'text-gray-400'
-                } transition-colors duration-200`}
-                onClick={toggleMobileMenu}
-              >
-                Certification
-                {isCertificationEligible && <Trophy className="h-4 w-4 text-yellow-500" />}
-              </Link>
-              <Link 
+            ) : 
+            <div className="flex items-center space-x-3">
+                <Link 
                   to="/login" 
-                  className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
+                  className="px-4 py-2 rounded-xl text-sm font-medium bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white transition-all duration-300 hover:-translate-y-0.5"
                   >
                   Login
                 </Link>
                 <Link 
                   to="/signup" 
-                  className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
-                  >
+                  className="px-4 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all duration-300 hover:-translate-y-0.5"
+                >
                   Sign Up
                 </Link>
-            </div>
-            
-            {currentUser && (
-              <div className="border-t border-white/10 pt-4">
-                <div className="bg-black/30 px-4 py-3 rounded-lg border border-white/10 mb-4">
-                  <span className="text-sm text-white">
-                    <span className="font-bold">{points}</span> / {totalPoints} points
-                  </span>
-                </div>
-                <ProfileDropdown user={currentUser} />
-              </div>
-            )}
+              </div>}
           </div>
         </div>
       </div>
+
+    {/* Mobile Navigation Sidebar */}
+{isMobileMenuOpen && (
+  <>
+    {/* Frosted‑glass backdrop */}
+    <div
+      className="fixed inset-0 z-[98] bg-black/40 backdrop-blur-sm"
+      onClick={toggleMobileMenu}   // click outside closes menu
+    />
+
+    {/* Slide‑in sidebar */}
+    <div
+      className={`
+        fixed top-0 left-0 z-[99] h-full w-48
+        bg-gradient-to-r from-black to-purple-950
+        transform transition-transform duration-300 ease-in-out
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}
+    >
+      <div className="flex flex-col h-full pt-16 pb-4 px-4">
+        <div className="flex-1 flex flex-col space-y-4">
+          <Link
+            to="/"
+            className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
+            onClick={toggleMobileMenu}
+          >
+            Home
+          </Link>
+
+          <Link
+            to="/learn"
+            className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
+            onClick={toggleMobileMenu}
+          >
+            Learn
+          </Link>
+
+          <Link
+            to="/CertGen"
+            className={`
+              px-4 py-3 rounded-lg flex items-center gap-2
+              ${isCertificationEligible ? 'text-white hover:bg-white/10' : 'text-gray-400'}
+              transition-colors duration-200
+            `}
+            onClick={toggleMobileMenu}
+          >
+            Certification
+            {isCertificationEligible && <Trophy className="h-4 w-4 text-yellow-500" />}
+          </Link>
+
+          {!currentUser && (
+            <>
+              <Link
+                to="/login"
+                className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
+                onClick={toggleMobileMenu}
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
+                onClick={toggleMobileMenu}
+              >
+                Sign&nbsp;Up
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  </>
+)}
+
     </nav>
   );
 };
