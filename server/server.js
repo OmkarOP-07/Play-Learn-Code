@@ -20,6 +20,7 @@ const app = express();
 // Define allowed origins
 const allowedOrigins = [
   'http://localhost:5173',
+  'https://play-learn-code.vercel.app',
   'http://localhost:5174',
   'http://localhost:3000',
   'https://play-learn-code-6tew-7uw605rc5-ompotdar7498-gmailcoms-projects.vercel.app',
@@ -30,12 +31,11 @@ const allowedOrigins = [
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
     } else {
-      console.log('Blocked by CORS:', origin);
-      return callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS'));
+     
     }
   },
   credentials: true,
