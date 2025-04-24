@@ -60,8 +60,8 @@ const Login = () => {
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white/10 backdrop-blur-lg py-8 px-4 shadow-lg sm:rounded-lg sm:px-10 border border-white/10">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md "> 
+        <div className="bg-white/10 backdrop-blur-lg py-8 px-4 shadow-lg sm:rounded-lg sm:px-10 border border-white/10 md:shadow-xl md:w-[50%]">
           {error && (
             <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
               {error}
