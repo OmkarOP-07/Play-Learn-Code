@@ -18,25 +18,31 @@ import mongoose from 'mongoose';
 const app = express();
 
 // Define allowed origins
-// CORS configuration with allowed origins
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://play-learn-code.vercel.app',
-  // Add other allowed origins here
+  'http://localhost:5174',
+  'http://localhost:3000',
+  'https://play-learn-code-6tew-7uw605rc5-ompotdar7498-gmailcoms-projects.vercel.app',
+  'https://play-learn-code-git-main-ompotdar7498-gmailcoms-projects.vercel.app'
 ];
 
+// CORS configuration with allowed origins
 app.use(cors({
   origin: function (origin, callback) {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.log('Blocked by CORS:', origin);
+      return callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
-}));
+}));  
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
