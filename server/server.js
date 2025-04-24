@@ -21,6 +21,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',
   'https://play-learn-code.vercel.app',
+  'https://play-learn-code-backend.onrender.com',
   'http://localhost:5174',
   'http://localhost:3000',
   'https://play-learn-code-6tew-7uw605rc5-ompotdar7498-gmailcoms-projects.vercel.app',
