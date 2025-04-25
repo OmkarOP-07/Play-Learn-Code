@@ -30,7 +30,7 @@ const CertGen = () => {
   if (!isCertificationEligible) {
     return (
       <div className="app-container flex justify-center items-center pt-16 bg-gradient-to-b from-indigo-950 via-purple-950 to-violet-950 h-screen overflow-y-auto">
-        <div className="max-w-md w-full bg-black/30 p-8 rounded-xl border border-white/10 shadow-lg">
+        <div className="max-w-md w-full bg-black/30 p-8 rounded-xl border border-white/10 shadow-lg mt-[5.6rem]">
           <div className="flex flex-col items-center text-center">
             <Lock className="h-16 w-16 text-yellow-500 mb-4" />
             <h1 className="text-2xl font-bold text-white mb-2">Certificate Locked</h1>

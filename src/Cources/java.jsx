@@ -27,8 +27,8 @@ const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
 
   //sidebar
   return (
-
-    <div className={`bg-black bg-opacity-30 text-white w-64 h-full fixed left-0 top-[4rem] p-4 transition-transform ${isVisible ? 'translate-x-0' : '-translate-x-full'} z-50 overflow-y-auto custom-scrollbar`}>
+    
+    <div className={`bg-black hidden md:block bg-opacity-30 text-white w-64 h-full fixed left-0 top-[4rem] p-4 transition-transform ${isVisible ? 'translate-x-0' : '-translate-x-full'} z-50 overflow-y-auto custom-scrollbar`}>
 
       <h2 className="bg-purple-900 bg-opacity-30 p-2 text-xl font-bold mb-4 border border-white/10 rounded-[0.5rem]">Java Concepts</h2>
       <ul>
@@ -267,6 +267,8 @@ const JavaLearning = () => {
 
 
   return (
+   
+    
     <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative pt-16 ">
       <Sidebar concepts={javaConcepts} isVisible={isSidebarVisible} onToggle={toggleSidebar} onTopicClick={handleTopicClick} />
 
