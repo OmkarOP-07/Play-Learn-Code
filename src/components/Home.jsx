@@ -5,7 +5,6 @@ import ProgressBar from './ProgressBar';
 import { useJavaPoints } from '../Java/JavaPointsContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import VideoGrid from './VideoGrid';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);

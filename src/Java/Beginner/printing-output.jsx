@@ -77,7 +77,7 @@ export default function JavaLearningGame() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative">
-      <div className="mx-auto p-4 pt-24 text-black text-white">
+      <div className="mx-auto p-4 pt-24 text-black ">
       <Card className="  shadow-lg bg-gray-200 text-black w-full max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6 bg-purple-500 p-2 rounded-md text-black border-2 border-purple-500">
         <div className="flex items-center gap-2  p-2 rounded-md text-black">

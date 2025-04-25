@@ -201,7 +201,7 @@ const JavaLearner = () => {
   };
 
   return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative pt-16 text-black">
+        <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 text-white overflow-hidden relative pt-16">
       <div className="container mx-auto px-4 py-8 ">
         <Card className="border-none shadow-lg">
           <CardHeader className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-t-lg">
