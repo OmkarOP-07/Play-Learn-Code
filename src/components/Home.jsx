@@ -98,10 +98,10 @@ const Home = () => {
       <div className="absolute top-1/4 -right-20 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl opacity-20 animate-pulse-slow"></div>
       <div className="absolute -bottom-32 -left-20 w-96 h-96 bg-indigo-500 rounded-full filter blur-3xl opacity-20 animate-pulse-slow"></div>
 
-      <div className="container mx-auto px-4 py-16 relative z-10">
+      <div className="container px-4 py-16 relative z-10">
         {/* Hero Section */}
         {location.pathname === '/' && (
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 min-h-[80vh] mt-2">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 min-h-[80vh] mt-2 ml-4">
             <div className="w-full md:w-1/2 text-center md:text-left space-y-6">
               {currentUser ? (
                 <>
