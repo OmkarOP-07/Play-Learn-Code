@@ -155,7 +155,7 @@ export const JavaPointsProvider = ({ children }) => {
       // Set the Authorization header
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      const response = await api.post(`/user/updatePoints`, {
+      const response = await api.post(`/api/user/updatePoints`, {
         userId: currentUser._id,
         points: newPoints
       });

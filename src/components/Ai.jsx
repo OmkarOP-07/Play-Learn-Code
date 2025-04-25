@@ -127,7 +127,7 @@ const Ai = ({ onClose }) => {
                     <button className="clear-button" onClick={clearChat} aria-label="Clear chat">
                         <FiTrash2 />
                     </button>
-                    <button className="close-button" onClick={onClose} aria-label="Close chat">
+                    <button className="close-button px-2" onClick={onClose} aria-label="Close chat">
                         <FiX />
                     </button>
                 </div>

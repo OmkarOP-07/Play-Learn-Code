@@ -50,7 +50,7 @@ const Layout = () => {
 
       {/* Sticky AI component */}
       {isAiVisible && (
-        <div className="sticky-ai" ref={aiRef} >
+        <div className="sticky-ai relative bottom-0" ref={aiRef} >
           <Ai onClose={() => setAiVisible(false)} />
         </div>
       )}

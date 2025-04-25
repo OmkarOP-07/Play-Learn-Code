@@ -13,6 +13,7 @@
 }
 
 .chat-container {
+    overflow-y: auto;
     width: auto;
     height: auto;
     display: flex;
@@ -292,6 +293,8 @@ input:focus {
     z-index: 1000;
     transition: opacity 0.3s ease;
     opacity: 1;
+    overflow: auto;
+    scrollbar-width: none;
 }
 
 .sticky-ai:hover {
@@ -315,17 +318,29 @@ input:focus {
 
 @media (max-width: 768px) {
     .sticky-ai {
+        overflow-y: auto;
+        position: fixed;    
         width: 90vw;
-        height: 80vh;
+        height: auto ;
+        max-height: 48vh;
         right: 0;
         bottom: 0;
         border-radius: 0;
-        
     }
+    .input-container {
+        padding: 0.5rem 1rem;
+        position:relative;
 
+    }
+    .chat-box {
+        overflow-y: auto;
+    }
     .chat-container {
         border-radius: 1rem;
         padding-bottom: 0%;
+        position: sticky;
+    }
+    .chat-header {
         position: sticky;
     }
 }
