@@ -60,7 +60,15 @@ app.use((req, res, next) => {
 console.log('Registering auth routes...');
 app.use('/api/auth', authRoutes);
 console.log('Registering user routes...');
-app.use('/api/user', userRoutes);
+app.use("/api/user", userRoutes); 
+console.log('Registering user routes...');
+
+console.log("Registered routes:");
+app._router.stack.forEach((r) => {
+  if (r.route && r.route.path) {
+    console.log(`${Object.keys(r.route.methods).join(",").toUpperCase()} - ${r.route.path}`);
+  }
+});
 
 // Test endpoint for CORS
 app.get('/api/test-cors', (req, res) => {

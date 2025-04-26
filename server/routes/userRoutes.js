@@ -10,8 +10,7 @@ router.get("/test", (req, res) => {
 });
 
 // Protected route for updating points
-router.post("/user/updatePoints", protect, updateUserPoints);
+router.post('/updatePoints', updateUserPoints);
 
-// Export the router
-const userRoutes = router;
-export default userRoutes;
+
+export default router;
