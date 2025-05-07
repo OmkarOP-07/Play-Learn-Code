@@ -1,5 +1,5 @@
 "use client";
-jjj
+
 import { useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
