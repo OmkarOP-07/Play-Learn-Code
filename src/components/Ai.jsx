@@ -5,8 +5,8 @@ import "katex/dist/katex.min.css";
 import "./Ai.css";
 import { FiCopy, FiTrash2, FiSend, FiRefreshCw, FiX } from "react-icons/fi";
 
-const API_KEY = "AIzaSyA1XG2nj0HNcXR1Y4ORjC970eac7TOFkh0";
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+const API_KEY = "AIzaSyCmdyOUdf38TZC6bbE-IMj0IkbGEYzKOvc";
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 const Ai = ({ onClose }) => {
     const [messages, setMessages] = useState(() => {
