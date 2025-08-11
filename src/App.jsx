@@ -1,4 +1,5 @@
 import React from 'react';
+import {ReactLenis, useLenis} from 'lenis/react'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -41,6 +42,10 @@ import CertGen from './components/CertGen.jsx';
 import HybridInheritance from './Java/OOPS/HybridInheritanceGame.jsx';
 import HierarchicalInheritance from './Java/OOPS/HierarchicalInheritanceGame.jsx';
 function App() {
+  const lenis = useLenis((lenis) => {
+    // called every scroll
+    console.log(lenis)
+  })
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route
@@ -207,11 +212,13 @@ function App() {
   );
 
   return (
+    <ReactLenis root> 
     <AuthProvider>
       <JavaPointsProvider>
         <RouterProvider router={router} />
       </JavaPointsProvider>
     </AuthProvider>
+    </ReactLenis>
   );
 }
 
