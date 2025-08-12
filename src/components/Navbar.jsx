@@ -37,6 +37,7 @@ const Navbar = () => {
   // Calculate percentage of course completed
   const totalPoints = 170; // Total points in the course
   const percentageCompleted = Math.round((points / totalPoints) * 100);
+  
   const isCertificationEligible = percentageCompleted >= 80;
 
   const toggleMobileMenu = () => {

@@ -1,31 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { InlineMath, BlockMath } from "react-katex";
-import "katex/dist/katex.min.css";
-import "./Ai.css";
 import { FiCopy, FiTrash2, FiSend, FiRefreshCw, FiX } from "react-icons/fi";
 
 const API_KEY = "AIzaSyCmdyOUdf38TZC6bbE-IMj0IkbGEYzKOvc";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 const Ai = ({ onClose }) => {
-    const [messages, setMessages] = useState(() => {
-        const saved = localStorage.getItem("chatMessages");
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
     const chatBoxRef = useRef(null);
 
-    useEffect(() => {
-        localStorage.setItem("chatMessages", JSON.stringify(messages));
-    }, [messages]);
-
-    const copyToClipboard = (text, e) => {
-        navigator.clipboard.writeText(text);
-        const button = e.currentTarget;
-        button.classList.add("copied");
-        setTimeout(() => button.classList.remove("copied"), 2000);
+    const copyToClipboard = async (text, e) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            const button = e.currentTarget;
+            const originalText = button.innerHTML;
+            button.innerHTML = "✓";
+            button.className = button.className + " text-green-400";
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.className = button.className.replace(" text-green-400", "");
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
     };
 
     const renderContent = (text) => {
@@ -34,38 +33,50 @@ const Ai = ({ onClose }) => {
             if (part.startsWith("$$") && part.endsWith("$$")) {
                 const content = part.slice(2, -2).trim();
                 return (
-                    <div className="math-container" key={index}>
-                        <BlockMath math={content} />
+                    <div className="relative bg-zinc-800 p-4 rounded-lg my-2 border border-zinc-700" key={index}>
+                        <pre className="text-blue-300 font-mono text-sm overflow-x-auto whitespace-pre-wrap">
+                            {content}
+                        </pre>
                         <button 
-                            className="copy-button"
+                            className="absolute top-2 right-2 p-1 hover:bg-zinc-700 rounded text-zinc-400 hover:text-white transition-colors"
                             onClick={(e) => copyToClipboard(content, e)}
                             aria-label="Copy equation"
                         >
-                            <FiCopy />
+                            <FiCopy size={14} />
                         </button>
                     </div>
                 );
             }
             if (part.startsWith("$") && part.endsWith("$")) {
                 const content = part.slice(1, -1).trim();
-                return <InlineMath key={index} math={content} />;
+                return (
+                    <span key={index} className="inline-block bg-zinc-800 px-2 py-1 rounded text-blue-300 font-mono text-sm mx-1">
+                        {content}
+                    </span>
+                );
             }
             if (part.startsWith("```") && part.endsWith("```")) {
                 const content = part.slice(3, -3).trim();
                 return (
-                    <div className="code-container" key={index}>
-                        <pre className="code-block">{content}</pre>
+                    <div className="relative bg-zinc-900 border border-zinc-700 rounded-lg my-2" key={index}>
+                        <pre className="p-4 text-green-300 font-mono text-sm overflow-x-auto whitespace-pre-wrap">
+                            {content}
+                        </pre>
                         <button
-                            className="copy-button"
+                            className="absolute top-2 right-2 p-1 hover:bg-zinc-700 rounded text-zinc-400 hover:text-white transition-colors"
                             onClick={(e) => copyToClipboard(content, e)}
                             aria-label="Copy code"
                         >
-                            <FiCopy />
+                            <FiCopy size={14} />
                         </button>
                     </div>
                 );
             }
-            return <span key={index} className="plain-text">{part}</span>;
+            return (
+                <span key={index} className="text-zinc-200 leading-relaxed whitespace-pre-wrap">
+                    {part}
+                </span>
+            );
         });
     };
 
@@ -111,70 +122,96 @@ const Ai = ({ onClose }) => {
     };
 
     const clearChat = () => {
-        localStorage.removeItem("chatMessages");
         setMessages([]);
     };
 
     useEffect(() => {
-        chatBoxRef.current?.scrollTo(0, chatBoxRef.current.scrollHeight);
+        if (chatBoxRef.current) {
+            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
     }, [messages]);
 
     return (
-        <div className="chat-container">
-            <div className="chat-header">
-                <h1>CodeQuest Helper</h1>
-                <div className="header-controls">
-                    <button className="clear-button" onClick={clearChat} aria-label="Clear chat">
-                        <FiTrash2 />
+        <div className="w-96 h-[600px] bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-900 rounded-t-lg">
+                <h1 className="text-white font-semibold flex items-center gap-2">
+                    <span className="text-blue-400">✦</span>
+                    CodeQuest Helper
+                </h1>
+                <div className="flex items-center gap-2">
+                    <button 
+                        className="p-2 hover:bg-zinc-800 rounded text-zinc-400 hover:text-white transition-colors" 
+                        onClick={clearChat} 
+                        aria-label="Clear chat"
+                    >
+                        <FiTrash2 size={16} />
                     </button>
-                    <button className="close-button px-2" onClick={onClose} aria-label="Close chat">
-                        <FiX />
+                    <button 
+                        className="p-2 hover:bg-zinc-800 rounded text-zinc-400 hover:text-white transition-colors" 
+                        onClick={onClose} 
+                        aria-label="Close chat"
+                    >
+                        <FiX size={16} />
                     </button>
                 </div>
             </div>
 
-            <div className="chat-box" ref={chatBoxRef}>
+            {/* Chat Messages */}
+            <div 
+                className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-track-zinc-900 scrollbar-thumb-zinc-700"
+                ref={chatBoxRef}
+            >
                 {messages.length === 0 && !isProcessing && (
-                    <div className="empty-state">
-                        <div className="empty-icon">✦</div>
-                        <div className="empty-text">Ask your doubts...</div>
+                    <div className="flex flex-col items-center justify-center h-full text-zinc-500">
+                        <div className="text-4xl mb-4 text-blue-400">✦</div>
+                        <div className="text-sm">Ask your doubts...</div>
                     </div>
                 )}
 
                 {messages.map((msg, index) => (
                     <motion.div
                         key={index}
-                        className={`message ${msg.type}-message`}
+                        className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <div className="message-content">
+                        <div className={`max-w-[85%] ${
+                            msg.type === 'user' 
+                                ? 'bg-blue-600 text-white rounded-lg rounded-br-sm' 
+                                : 'bg-zinc-800 text-zinc-200 rounded-lg rounded-bl-sm'
+                        } p-3 shadow-lg`}>
                             {msg.type === "bot" ? (
                                 <>
-                                    <div className="bot-header">
-                                        <span className="ai-icon">✦ AI</span>
+                                    <div className="flex items-center justify-between mb-2 pb-2 border-b border-zinc-700">
+                                        <span className="text-xs text-blue-400 font-medium flex items-center gap-1">
+                                            ✦ AI
+                                        </span>
                                         <button 
-                                            className="copy-message-button"
+                                            className="p-1 hover:bg-zinc-700 rounded text-zinc-400 hover:text-white transition-colors"
                                             onClick={(e) => copyToClipboard(msg.text, e)}
                                             aria-label="Copy message"
                                         >
-                                            <FiCopy />
+                                            <FiCopy size={12} />
                                         </button>
                                     </div>
-                                    <div className="response-content">
+                                    <div className="text-sm">
                                         {renderContent(msg.text)}
                                     </div>
                                 </>
                             ) : (
                                 <>
-                                    <div className="user-header">
-                                        <span className="user-icon">✦ You</span>
-                                        <span className="timestamp">
-                                            {new Date(msg.timestamp).toLocaleTimeString()}
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-xs text-blue-200 font-medium">You</span>
+                                        <span className="text-xs text-blue-200 opacity-70">
+                                            {new Date(msg.timestamp).toLocaleTimeString([], {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
                                         </span>
                                     </div>
-                                    <div className="response-content">
+                                    <div className="text-sm">
                                         {msg.text}
                                     </div>
                                 </>
@@ -182,33 +219,42 @@ const Ai = ({ onClose }) => {
                         </div>
                     </motion.div>
                 ))}
+                
                 {isProcessing && (
-                    <div className="loading">
-                        <div className="typing-indicator">
-                            <FiRefreshCw className="spin" />
+                    <div className="flex justify-start">
+                        <div className="bg-zinc-800 rounded-lg rounded-bl-sm p-3 max-w-[85%]">
+                            <div className="flex items-center gap-2 text-zinc-400">
+                                <FiRefreshCw className="animate-spin" size={14} />
+                                <span className="text-sm">AI is thinking...</span>
+                            </div>
                         </div>
                     </div>
                 )}
             </div>
             
-            <div className="input-container">
-                <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message (use $$ for LaTeX)..."
-                    onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                />
-                <motion.button 
-                    onClick={sendMessage} 
-                    disabled={isProcessing}
-                    className="send-button"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    aria-label="Send message"
-                >
-                    <FiSend />
-                </motion.button>
+            {/* Input Area */}
+            <div className="p-4 border-t border-zinc-800 bg-zinc-900 rounded-b-lg">
+                <div className="flex gap-2">
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Type your message (use $$ for LaTeX)..."
+                        onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                        className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white placeholder-zinc-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm"
+                        disabled={isProcessing}
+                    />
+                    <motion.button 
+                        onClick={sendMessage} 
+                        disabled={isProcessing || !input.trim()}
+                        className="bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white rounded-lg px-3 py-2 transition-colors flex items-center justify-center"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        aria-label="Send message"
+                    >
+                        <FiSend size={16} />
+                    </motion.button>
+                </div>
             </div>
         </div>
     );

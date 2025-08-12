@@ -123,11 +123,13 @@ export const JavaPointsProvider = ({ children }) => {
     try {
       console.log("JavaPointsContext - Adding points:", value);
       const newPoints = points + value;
+      if(newPoints > 170){
+        console.log("JavaPointsContext - Cannot add points, value greater than 170");
+        return;
+      } else {
       setPoints(newPoints);
-      
-      // Update points in the database
       await updatePointsInDB(newPoints);
-      
+      }
       console.log("JavaPointsContext - Points updated successfully:", newPoints);
     } catch (error) {
       console.error("JavaPointsContext - Error adding points:", error);
