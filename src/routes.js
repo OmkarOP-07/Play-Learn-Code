@@ -9,7 +9,7 @@ export const appRoutes = [
   { path: '/signup', component: lazy(() => import('./components/SignUp')) },
   { path: '/profile', component: lazy(() => import('./components/Profile')) },
   { path: '/learn', component: lazy(() => import('./components/Learn')) },
-  { path: '/ai', component: lazy(() => import('./components/Ai')) },
+  { path: '/chatbot', component: lazy(() => import('./components/ChatbotPage')) },
   { path: '/CertGen', component: lazy(() => import('./components/CertGen')) },
   
   // Python Course

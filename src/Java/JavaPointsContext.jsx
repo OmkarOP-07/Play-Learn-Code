@@ -66,14 +66,14 @@ export const JavaPointsProvider = ({ children }) => {
   const [points, setPoints] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useAuth();
-  
+
   // Game progress state
   const [javaGameProgress, setJavaGameProgress] = useState(() => {
     const savedProgress = localStorage.getItem('javaGameProgress');
     if (savedProgress) {
       return JSON.parse(savedProgress);
     }
-    
+
     // Initialize all games as not completed
     const initialProgress = {};
     Object.values(JAVA_CHAPTERS).forEach(chapter => {
@@ -123,12 +123,12 @@ export const JavaPointsProvider = ({ children }) => {
     try {
       console.log("JavaPointsContext - Adding points:", value);
       const newPoints = points + value;
-      if(newPoints > 170){
+      if (newPoints > 170) {
         console.log("JavaPointsContext - Cannot add points, value greater than 170");
         return;
       } else {
-      setPoints(newPoints);
-      await updatePointsInDB(newPoints);
+        setPoints(newPoints);
+        await updatePointsInDB(newPoints);
       }
       console.log("JavaPointsContext - Points updated successfully:", newPoints);
     } catch (error) {
@@ -147,21 +147,21 @@ export const JavaPointsProvider = ({ children }) => {
         userId: currentUser._id,
         points: newPoints
       });
-      
+
       // Get the token from localStorage
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('No authentication token found');
       }
-      
+
       // Set the Authorization header
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
-      const response = await api.post(`/api/user/updatePoints`, {
+
+      const response = await api.post(`/user/updatePoints`, {
         userId: currentUser._id,
         points: newPoints
       });
-      
+
       console.log("JavaPointsContext - Points update response:", response.data);
       return response.data;
     } catch (error) {
@@ -192,27 +192,27 @@ export const JavaPointsProvider = ({ children }) => {
       'variables': 20,         // Unlocked at 20 points
       'data-types': 30,        // Unlocked at 30 points
       'type-casting': 40,      // Unlocked at 40 points
-      
+
       // Conditionals
       'if-else': 50,           // Unlocked at 50 points
       'switch': 60,            // Unlocked at 60 points
-      
+
       // Loops
       'for-loop': 70,          // Unlocked at 70 points
       'while-loop': 80,        // Unlocked at 80 points
-      
+
       // Exceptions
       'exception': 90,         // Unlocked at 90 points
-      
+
       // Arrays
       'array': 100,            // Unlocked at 100 points
-      
+
       // OOPS
       'ClassesAndObjects': 110,  // Unlocked at 110 points
       'inheritance': 120,        // Unlocked at 120 points
       'encapsulation': 130,      // Unlocked at 130 points
       'constructors': 140,       // Unlocked at 140 points
-      
+
       // Collections
       'ArrayGame': 150,         // Unlocked at 150 points
       'HashMapGame': 160,       // Unlocked at 160 points

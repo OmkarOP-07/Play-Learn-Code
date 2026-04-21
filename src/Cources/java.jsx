@@ -10,8 +10,7 @@ import {
   faCheckCircle,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import Ai from "../components/Ai";
-import chatbotImage from "../assets/images/chatbot.jpeg";
+
 import { useJavaPoints } from "../Java/JavaPointsContext";
 import "./java.css";
 
@@ -137,8 +136,7 @@ const Sidebar = ({ concepts, isVisible, onToggle, onTopicClick }) => {
 const JavaLearning = () => {
   const [isSidebarVisible, setSidebarVisible] = useState(false); // Initially hidden
   const [selectedTopic, setSelectedTopic] = useState(1);
-  const [isAiVisible, setAiVisible] = useState(false);
-  const aiRef = useRef(null);
+
   const sidebarRef = useRef(null);
   const { getGameStatus } = useJavaPoints();
 
@@ -146,10 +144,7 @@ const JavaLearning = () => {
     setSidebarVisible(!isSidebarVisible);
   };
 
-  const toggleAi = () => {
-    console.log("Chatbot icon clicked");
-    setAiVisible(!isAiVisible);
-  };
+
 
   const handleClickOutside = (event) => {
     // Check if click is outside sidebar and not on toggle button
@@ -159,11 +154,6 @@ const JavaLearning = () => {
       !event.target.closest('.sidebar-toggle')
     ) {
       setSidebarVisible(false);
-    }
-
-    // Existing AI click outside handler
-    if (aiRef.current && !aiRef.current.contains(event.target)) {
-      setAiVisible(false);
     }
   };
 
@@ -530,31 +520,6 @@ const JavaLearning = () => {
         </div>
       </div>
 
-      {/* Circular icon for chatbot */}
-      <div
-        className="chatbot-icon"
-        onClick={toggleAi}
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          width: "60px",
-          height: "60px",
-          borderRadius: "50%",
-          backgroundImage: `url(${chatbotImage})`, // Use the imported image
-          backgroundSize: "cover",
-          cursor: "pointer",
-          transition: "transform 0.3s ease",
-          zIndex: 1000, // Ensure it's on top
-        }}
-      />
-
-      {/* Sticky AI component */}
-      {isAiVisible && (
-        <div className="sticky-ai" ref={aiRef}>
-          <Ai onClose={() => setAiVisible(false)} />
-        </div>
-      )}
     </div>
   );
 };

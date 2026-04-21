@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useJavaPoints } from '../Java/JavaPointsContext';
 import ProfileDropdown from './ProfileDropdown';
-import { Trophy, Menu, X } from 'lucide-react';
+import { Trophy, Menu, X, Bot } from 'lucide-react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../components/Backdrop.jsx'; // Import the Backdrop component
@@ -92,6 +92,13 @@ const Navbar = () => {
               Learn
             </Link>
             <Link 
+              to="/chatbot" 
+              className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-purple-200 transition-colors duration-200 flex items-center gap-1"
+            >
+              <Bot className="h-4 w-4" />
+              Chatbot
+            </Link>
+            <Link 
               to="/CertGen" 
               className={`px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 ${
                 isCertificationEligible 
@@ -172,6 +179,15 @@ const Navbar = () => {
             onClick={toggleMobileMenu}
           >
             Learn
+          </Link>
+
+          <Link
+            to="/chatbot"
+            className="px-4 py-3 rounded-lg text-white hover:bg-white/10 transition-colors duration-200 flex items-center gap-2"
+            onClick={toggleMobileMenu}
+          >
+            <Bot className="h-4 w-4" />
+            Chatbot
           </Link>
 
           <Link
