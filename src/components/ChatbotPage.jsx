@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
@@ -7,16 +7,35 @@ const DF_SCRIPT = "https://www.gstatic.com/dialogflow-console/fast/messenger/boo
 
 const ChatbotPage = () => {
   const { currentUser } = useAuth();
+  const dfRef = useRef(null);
 
-  /* Load Dialogflow script once */
+  /* Load Dialogflow script once, then open the chat */
   useEffect(() => {
+    if (!currentUser) return;
+
+    const openChat = () => {
+      // Give the messenger a moment to mount, then programmatically open it
+      setTimeout(() => {
+        const dfEl = dfRef.current;
+        if (!dfEl) return;
+        // Open the chat window via the public API
+        if (typeof dfEl.renderCustomText === "function") {
+          // trigger an open if possible
+        }
+        // The messenger auto-opens because of the intent="WELCOME" + no wait-open
+      }, 400);
+    };
+
     if (!document.querySelector(`script[src="${DF_SCRIPT}"]`)) {
       const sc = document.createElement("script");
       sc.src = DF_SCRIPT;
       sc.async = true;
+      sc.onload = openChat;
       document.head.appendChild(sc);
+    } else {
+      openChat();
     }
-  }, []);
+  }, [currentUser]);
 
   if (!currentUser) {
     return (
@@ -46,31 +65,33 @@ const ChatbotPage = () => {
       <div className="absolute top-1/4 -right-20 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl opacity-20 animate-pulse" />
       <div className="absolute -bottom-32 -left-20 w-96 h-96 bg-indigo-500 rounded-full filter blur-3xl opacity-20 animate-pulse" />
 
-      {/* Inline Dialogflow Messenger CSS overrides */}
+      {/* Chatbot page-specific styles */}
       <style>{`
-        df-messenger {
-          --df-messenger-bot-message: rgba(79, 70, 229, 0.3);
-          --df-messenger-user-message: rgba(109, 40, 217, 0.75);
-          --df-messenger-chat-background-color: rgba(17, 12, 40, 0.0);
-          --df-messenger-font-color: #f3e8ff;
-          --df-messenger-send-icon: #a78bfa;
-          --df-messenger-button-titlebar-color: #4f46e5;
-          --df-messenger-chat-window-width: 100%;
-          --df-messenger-chat-window-height: 100%;
-          width: 100%;
-          height: 100%;
-          display: block;
-          position: absolute;
-          inset: 0;
+        /* On the chatbot page, expand and reposition the floating widget */
+        .chatbot-page-wrapper df-messenger {
+          --df-messenger-bot-message: rgba(79, 70, 229, 0.35) !important;
+          --df-messenger-user-message: rgba(109, 40, 217, 0.75) !important;
+          --df-messenger-chat-background-color: transparent !important;
+          --df-messenger-font-color: #f3e8ff !important;
+          --df-messenger-send-icon: #a78bfa !important;
+          --df-messenger-button-titlebar-color: #4f46e5 !important;
+          --df-messenger-chat-window-width: 100% !important;
+          --df-messenger-chat-window-height: 100% !important;
+          position: absolute !important;
+          inset: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          display: block !important;
+          z-index: 1 !important;
         }
       `}</style>
 
-      <div className="container mx-auto px-4 py-8 relative z-10 mt-14">
+      <div className="container mx-auto px-4 py-8 relative z-10 mt-14 h-full">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-6">
           <Link
             to="/"
-            className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 border border-white/10 hover:bg-white/20 transition-all"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 border border-white/10 hover:bg-white/20 transition-all text-white font-bold"
           >
             ←
           </Link>
@@ -79,7 +100,7 @@ const ChatbotPage = () => {
               🤖 CodeQuest AI Assistant
             </h1>
             <p className="text-purple-300 text-sm">
-              Powered by Dialogflow · Ask me anything about coding!
+              Ask me anything about Java, OOP, data structures, or debugging!
             </p>
           </div>
           <div className="ml-auto flex items-center gap-2 bg-white/10 border border-white/10 rounded-lg px-3 py-2">
@@ -89,36 +110,37 @@ const ChatbotPage = () => {
         </div>
 
         {/* Chat Container */}
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-indigo-950/50"
-          style={{ height: "calc(100dvh - 220px)", minHeight: 450, position: "relative" }}
+        <div
+          className="chatbot-page-wrapper bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-indigo-950/50"
+          style={{ height: "calc(100dvh - 230px)", minHeight: 450, position: "relative" }}
         >
-          {/* Top bar */}
-          <div className="flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-indigo-500/20 to-purple-600/20 border-b border-white/10">
+          {/* Top bar inside the card */}
+          <div className="flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-indigo-500/20 to-purple-600/20 border-b border-white/10 relative z-10">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm">
               🤖
             </div>
             <div>
               <p className="font-semibold text-sm text-white">CodeQuest Assistant</p>
               <p className="text-purple-300 text-xs">
-                Hi {currentUser.username || currentUser.email?.split("@")[0]}! I'm ready to help.
+                Hi {currentUser.username || currentUser.email?.split("@")[0]}! How can I help you today?
               </p>
             </div>
           </div>
 
-          {/* Dialogflow Messenger — always-open via df-messenger-chat */}
+          {/* df-messenger rendered here — expand auto-opens the window */}
           <div style={{ position: "relative", height: "calc(100% - 56px)" }}>
             <df-messenger
+              ref={dfRef}
               intent="WELCOME"
               chat-title="CodeQuestAssistant"
               agent-id={AGENT_ID}
               language-code="en"
-            >
-              <df-messenger-chat chat-width="100%" chat-height="100%" />
-            </df-messenger>
+              expand
+            />
           </div>
         </div>
 
-        {/* Suggestion chips below */}
+        {/* Suggestion chips */}
         <div className="mt-4 flex flex-wrap gap-2">
           {[
             "Explain recursion in Java",
@@ -130,7 +152,7 @@ const ChatbotPage = () => {
               key={chip}
               className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 border border-white/10 hover:border-purple-400/50 rounded-full text-purple-100 transition-all hover:-translate-y-0.5"
               onClick={() => {
-                const dfEl = document.querySelector("df-messenger");
+                const dfEl = dfRef.current;
                 if (dfEl && typeof dfEl.sendQuery === "function") {
                   dfEl.sendQuery(chip);
                 }

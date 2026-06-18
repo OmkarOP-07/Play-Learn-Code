@@ -224,7 +224,6 @@ const DialogflowChat = () => {
       chat-title="CodePlayLearnAssistant"
       agent-id="89cc1a6f-41c3-414f-b48f-a33bac0952ac"
       language-code="en"
-      wait-open="true"
       style={{
         position: "fixed",
         bottom: "20px",
