@@ -179,9 +179,12 @@ const ChatbotPage = () => {
     setMessages(prev => [...prev, { from: "user", text: msg }]);
     setTyping(true);
     /* Trigger df-messenger via its public event API */
-    dfRef.current.dispatchEvent(
-      new CustomEvent("df-user-input-entered", { detail: { input: msg }, bubbles: true })
-    );
+    if (typeof dfRef.current.sendQuery === "function") {
+      dfRef.current.sendQuery(msg);
+    } else {
+      console.warn("Dialogflow Messenger is not fully loaded yet.");
+      setTyping(false);
+    }
   }, []);
 
   const onKey = (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } };
