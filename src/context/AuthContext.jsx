@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log("AuthContext - Attempting login with:", { email });
       
-      const response = await api.post('/auth/login', {
+      const response = await api.post('/login', {
         email,
         password,
       });
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     try {
       console.log("AuthContext - Attempting signup");
-      const response = await api.post('/auth/register', userData);
+      const response = await api.post('/register', userData);
       
       console.log("AuthContext - Signup response:", response.data);
       
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }) => {
 
   const sendOTP = async (email) => {
     try {
-      const response = await api.post('/auth/send-otp', { email });
+      const response = await api.post('/send-otp', { email });
       return response.data;
     } catch (error) {
       console.error('Error sending OTP:', error);
@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }) => {
 
   const verifyOTP = async (email, otp) => {
     try {
-      const response = await api.post('/auth/verify-otp', { email, otp });
+      const response = await api.post('/verify-otp', { email, otp });
       const { token, ...userData } = response.data;
       
       localStorage.setItem('token', token);

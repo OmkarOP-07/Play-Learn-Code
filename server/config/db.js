@@ -8,12 +8,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load environment variables from the correct path
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
-
+dotenv.config();
 const connectDB = async () => {
   try {
     // Log the MongoDB URI (but mask the password)
-    const maskedUri = process.env.MONGODB_URI 
+    const maskedUri = process.env.MONGODB_URI
       ? process.env.MONGODB_URI.replace(/:([^@]+)@/, ':****@')
       : 'undefined';
     console.log('Attempting to connect with URI:', maskedUri);
@@ -28,9 +27,9 @@ const connectDB = async () => {
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
     });
-    
+
     console.log(`MongoDB Connected: ${conn.connection.host}`);
-    
+
     mongoose.connection.on('error', err => {
       console.error('MongoDB connection error:', err);
     });
