@@ -66,7 +66,7 @@ const Navbar = () => {
             </button>
             <Link to="/" className="flex items-center group">
               <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200 group-hover:from-purple-200 group-hover:to-white transition-all duration-300">
-                CodeQuest
+                Code-Play-Learn by Onkar ❤️
               </span>
             </Link>
             {/* Profile icon for mobile */}
