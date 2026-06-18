@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Bot, Sparkles, Send, Code2, Lightbulb, BookOpen, Zap } from "lucide-react";
+import { ArrowLeft, Bot, Sparkles, Code2, Lightbulb, BookOpen, Zap } from "lucide-react";
 
 const AGENT_ID = "89cc1a6f-41c3-414f-b48f-a33bac0952ac";
 
@@ -12,11 +12,9 @@ const SUGGESTIONS = [
   { icon: Zap,       text: "Give me a quick quiz on Java loops" },
 ];
 
-/* ── styles object to keep JSX clean ── */
 const s = {
   page: {
     height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden",
-    /* matches app-wide: from-indigo-950 via-purple-900 to-violet-950 */
     background: "linear-gradient(135deg, #1e1b4b 0%, #4a1d96 50%, #2e1065 100%)",
     fontFamily: "'Inter','Segoe UI',sans-serif", color: "#fff",
   },
@@ -66,97 +64,170 @@ const s = {
     background: "rgba(109,40,217,0.3)", display: "flex",
     alignItems: "center", justifyContent: "center",
   },
-  messages: {
-    flex: 1, overflowY: "auto", padding: "24px 20px",
-    display: "flex", flexDirection: "column", gap: 16,
-  },
-  botBubble: {
-    maxWidth: "72%", alignSelf: "flex-start",
-    background: "rgba(49,46,129,0.5)", border: "1px solid rgba(99,81,212,0.3)",
-    borderRadius: "18px 18px 18px 4px", padding: "12px 16px",
-    fontSize: 14, lineHeight: 1.65, color: "#f3e8ff",
-  },
-  userBubble: {
-    maxWidth: "72%", alignSelf: "flex-end",
-    background: "linear-gradient(135deg,rgba(109,40,217,0.85),rgba(79,70,229,0.85))",
-    borderRadius: "18px 18px 4px 18px", padding: "12px 16px",
-    fontSize: 14, lineHeight: 1.65, color: "#fff",
-  },
-  inputRow: {
-    display: "flex", alignItems: "center", gap: 10,
-    padding: "12px 20px", flexShrink: 0,
-    background: "rgba(30,27,75,0.8)", borderTop: "1px solid rgba(124,58,237,0.25)",
-    backdropFilter: "blur(16px)",
-  },
-  input: {
-    flex: 1, background: "rgba(30,27,75,0.7)", border: "1.5px solid rgba(124,58,237,0.4)",
-    borderRadius: 13, padding: "11px 16px", color: "#f3e8ff", fontSize: 14,
-    outline: "none", fontFamily: "inherit",
-    transition: "border-color 0.2s, box-shadow 0.2s",
-  },
-  sendBtn: (disabled) => ({
-    width: 42, height: 42, borderRadius: 12, flexShrink: 0, border: "none",
-    background: disabled
-      ? "rgba(124,58,237,0.3)"
-      : "linear-gradient(135deg,#7c3aed,#4f46e5)",
-    color: "#fff", cursor: disabled ? "not-allowed" : "pointer",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    transition: "opacity 0.2s, transform 0.15s",
-    boxShadow: disabled ? "none" : "0 4px 16px rgba(109,40,217,0.5)",
-  }),
 };
 
-/* ── Typing indicator ── */
-const Typing = () => (
-  <div style={{ ...s.botBubble, display: "flex", gap: 5, padding: "14px 18px" }}>
-    {[0, 1, 2].map(i => (
-      <span key={i} style={{
-        width: 7, height: 7, borderRadius: "50%", background: "#a78bfa",
-        animation: `typing-dot 1.2s ease-in-out ${i * 0.2}s infinite`,
-        display: "inline-block",
-      }} />
-    ))}
-  </div>
-);
-
-/* ── Main component ── */
 const ChatbotPage = () => {
   const { currentUser } = useAuth();
-  const [messages, setMessages] = useState([
-    { from: "bot", text: "Hey! 👋 I'm your CodeQuest AI Assistant. Ask me anything about Java, Python, OOP, data structures, or debugging!" },
-  ]);
-  const [input, setInput] = useState("");
-  const [typing, setTyping] = useState(false);
   const [sidebar, setSidebar] = useState(true);
-  const [dfReady, setDfReady] = useState(false);
   const dfRef = useRef(null);
-  const bottomRef = useRef(null);
-  const inputRef = useRef(null);
 
-  /* Auto-scroll */
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typing]);
+  /* Drill into nested shadow DOMs and inject custom styles */
+  const injectStyles = () => {
+    const dfEl = dfRef.current;
+    if (!dfEl || !dfEl.shadowRoot) return;
 
-  /* Load Dialogflow Messenger script + wire events */
+    const chatEl = dfEl.shadowRoot.querySelector("df-messenger-chat");
+    if (!chatEl || !chatEl.shadowRoot) return;
+
+    /* ── Chat window styles ── */
+    if (!chatEl.shadowRoot.getElementById("df-chat-custom")) {
+      const s = document.createElement("style");
+      s.id = "df-chat-custom";
+      s.textContent = `
+        .chat-wrapper, .chat-window {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 100% !important;
+          max-height: 100% !important;
+          border-radius: 0px !important;
+          background: rgba(17, 12, 40, 0.25) !important;
+          backdrop-filter: blur(12px) !important;
+          border: none !important;
+          box-shadow: none !important;
+          overflow: hidden !important;
+        }
+        .chat-container {
+          background: transparent !important;
+        }
+      `;
+      chatEl.shadowRoot.appendChild(s);
+    }
+
+    /* ── Message list ── */
+    const msgList = chatEl.shadowRoot.querySelector("df-messenger-message-list");
+    if (msgList && msgList.shadowRoot && !msgList.shadowRoot.getElementById("df-msg-custom")) {
+      const s = document.createElement("style");
+      s.id = "df-msg-custom";
+      s.textContent = `
+        .message-list-wrapper, .messages-container {
+          background: transparent !important;
+        }
+        .message-list {
+          padding: 16px !important;
+        }
+      `;
+      msgList.shadowRoot.appendChild(s);
+    }
+
+    /* ── User input ── */
+    const inputEl = chatEl.shadowRoot.querySelector("df-messenger-user-input");
+    if (inputEl && inputEl.shadowRoot) {
+      const old = inputEl.shadowRoot.getElementById("df-input-custom");
+      if (old) old.remove();
+
+      const s = document.createElement("style");
+      s.id = "df-input-custom";
+      s.textContent = `
+        * {
+          box-sizing: border-box;
+        }
+        :host {
+          background: rgba(20, 16, 50, 0.4) !important;
+          border-top: 1px solid rgba(124, 58, 237, 0.2) !important;
+        }
+        .input-box-wrapper {
+          background: rgba(20, 16, 50, 0.85) !important;
+          border: 1.5px solid rgba(124, 58, 237, 0.5) !important;
+          border-radius: 12px !important;
+          margin: 10px 16px 16px !important;
+          padding: 6px 12px !important;
+          backdrop-filter: blur(8px) !important;
+          display: flex !important;
+          align-items: center !important;
+        }
+        .input-box-wrapper:focus-within {
+          border-color: rgba(167, 139, 250, 0.8) !important;
+          box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2) !important;
+        }
+        input, textarea, input[type="text"] {
+          background: transparent !important;
+          color: #f3e8ff !important;
+          caret-color: #a78bfa !important;
+          font-family: 'Inter', sans-serif !important;
+          font-size: 14px !important;
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          width: 100% !important;
+        }
+        input::placeholder, textarea::placeholder {
+          color: #7c5cbf !important;
+          opacity: 1 !important;
+        }
+        button[type="submit"], .send-icon-button, button {
+          background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
+          border-radius: 8px !important;
+          border: none !important;
+          width: 32px !important;
+          height: 32px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+          transition: opacity 0.2s ease !important;
+        }
+        button[type="submit"] svg, .send-icon-button svg, button svg {
+          width: 22px !important;
+          height: 22px !important;
+          transform: scale(0.8) !important;
+        }
+        button:hover {
+          opacity: 0.8 !important;
+        }
+      `;
+      inputEl.shadowRoot.appendChild(s);
+    }
+
+    /* ── Title bar ── */
+    const titleBar = chatEl.shadowRoot.querySelector("df-messenger-titlebar");
+    if (titleBar && titleBar.shadowRoot && !titleBar.shadowRoot.getElementById("df-title-custom")) {
+      const s = document.createElement("style");
+      s.id = "df-title-custom";
+      s.textContent = `
+        .titlebar {
+          background: linear-gradient(135deg, rgba(79, 70, 229, 0.8), rgba(109, 40, 217, 0.8)) !important;
+          backdrop-filter: blur(8px) !important;
+          border-bottom: 1px solid rgba(124, 58, 237, 0.25) !important;
+        }
+        .titlebar-title {
+          font-family: 'Inter', sans-serif !important;
+          font-weight: 600 !important;
+        }
+      `;
+      titleBar.shadowRoot.appendChild(s);
+    }
+  };
+
+  /* Load Dialogflow Messenger script + setup style injection and observer */
   useEffect(() => {
     if (!currentUser) return;
 
-    const load = () => {
-      const df = dfRef.current;
-      if (!df) return;
+    const setupObserver = () => {
+      const dfEl = dfRef.current;
+      if (!dfEl) return;
 
-      /* Listen for bot responses via public event API */
-      df.addEventListener("df-response-received", (e) => {
-        const resp = e.detail?.response;
-        const texts = resp?.queryResult?.fulfillmentMessages
-          ?.filter(m => m.text?.text?.length)
-          .flatMap(m => m.text.text) || [];
-        const botText = texts.join("\n") || resp?.queryResult?.fulfillmentText || "Sorry, I didn't get that.";
-        setTyping(false);
-        setMessages(prev => [...prev, { from: "bot", text: botText }]);
+      /* Retry style injection at intervals to catch async shadow DOM render */
+      [200, 500, 1000, 2000, 4000].forEach((ms) =>
+        setTimeout(injectStyles, ms)
+      );
+
+      /* Watch for shadow DOM mutations to re-style */
+      const obs = new MutationObserver(() => {
+        injectStyles();
       });
+      obs.observe(dfEl, { childList: true, subtree: true, attributes: true });
 
-      df.addEventListener("df-messenger-loaded", () => setDfReady(true));
-      setDfReady(true); // fallback
+      return () => obs.disconnect();
     };
 
     const existing = document.querySelector('script[src*="dialogflow-console/fast/messenger"]');
@@ -164,10 +235,10 @@ const ChatbotPage = () => {
       const sc = document.createElement("script");
       sc.src = "https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1";
       sc.async = true;
-      sc.onload = load;
+      sc.onload = setupObserver;
       document.head.appendChild(sc);
     } else {
-      load();
+      setupObserver();
     }
   }, [currentUser]);
 
@@ -175,19 +246,12 @@ const ChatbotPage = () => {
   const send = useCallback((text) => {
     const msg = text.trim();
     if (!msg || !dfRef.current) return;
-    setInput("");
-    setMessages(prev => [...prev, { from: "user", text: msg }]);
-    setTyping(true);
-    /* Trigger df-messenger via its public event API */
     if (typeof dfRef.current.sendQuery === "function") {
       dfRef.current.sendQuery(msg);
     } else {
       console.warn("Dialogflow Messenger is not fully loaded yet.");
-      setTyping(false);
     }
   }, []);
-
-  const onKey = (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } };
 
   /* ── Gate ── */
   if (!currentUser) return (
@@ -208,34 +272,12 @@ const ChatbotPage = () => {
       {/* CSS keyframes */}
       <style>{`
         @keyframes blob-pulse { 0%,100%{opacity:0.8} 50%{opacity:0.4} }
-        @keyframes typing-dot { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }
-        #chatbot-input:focus { border-color:rgba(167,139,250,0.7)!important; box-shadow:0 0 0 3px rgba(124,58,237,0.15)!important; }
-        .msg-scroll::-webkit-scrollbar{width:5px} .msg-scroll::-webkit-scrollbar-thumb{background:rgba(124,58,237,0.3);border-radius:4px}
         .sugg-btn:hover{background:rgba(109,40,217,0.22)!important;border-color:rgba(167,139,250,0.4)!important;transform:translateX(2px)}
       `}</style>
 
       {/* Ambient blobs */}
       <div style={s.blob("-5%","60%","450px","rgba(109,40,217,0.15)")} />
       <div style={s.blob("60%","-5%","380px","rgba(79,70,229,0.13)","2s")} />
-
-      {/* Hidden df-messenger — event bridge only */}
-      <df-messenger
-        ref={dfRef}
-        intent="WELCOME"
-        chat-title="CodeQuestAssistant"
-        agent-id={AGENT_ID}
-        language-code="en"
-        style={{
-          position: "fixed",
-          left: "-9999px",
-          top: "-9999px",
-          width: "1px",
-          height: "1px",
-          overflow: "hidden",
-          pointerEvents: "none",
-          opacity: 0,
-        }}
-      />
 
       {/* ── Header ── */}
       <header style={s.header}>
@@ -283,74 +325,57 @@ const ChatbotPage = () => {
             ))}
             <div style={{ marginTop: "auto", padding: 12, background: "rgba(109,40,217,0.1)", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 12 }}>
               <p style={{ color: "#7c5cbf", fontSize: 11, lineHeight: 1.7, margin: 0 }}>
-                💡 Click any prompt above or type your own question below!
+                💡 Click any prompt above to automatically send it to the assistant!
               </p>
             </div>
           </div>
         </aside>
 
-        {/* Chat */}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+        {/* Chat Area Container */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", background: "rgba(17, 12, 40, 0.4)", borderRadius: "16px", margin: "12px", border: "1px solid rgba(124, 58, 237, 0.15)" }}>
 
           {/* Welcome strip */}
-          <div style={{ padding: "8px 20px", background: "rgba(109,40,217,0.08)", borderBottom: "1px solid rgba(124,58,237,0.12)", flexShrink: 0 }}>
-            <span style={{ color: "#c4b5fd", fontSize: 12 }}>
-              👋 Hi <strong style={{ color: "#e9d5ff" }}>{currentUser.displayName || currentUser.email?.split("@")[0]}</strong>! Ask me anything about coding.
+          <div style={{ padding: "12px 20px", background: "rgba(109,40,217,0.12)", borderBottom: "1px solid rgba(124,58,237,0.2)", flexShrink: 0 }}>
+            <span style={{ color: "#c4b5fd", fontSize: 13, display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#a78bfa" }} />
+              👋 Hi <strong style={{ color: "#e9d5ff" }}>{currentUser.displayName || currentUser.email?.split("@")[0]}</strong>! Welcome to your interactive workspace.
             </span>
           </div>
 
-          {/* Messages */}
-          <div className="msg-scroll" style={s.messages}>
-            {messages.map((m, i) => (
-              <div key={i} style={{ display: "flex", flexDirection: "column" }}>
-                {m.from === "bot" && (
-                  <div style={{ display: "flex", alignItems: "flex-end", gap: 8, marginBottom: 2 }}>
-                    <div style={{ ...s.avatar, width: 26, height: 26, borderRadius: 7, flexShrink: 0 }}>
-                      <Bot size={13} color="#fff" />
-                    </div>
-                    <div style={s.botBubble}>{m.text}</div>
-                  </div>
-                )}
-                {m.from === "user" && (
-                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <div style={s.userBubble}>{m.text}</div>
-                  </div>
-                )}
-              </div>
-            ))}
-            {typing && (
-              <div style={{ display: "flex", alignItems: "flex-end", gap: 8 }}>
-                <div style={{ ...s.avatar, width: 26, height: 26, borderRadius: 7, flexShrink: 0 }}>
-                  <Bot size={13} color="#fff" />
-                </div>
-                <Typing />
-              </div>
-            )}
-            <div ref={bottomRef} />
-          </div>
-
-          {/* Input */}
-          <div style={s.inputRow}>
-            <input
-              id="chatbot-input"
-              ref={inputRef}
-              style={s.input}
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={onKey}
-              placeholder="Ask me anything about coding…"
-              autoComplete="off"
-            />
-            <button
-              id="chatbot-send"
-              style={s.sendBtn(!input.trim() || typing)}
-              disabled={!input.trim() || typing}
-              onClick={() => send(input)}
+          {/* Inline Embedded df-messenger */}
+          <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+            <df-messenger
+              ref={dfRef}
+              intent="WELCOME"
+              chat-title="CodeQuestAssistant"
+              agent-id={AGENT_ID}
+              language-code="en"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 1,
+                display: "block",
+                "--df-messenger-bot-message": "rgba(49, 46, 129, 0.6)",
+                "--df-messenger-button-titlebar-color": "linear-gradient(135deg, #4f46e5, #6d28d9)",
+                "--df-messenger-chat-background-color": "transparent",
+                "--df-messenger-font-color": "#f3e8ff",
+                "--df-messenger-send-icon": "#a78bfa",
+                "--df-messenger-user-message": "rgba(109, 40, 217, 0.8)",
+                "--df-messenger-chat-window-width": "100%",
+                "--df-messenger-chat-window-height": "100%",
+              }}
             >
-              <Send size={17} />
-            </button>
+              <df-messenger-chat
+                chat-width="100%"
+                chat-height="100%"
+              />
+            </df-messenger>
           </div>
         </div>
+
       </div>
     </div>
   );
