@@ -60,9 +60,7 @@ export const login = async (req, res) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (user && (await user.matchPassword(password))) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '30d'
-      });
+      const token = generateToken(user._id);
 
       res.json({
         _id: user._id,
@@ -131,9 +129,7 @@ export const verifyOTPEmail = async (req, res) => {
     await user.save();
 
     // Generate token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '30d'
-    });
+    const token = generateToken(user._id);
 
     res.json({
       _id: user._id,
